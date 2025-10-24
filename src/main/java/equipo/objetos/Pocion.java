@@ -1,4 +1,6 @@
-package clases;
+package equipo.objetos;
+
+import equipo.Equipamiento;
 
 public class Pocion extends Equipamiento {
 	

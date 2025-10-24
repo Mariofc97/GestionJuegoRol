@@ -1,20 +1,22 @@
+package clases;
+
+
 
 public abstract class Raza {
 
 	private int fuerza;
-	private int magia;
+	private int inteligencia;
 	private int suerte;
-	
-	//Constructor
-	
-	public Raza(int fuerza, int magia, int suerte) {
-		this.fuerza=fuerza;
-		this.magia=magia;
-		this.suerte=suerte;
-}
-	
-	//Getters Setters
 
+	// Constructor
+
+	public Raza(int fuerza, int inteligencia, int suerte) {
+		this.fuerza = fuerza;
+		this.inteligencia = inteligencia;
+		this.suerte = suerte;
+	}
+
+	// Getters Setters
 
 	public int getFuerza() {
 		return fuerza;
@@ -24,12 +26,12 @@ public abstract class Raza {
 		this.fuerza = fuerza;
 	}
 
-	public int getMagia() {
-		return magia;
+	public int getInteligencia() {
+		return inteligencia;
 	}
 
-	public void setMagia(int magia) {
-		this.magia = magia;
+	public void setInteligencia(int inteligencia) {
+		this.inteligencia = inteligencia;
 	}
 
 	public int getSuerte() {
@@ -40,12 +42,4 @@ public abstract class Raza {
 		this.suerte = suerte;
 	}
 
-
-
-	
-	
-	
-	
-	
-	
 }

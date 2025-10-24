@@ -1,4 +1,4 @@
-package clases;
+package equipo;
 
 public class Escudos extends Equipamiento {
 	

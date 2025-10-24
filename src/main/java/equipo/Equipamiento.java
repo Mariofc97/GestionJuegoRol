@@ -1,6 +1,10 @@
-package clases;
+package equipo;
 
-abstract class Equipamiento {
+public abstract class Equipamiento {
+	
+	//TODO
+	
+	//Tenemos que crear 
 
 	private String nombre;
 	private int nivelRequerido;

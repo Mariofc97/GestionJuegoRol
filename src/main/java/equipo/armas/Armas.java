@@ -1,6 +1,8 @@
-package clases;
+package equipo.armas;
 
-public class Armas extends Equipamiento {
+import equipo.Equipamiento;
+
+abstract class Armas extends Equipamiento {
 	
 	private String tipoDaño; // (fisico, fuego, hielo, etc)
 	private int alcance;
