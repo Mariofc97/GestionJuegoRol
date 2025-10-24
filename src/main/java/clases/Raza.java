@@ -1,29 +1,20 @@
-package clases;
 
-abstract class Raza {
+public abstract class Raza {
 
-	private String tipo;
 	private int fuerza;
-	private int velocidad;
 	private int magia;
-	private int destreza;
+	private int suerte;
+	
+	//Constructor
+	
+	public Raza(int fuerza, int magia, int suerte) {
+		this.fuerza=fuerza;
+		this.magia=magia;
+		this.suerte=suerte;
+}
+	
+	//Getters Setters
 
-	public Raza(String tipo, int fuerza, int velocidad, int magia, int destreza) {
-		super();
-		this.tipo = tipo;
-		this.fuerza = fuerza;
-		this.velocidad = velocidad;
-		this.magia = magia;
-		this.destreza = destreza;
-	}
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
 
 	public int getFuerza() {
 		return fuerza;
@@ -31,14 +22,6 @@ abstract class Raza {
 
 	public void setFuerza(int fuerza) {
 		this.fuerza = fuerza;
-	}
-
-	public int getVelocidad() {
-		return velocidad;
-	}
-
-	public void setVelocidad(int velocidad) {
-		this.velocidad = velocidad;
 	}
 
 	public int getMagia() {
@@ -49,18 +32,20 @@ abstract class Raza {
 		this.magia = magia;
 	}
 
-	public int getDestreza() {
-		return destreza;
+	public int getSuerte() {
+		return suerte;
 	}
 
-	public void setDestreza(int destreza) {
-		this.destreza = destreza;
+	public void setSuerte(int suerte) {
+		this.suerte = suerte;
 	}
 
-	//TODO
-	//Metodos:
-	// public int modAtaque();
-	// public int modDefensa();
-	// public int modCritico();
 
+
+	
+	
+	
+	
+	
+	
 }
