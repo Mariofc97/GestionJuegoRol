@@ -21,8 +21,9 @@ public class utils {
 		System.out.println("Has gando equipo: " + ganaEquipo.toString());
 
 	}
+
 	// invocacion();
-	
+
 	public static void invocacionCompañeroCriatura (Criatura compi, Personaje person) {
 		
 	boolean	resultado = dadoDiez()>3;
