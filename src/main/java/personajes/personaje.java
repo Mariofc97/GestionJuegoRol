@@ -1,6 +1,6 @@
 package personajes;
 
-public class personaje {
+public abstract class personaje {
 
 	//PERSONAJE
 	// public void ganarExperiencia(int experiencia);

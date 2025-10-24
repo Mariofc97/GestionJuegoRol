@@ -1,6 +1,6 @@
 package criaturas;
 
-abstract class Criatura {
+public abstract class Criatura {
 	
 	//TODO: MANUEL
 	// Debemos de crear criaturas:
