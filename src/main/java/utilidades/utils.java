@@ -24,17 +24,17 @@ public class utils {
 
 	// invocacion();
 
-	public static void invocacionCompañeroCriatura (Criatura compi, Personaje person) {
-		
-	boolean	resultado = dadoDiez()>3;
-	if (resultado) {
-		person.getCriaturas().add(compi);
-		System.out.println("Hora tienes un compañero de viaje:" + compi.toString());
-	}else {
-		System.out.println("No estan pensado en lo que debes, al invocar la criatura se rie de ti y te ataca.");
-		person.set
-	}
-		
+	public static void invocacionCompañeroCriatura(Criatura compi, Personaje person) {
+
+		boolean resultado = dadoDiez() > 3;
+		if (resultado) {
+			person.getCriaturas().add(compi);
+			System.out.println("Hora tienes un compañero de viaje:" + compi.toString());
+		} else {
+			System.out.println("No estan pensado en lo que debes, al invocar la criatura se rie de ti y te ataca.");
+			person.setPuntosVida(person.getPuntosVida() - compi.getPuntosAtaque());
+		}
+
 	}
 
 	/**
