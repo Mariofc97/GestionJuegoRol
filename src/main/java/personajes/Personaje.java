@@ -1,6 +1,20 @@
 package personajes;
 
-public abstract class personaje {
+import clases.Raza;
+
+public class Personaje extends Raza{
+
+	
+	public Personaje(String tipo, int fuerza, int inteligencia, int suerte) {
+		super(tipo, fuerza, inteligencia, suerte);
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+
+	
+	
+	
 
 	//PERSONAJE
 	// public void ganarExperiencia(int experiencia);
