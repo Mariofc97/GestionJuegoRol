@@ -10,9 +10,16 @@ public abstract class Criatura {
 	private String Nombre;
 	private int nivel;
 	private int experiencia;
-	private int puntosVida;
+	private int puntosVida; 
 	private int puntosAtaque;
 	
+	public Criatura(String nombre, int nivel, int experiencia) {
+		super();
+		Nombre = nombre;
+		this.nivel = nivel;
+		this.experiencia = experiencia;
+	}
+
 	public Criatura(String nombre, int nivel, int experiencia, int puntosVida, int puntosAtaque) {
 		super();
 		Nombre = nombre;
