@@ -57,7 +57,7 @@ public class utils {
 				"Los extraterrestre te secuestran y experimenta con tigo, estas para el arrastre.",
 				"Esta lloviendo mucho y decides volver, pero al volver te pilla una riada, casi te ahogas." };
 		String nombre = nombres[ThreadLocalRandom.current().nextInt(nombres.length)];
-		System.out.println(nombre);
+		System.out.println(nombre + "tus puntos de via son\t");
 		return nombre;
 	}
 
