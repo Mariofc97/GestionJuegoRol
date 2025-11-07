@@ -15,15 +15,17 @@ public class Trogodita extends Raza {
 	public void aplicarBonos(Personaje p) {
 		// TODO Auto-generated method stub
 		if(p.getPuntosVida() >= 80) {
-			p.setPuntosAtaque(p.getPuntosAtaque() + p.getFuerza() + 2);
+			p.setPuntosAtaque(p.getPuntosAtaque() + 2);
 		};
 	}
 
 	@Override
 	public String descripcionRasgos() {
 		// TODO Auto-generated method stub
-		return "Eres tan feo y gordo como fuerte. +2 puntosAtaque al inicio si ;
+		return "Eres un trogodita tan feo y gordo como fuerte. +2 Ataque si PV>=80." ;
 	}
+	
+	
 	
 	
 	

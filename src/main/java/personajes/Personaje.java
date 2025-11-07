@@ -7,26 +7,37 @@ import criaturas.Criatura;
 import equipo.Equipamiento;
 import equipo.objetos.Pocion;
 
-public class Personaje extends Raza {
+public class Personaje{
 
 	private Raza raza;
 	private List<Equipamiento> equipo;
 	private List<Criatura> criaturas;
 	private String nombre;
 	private int experiencia; // sube putnos de vida y ataque
-	private int puntasVidaMax; // maximo 100 puntos de vida
+	private int puntosVidaMax; // maximo 100 puntos de vida
 	private int puntosVida;
 	private int puntosAtaque; // modificamos si raza
 	private int inteligencia; // nos vale par pensar y crear
+	private int suerte;
 
-	public Personaje(String tipo, int fuerza, int inteligencia, int suerte) {
-		super(tipo, fuerza, inteligencia, suerte);
-		// TODO Auto-generated constructor stub
-	}
+    public Personaje(Raza raza, String nombre) {
+        if (raza == null) {
+        	throw new IllegalArgumentException("La raza no puede ser null");
+        }
+        this.raza = raza;
+        this.nombre = nombre;
+
+        // bases desde la raza
+        this.puntosVida = puntosVida;
+        this.puntosAtaque = puntosAtaque;
+
+        // aplica pasivas/bonos iniciales DESPUÉS de setear PV/ATQ
+        raza.aplicarBonos(this);
+    }
 
 	public Personaje(String tipo, int fuerza, int inteligencia, int suerte, List<Equipamiento> equipo,
 			List<Criatura> criaturas, String nombre) {
-		super(tipo, fuerza, inteligencia, suerte);
+		super();
 		this.equipo = equipo;
 		this.criaturas = criaturas;
 		this.nombre = nombre;
@@ -34,13 +45,45 @@ public class Personaje extends Raza {
 
 	public Personaje(String tipo, int fuerza, int inteligencia, int suerte, List<Equipamiento> equipo,
 			List<Criatura> criaturas, String nombre, int experiencia, int puntosVida, int puntosAtaque) {
-		super(tipo, fuerza, inteligencia, suerte);
+		super();
 		this.equipo = equipo;
 		this.criaturas = criaturas;
 		this.nombre = nombre;
 		this.experiencia = experiencia;
 		this.puntosVida = puntosVida;
 		this.puntosAtaque = puntosAtaque;
+	}
+	
+	public int getSuerte() {
+		return suerte;
+	}
+
+	public void setSuerte(int suerte) {
+		this.suerte = suerte;
+	}
+
+	public Raza getRaza() {
+		return raza;
+	}
+
+	public void setRaza(Raza raza) {
+		this.raza = raza;
+	}
+
+	public int getPuntosVidaMax() {
+		return puntosVidaMax;
+	}
+
+	public void setPuntosVidaMax(int puntosVidaMax) {
+		this.puntosVidaMax = puntosVidaMax;
+	}
+
+	public int getInteligencia() {
+		return inteligencia;
+	}
+
+	public void setInteligencia(int inteligencia) {
+		this.inteligencia = inteligencia;
 	}
 
 	public int getExperiencia() {
