@@ -48,8 +48,14 @@ public class utils {
 	}
 
 	public static String desgraciaAleatorio() {
-		String[] nombres = { "Juan", "Ana", "Carlos", "Lucía", "Pedro", "María", "Amparo", "Geese", "Juanjo", "Pepito",
-				"Carlitos", };
+		String[] nombres = { "Hay tormenta y te cae un rayos vuelves a la cueva, hueles a pelo quemado.",
+				"Hay ventisca tropiezas y te caes por el acantilado de al lado de la cueva, consigues volver a la cueva a duras penas.",
+				"Esta helando y no tienes ropa, vuelves a la cueva con hipotermia.",
+				"Hay una ola de calor y te desidratas, te rescatan los niños.",
+				"Habia un dientes de sable acechando y sales con vida gracias a que hueles muy mal y no a querido comerte.",
+				"El día es explendido te distraes disfrutando de la tarde y un mamut te arrolla.",
+				"Los extraterrestre te secuestran y experimenta con tigo, estas para el arrastre.",
+				"Esta lloviendo mucho y decides volver, pero al volver te pilla una riada, casi te ahogas." };
 		String nombre = nombres[ThreadLocalRandom.current().nextInt(nombres.length)];
 		System.out.println(nombre);
 		return nombre;
