@@ -1,8 +1,9 @@
 package clases;
 
+import interfaces.RasgoRacial;
+import personajes.Personaje;
 
-
-public abstract class Raza {
+public abstract class Raza implements RasgoRacial {
 
 	private String tipo;
 	private int fuerza;
@@ -51,5 +52,19 @@ public abstract class Raza {
 	public void setSuerte(int suerte) {
 		this.suerte = suerte;
 	}
+
+	@Override
+	public void aplicarBonos(Personaje p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String descripcionRasgos() {
+		// TODO Auto-generated method stub
+		return "Sin rasgos especiales.";
+	}
+	
+	
 
 }

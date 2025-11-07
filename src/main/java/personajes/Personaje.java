@@ -9,10 +9,12 @@ import equipo.objetos.Pocion;
 
 public class Personaje extends Raza {
 
+	private Raza raza;
 	private List<Equipamiento> equipo;
 	private List<Criatura> criaturas;
 	private String nombre;
 	private int experiencia; // sube putnos de vida y ataque
+	private int puntasVidaMax;
 	private int puntosVida;
 	private int puntosAtaque; // modificamos si raza
 	private int inteligencia; // nos vale par pensar y crear
