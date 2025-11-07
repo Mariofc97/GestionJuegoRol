@@ -45,4 +45,7 @@ public class utils {
 		return tirada;
 	}
 
+	
+	//crear un metodo para que se le llame episodio 1.
+	
 }
