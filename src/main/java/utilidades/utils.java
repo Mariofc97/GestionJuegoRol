@@ -1,5 +1,7 @@
 package utilidades;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import criaturas.Criatura;
 import equipo.Equipamiento;
 import personajes.Personaje;
@@ -43,6 +45,14 @@ public class utils {
 	public static int dadoDiez() {
 		int tirada = (int) (Math.random() * 10 + 1);
 		return tirada;
+	}
+
+	public static String desgraciaAleatorio() {
+		String[] nombres = { "Juan", "Ana", "Carlos", "Lucía", "Pedro", "María", "Amparo", "Geese", "Juanjo", "Pepito",
+				"Carlitos", };
+		String nombre = nombres[ThreadLocalRandom.current().nextInt(nombres.length)];
+		System.out.println(nombre);
+		return nombre;
 	}
 
 }
