@@ -8,7 +8,7 @@ public class Gusano extends Criatura {
 	private int PuntosDeVida = 5;
 	private int PuntosDeAtaque = 1;
 	
-public Gusano(String nombre, int nivel, int experiencia, int puntosVida, int puntosAtaque) {
+public Gusano(String subcionar, String nombre, int nivel, int experiencia, int puntosVida, int puntosAtaque) {
 		super(nombre, nivel, experiencia, puntosVida, puntosAtaque);
 	this.subcionar = subcionar;
 		
@@ -21,7 +21,7 @@ public String getSubcionar() {
 }
 
 public void setSubcionar(String subcionar) {
-	subcionar = subcionar;
+	this.subcionar = subcionar;
 }
 
 public int getPuntosDeVida() {

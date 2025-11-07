@@ -5,8 +5,8 @@ import criaturas.Criatura;
 public class Mosquito extends Criatura{
 	
 	private String picar;
-	private int PuntoDeVida = 4;
-	private int PuntoDeAtaque = 8;
+	private int PuntosDeVida = 4;
+	private int PuntosDeAtaque = 8;
 	
 	
 public Mosquito(String nombre, int nivel, int experiencia, String picar) {
@@ -16,9 +16,15 @@ public Mosquito(String nombre, int nivel, int experiencia, String picar) {
 	}
 
 
+
+
+
 public String getPicar() {
 	return picar;
 }
+
+
+
 
 
 public void setPicar(String picar) {
@@ -26,30 +32,41 @@ public void setPicar(String picar) {
 }
 
 
-public int getPuntoDeVida() {
-	return PuntoDeVida;
+
+
+
+public int getPuntosDeVida() {
+	return PuntosDeVida;
 }
 
 
-public void setPuntoDeVida(int puntoDeVida) {
-	PuntoDeVida = puntoDeVida;
+
+
+public void setPuntosDeVida(int puntosDeVida) {
+	PuntosDeVida = puntosDeVida;
 }
 
 
-public int getPuntoDeAtaque() {
-	return PuntoDeAtaque;
+
+
+
+public int getPuntosDeAtaque() {
+	return PuntosDeAtaque;
 }
 
 
-public void setPuntoDeAtaque(int puntoDeAtaque) {
-	PuntoDeAtaque = puntoDeAtaque;
+
+
+
+public void setPuntosDeAtaque(int puntosDeAtaque) {
+	PuntosDeAtaque = puntosDeAtaque;
 }
 
 
-@Override
-public String toString() {
-	return "Mosquito [picar=" + picar + ", PuntoDeVida=" + PuntoDeVida + ", PuntoDeAtaque=" + PuntoDeAtaque + "]";
-}
+
+
+
+
 	
 
 }
