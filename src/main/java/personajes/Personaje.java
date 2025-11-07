@@ -9,10 +9,12 @@ import equipo.objetos.Pocion;
 
 public class Personaje extends Raza {
 
+	private Raza raza;
 	private List<Equipamiento> equipo;
 	private List<Criatura> criaturas;
 	private String nombre;
 	private int experiencia;
+	private int puntasVidaMax;
 	private int puntosVida;
 	private int puntosAtaque;
 
