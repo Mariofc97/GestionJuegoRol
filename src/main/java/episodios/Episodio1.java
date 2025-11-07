@@ -2,7 +2,9 @@ package episodios;
 
 import java.util.Scanner;
 
+import equipo.objetos.HojaParaLimpiar;
 import personajes.Personaje;
+import utilidades.utils;
 
 public class Episodio1 {
 
@@ -18,15 +20,18 @@ public class Episodio1 {
 // necesitamos un bucle para que el menu se repita hasta que cumpla  una condicion de salida. 
 		switch (opcion) {
 
-		case 1: {
-			//llorar crea objeto hoja de ortiga y lo añade al personaje.
+		case 1: { HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
+		
+		notas.getEquipo().add(hojadeortiga);// añadido una hoja al equipo de notas.
+		
+			//Llorar crea objeto hoja de ortiga y lo añade al personaje.
 		}
 		case 2: {
 			//Pensar enseña a invocar criaturas.
 		}
 		case 3: { notas.setPuntosVida(1); //Le ponemos la vida a uno.
 		
-			System.out.println("Sales de la cueva y te cae un rayo." + notas.getPuntosVida());
+			System.out.println( utils.desgraciaAleatorio() + notas.getPuntosVida()); //utils.desgraciaAleatorio() esta llamando directamente a utils(la clase).
 		//Necesitamos que las distintas
 		
 		
