@@ -47,6 +47,7 @@ public class utils {
 		return tirada;
 	}
 
+<<<<<<< HEAD
 	public static String desgraciaAleatorio() {
 		String[] nombres = { "Juan", "Ana", "Carlos", "Lucía", "Pedro", "María", "Amparo", "Geese", "Juanjo", "Pepito",
 				"Carlitos", };
@@ -55,4 +56,9 @@ public class utils {
 		return nombre;
 	}
 
+=======
+	
+	//crear un metodo para que se le llame episodio 1.
+	
+>>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
 }

@@ -22,7 +22,7 @@ public class Trogodita extends Raza {
 	@Override
 	public String descripcionRasgos() {
 		// TODO Auto-generated method stub
-		return "Eres tan feo y gordo como fuerte. +2 (Ataque ;
+		return "Eres tan feo y gordo como fuerte. +2 puntosAtaque al inicio si ;
 	}
 	
 	
