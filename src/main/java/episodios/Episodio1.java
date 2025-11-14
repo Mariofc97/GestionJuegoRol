@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import equipo.objetos.HojaParaLimpiar;
 import personajes.Personaje;
-import utilidades.utils;
+import utilidades.Utils;
 
 public class Episodio1 {
 
@@ -46,7 +46,7 @@ public class Episodio1 {
 			case 3: {
 				notas.setPuntosVida(1); // Le ponemos la vida a uno.
 
-				System.out.println(utils.desgraciaAleatorio() + notas.getPuntosVida()); // utils.desgraciaAleatorio()
+				System.out.println(Utils.desgraciaAleatorio() + notas.getPuntosVida()); // utils.desgraciaAleatorio()
 																						// esta llamando directamente a
 																						// utils(la clase).
 				// Necesitamos que las distintas

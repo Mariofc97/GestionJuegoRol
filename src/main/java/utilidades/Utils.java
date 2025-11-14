@@ -10,7 +10,7 @@ import criaturas.Raton;
 import equipo.Equipamiento;
 import personajes.Personaje;
 
-public class utils {
+public class Utils {
 
 	// TODO
 	// Metodos
