@@ -38,8 +38,9 @@ public class Episodio1 {
 			}
 				break;
 			case 2: {
+				utils.invocacionCompañeroCriatura(notas);
 				// Pensar enseña a invocar criaturas.
-				key2=true;
+				key2 = true;
 			}
 				break;
 
@@ -47,7 +48,8 @@ public class Episodio1 {
 				notas.setPuntosVida(1); // Le ponemos la vida a uno.
 
 				System.out.println(utils.desgraciaAleatorio() + notas.getPuntosVida()); // utils.desgraciaAleatorio()
-																						// esta llamando directamente a
+																						// esta llamando
+																						// directamente a
 																						// utils(la clase).
 				// Necesitamos que las distintas
 
@@ -67,5 +69,4 @@ public class Episodio1 {
 		} while (!salida); // !no (no salida !salida)
 
 	}
-
 }
