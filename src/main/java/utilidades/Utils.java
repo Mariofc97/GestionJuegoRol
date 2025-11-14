@@ -116,8 +116,10 @@ public class Utils {
 		System.out.println("Comienza el combate entre: " + person.getNombre() + " y " + enemigo.getNombre());
 		
 		if (person.tieneArmaEquipada() == false) {
-			System.out.println("El personaje " + person.getNombre() + " no tiene ningun arma equipada, asique el enemigo " + enemigo.getNombre() + " se mea en tu cara y mueres.");
-			person.setPuntosVida(0);
+			System.out.println("El personaje " + person.getNombre() + " no tiene ningun arma equipada, asique el enemigo " + enemigo.getNombre() + " se mea en tu cara y te deja a un punto de vida.");
+			person.setPuntosVida(1);
+			System.out.println("Vuelves a la cueva con " + person.getPuntosVida() + " puntos de vida.");
+			
 		}
 
 		while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {
