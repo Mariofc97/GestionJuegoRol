@@ -21,7 +21,6 @@ public abstract class Criatura {
 	}
 	
 	public Criatura() {
-		super();
 	}
 
 	public Criatura(String nombre, int nivel, int experiencia, int puntosVida, int puntosAtaque) {

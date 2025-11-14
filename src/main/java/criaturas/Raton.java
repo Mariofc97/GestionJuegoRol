@@ -17,6 +17,10 @@ public class Raton extends Criatura {
 		
 	}
 
+	public Raton() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getMorder() {
 		return morder;
 	}

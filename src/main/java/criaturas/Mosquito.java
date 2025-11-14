@@ -17,6 +17,14 @@ public Mosquito(String nombre, int nivel, int experiencia, String picar) {
 
 
 
+public Mosquito() {
+	// TODO Auto-generated constructor stub
+}
+
+
+
+
+
 public String getPicar() {
 	return picar;
 }

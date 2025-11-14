@@ -14,6 +14,10 @@ public Gusano(String subcionar, String nombre, int nivel, int experiencia, int p
 		
 	}
 
+public Gusano() {
+	// TODO Auto-generated constructor stub
+}
+
 public String getSubcionar() {
 	return subcionar;
 }

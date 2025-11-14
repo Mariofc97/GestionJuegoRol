@@ -2,7 +2,11 @@ package utilidades;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import criaturas.Conejo;
 import criaturas.Criatura;
+import criaturas.Gusano;
+import criaturas.Mosquito;
+import criaturas.Raton;
 import equipo.Equipamiento;
 import personajes.Personaje;
 
@@ -28,8 +32,9 @@ public class utils {
 
 	public static Criatura invocacionCompañeroCriatura(Personaje person) {
 
+		Criatura compi = randomizarCriatura();
 		boolean resultado = dadoDiez() > 3;
-		Criatura criatura = new Criatura();
+		
 		if (resultado) {
 
 			person.getCriaturas().add(compi);
@@ -39,6 +44,24 @@ public class utils {
 			person.setPuntosVida(person.getPuntosVida() - compi.getPuntosAtaque());
 		}
 
+		return compi;
+	}
+	
+	// este random solo esta hecho con 4 criaturas, habrá que meter mas si se generan mas
+	public static Criatura randomizarCriatura() {
+		
+		int tirada = (int)(Math.random() * 4 + 1);
+		
+		switch (tirada) {
+		case 1:
+			return new Gusano();
+		case 2:
+			return new Conejo();
+		case 3:
+			return new Mosquito();
+		default:
+			return new Raton();
+		}
 	}
 
 	/**

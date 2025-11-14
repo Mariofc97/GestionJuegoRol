@@ -16,6 +16,10 @@ public class Conejo extends Criatura{
 		this.orejazo = orejazo;
 	}
 
+	public Conejo() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getPuntosDeVida() {
 		return PuntosDeVida;
 	}
