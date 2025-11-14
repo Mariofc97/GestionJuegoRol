@@ -36,7 +36,7 @@ public class Utils {
 
 		Criatura compi = randomizarCriatura();
 		boolean resultado = dadoDiez() > 3;
-		
+
 		if (resultado) {
 
 			person.getCriaturas().add(compi);
@@ -48,12 +48,13 @@ public class Utils {
 
 		return compi;
 	}
-	
-	// este random solo esta hecho con 4 criaturas, habrá que meter mas si se generan mas
+
+	// este random solo esta hecho con 4 criaturas, habrá que meter mas si se
+	// generan mas
 	public static Criatura randomizarCriatura() {
-		
-		int tirada = (int)(Math.random() * 4 + 1);
-		
+
+		int tirada = (int) (Math.random() * 4 + 1);
+
 		switch (tirada) {
 		case 1:
 			return new Gusano();
@@ -74,8 +75,8 @@ public class Utils {
 		return tirada;
 	}
 
-	public static int dadoNumeroDefine(String string) {
-		int tirada = (int) (Math.random() * string + 1);
+	public static int dadoNumeroDefine(int numero) {
+		int tirada = (int) (Math.random() * numero + 1);
 		return tirada;
 	}
 
@@ -93,6 +94,7 @@ public class Utils {
 		System.out.println(nombre + "tus puntos de via son\t");
 		return nombre;
 	}
+
 	public static int pideDatoNumerico(String texto) {
 		int numero = 0;
 		System.out.println(texto);
@@ -107,6 +109,33 @@ public class Utils {
 
 	}
 
-	
+	public static void combate(Personaje person, Criatura enemigo) {
+		System.out.println("Comienza el combate entre: " + person.getNombre() + " y " + enemigo.getNombre());
+
+		while (person.estaVivo() && enemigo.estaVivo()) {
+
+			// Turno personaje
+			int danioHecho = person.atacar(enemigo);
+			System.out
+					.println(person.getNombre() + " hace " + danioHecho + " de daño al enemigo " + enemigo.getNombre());
+			System.out.println("La vida del enemigo es de " + enemigo.getPuntosVida());
+
+			if (!enemigo.estaVivo()) {
+				System.out.println("¡" + enemigo.getNombre() + " ha sido derrotado!");
+				break;
+			}
+
+			// Turno criatura
+
+			int danioRecibido = enemigo.atacar(person); // <- aquí nace danioRecibido
+			System.out.println(enemigo.getNombre() + " hace " + danioRecibido + " de daño. Vida de "
+					+ person.getNombre() + ": " + person.getPuntosVida());
+
+			if (!person.estaVivo()) {
+				System.out.println("¡" + person.getNombre() + " ha caído en combate!");
+				break;
+			}
+		}
+	}
 
 }

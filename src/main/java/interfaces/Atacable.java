@@ -2,7 +2,7 @@ package interfaces;
 
 public interface Atacable {
 	
-	public void atacar();
+	int atacar(Defendible objetivo);
 
 	
 }
