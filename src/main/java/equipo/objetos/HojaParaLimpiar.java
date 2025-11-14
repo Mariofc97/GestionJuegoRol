@@ -15,6 +15,7 @@ public class HojaParaLimpiar extends Equipamiento {
 		super(nombre, nivelRequerido, peso, durabilidad);
 		this.origen = origen;
 	}
+	
 
 	public String getOrigen() {
 		return origen;

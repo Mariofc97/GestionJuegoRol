@@ -26,10 +26,11 @@ public class utils {
 
 	// invocacion();
 
-	public static Criatura invocacionCompañeroCriatura(Criatura compi, Personaje person) {
+	public static Criatura invocacionCompañeroCriatura(Personaje person) {
 
 		boolean resultado = dadoDiez() > 3;
 		if (resultado) {
+
 			person.getCriaturas().add(compi);
 			System.out.println("Ahora tienes un compañero de viaje:" + compi.toString());
 		} else {
@@ -44,6 +45,11 @@ public class utils {
 	 */
 	public static int dadoDiez() {
 		int tirada = (int) (Math.random() * 10 + 1);
+		return tirada;
+	}
+
+	public static int dadoNumeroDefine(int numeroCaras) {
+		int tirada = (int) (Math.random() * numeroCaras + 1);
 		return tirada;
 	}
 
