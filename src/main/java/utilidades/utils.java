@@ -26,9 +26,10 @@ public class utils {
 
 	// invocacion();
 
-	public static Criatura invocacionCompañeroCriatura(Criatura compi, Personaje person) {
+	public static Criatura invocacionCompañeroCriatura(Personaje person) {
 
 		boolean resultado = dadoDiez() > 3;
+		Criatura criatura = new Criatura();
 		if (resultado) {
 			person.getCriaturas().add(compi);
 			System.out.println("Ahora tienes un compañero de viaje:" + compi.toString());

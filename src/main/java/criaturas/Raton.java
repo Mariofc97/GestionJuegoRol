@@ -1,6 +1,4 @@
-package clases;
-
-import criaturas.Criatura;
+package criaturas;
 
 public class Raton extends Criatura {
 	

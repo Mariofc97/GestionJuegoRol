@@ -1,4 +1,4 @@
-package clases;
+package clases.razas;
 
 import interfaces.RasgoRacial;
 import personajes.Personaje;
