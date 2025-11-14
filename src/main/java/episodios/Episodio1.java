@@ -38,7 +38,7 @@ public class Episodio1 {
 			case 2: {
 				Utils.invocacionCompañeroCriatura(notas);
 				key2 = true;
-				System.out.println("Has aprendido a invocar criaturas.");
+				System.out.println("Has aprendido a invocar criaturas."+ notas.getCriaturas());
 			}
 				break;
 
