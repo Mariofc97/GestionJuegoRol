@@ -96,17 +96,20 @@ public class Utils {
 	}
 
 	public static int pideDatoNumerico(String texto) {
-		int numero = 0;
-		System.out.println(texto);
 		Scanner scan = new Scanner(System.in);
+		int numero;
 
-		try {
-			return scan.nextInt();
-		} catch (InputMismatchException | NumberFormatException e) {
-			System.out.println("No has introducido un valor correcto");
-			return pideDatoNumerico(texto);
+		while (true) {
+			System.out.println(texto);
+
+			if (scan.hasNextInt()) { // Comprueba si es un número entero
+				numero = scan.nextInt();
+				return numero; // Devuelve el número válido
+			} else {
+				System.out.println("No has introducido un valor correcto. Inténtalo de nuevo.");
+				scan.nextLine(); // Limpia el buffer
+			}
 		}
-
 	}
 
 	public static void combate(Personaje person, Criatura enemigo) {
