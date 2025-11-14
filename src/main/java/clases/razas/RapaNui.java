@@ -1,6 +1,5 @@
 package clases.razas;
 
-import clases.Raza;
 import personajes.Personaje;
 
 public class RapaNui extends Raza {

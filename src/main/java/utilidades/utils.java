@@ -29,6 +29,7 @@ public class utils {
 	public static Criatura invocacionCompañeroCriatura(Personaje person) {
 
 		boolean resultado = dadoDiez() > 3;
+		Criatura criatura = new Criatura();
 		if (resultado) {
 
 			person.getCriaturas().add(compi);

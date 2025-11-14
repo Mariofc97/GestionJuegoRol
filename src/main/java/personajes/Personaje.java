@@ -2,7 +2,7 @@ package personajes;
 
 import java.util.List;
 
-import clases.Raza;
+import clases.razas.Raza;
 import criaturas.Criatura;
 import equipo.Equipamiento;
 import equipo.objetos.Pocion;

@@ -19,6 +19,10 @@ public abstract class Criatura {
 		this.nivel = nivel;
 		this.experiencia = experiencia;
 	}
+	
+	public Criatura() {
+		super();
+	}
 
 	public Criatura(String nombre, int nivel, int experiencia, int puntosVida, int puntosAtaque) {
 		super();
