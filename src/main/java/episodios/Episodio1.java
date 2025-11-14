@@ -21,8 +21,7 @@ public class Episodio1 {
 
 			System.out.println("1. Llorar \t2. Pensar \t3. Salir \t4. Dormir");
 			System.out.println("dila opcion del menu");
-			Scanner scan = new Scanner(System.in);
-			int opcion = scan.nextInt();
+			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
 			switch (opcion) {
 
