@@ -71,7 +71,7 @@ public class Utils {
 	 * @return devuelve int resultado tirada
 	 */
 	public static int dadoDiez() {
-		int tirada = (int) (Math.random() * 10 + 1);
+		int tirada = dadoNumeroDefine(10);
 		return tirada;
 	}
 
