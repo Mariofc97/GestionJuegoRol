@@ -38,16 +38,23 @@ public class Episodio1 {
 			}
 				break;
 			case 2: {
+				utils.invocacionCompañeroCriatura(notas);
 				// Pensar enseña a invocar criaturas.
-				key2=true;
+				key2 = true;
 			}
 				break;
 
 			case 3: {
 				notas.setPuntosVida(1); // Le ponemos la vida a uno.
 
+<<<<<<< HEAD
 				System.out.println(Utils.desgraciaAleatorio() + notas.getPuntosVida()); // utils.desgraciaAleatorio()
 																						// esta llamando directamente a
+=======
+				System.out.println(utils.desgraciaAleatorio() + notas.getPuntosVida()); // utils.desgraciaAleatorio()
+																						// esta llamando
+																						// directamente a
+>>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
 																						// utils(la clase).
 				// Necesitamos que las distintas
 
@@ -67,5 +74,4 @@ public class Episodio1 {
 		} while (!salida); // !no (no salida !salida)
 
 	}
-
 }
