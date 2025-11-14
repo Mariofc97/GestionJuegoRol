@@ -2,6 +2,7 @@ package interfaces;
 
 public interface Defendible {
 	
-	public void defender();
+	void recibirDanio(int danio);
+	boolean estaVivo();
 
 }

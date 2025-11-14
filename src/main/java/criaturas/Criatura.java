@@ -1,6 +1,9 @@
 package criaturas;
 
-public abstract class Criatura {
+import interfaces.Atacable;
+import interfaces.Defendible;
+
+public abstract class Criatura implements Atacable, Defendible {
 	
 	//TODO: MANUEL
 	// Debemos de crear criaturas:
@@ -71,6 +74,28 @@ public abstract class Criatura {
 	public void setPuntosAtaque(int puntosAtaque) {
 		this.puntosAtaque = puntosAtaque;
 	}
+
+	@Override
+	public void recibirDanio(int danio) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean estaVivo() {
+		// TODO Auto-generated method stub
+		return this.puntosVida > 0;
+	}
+
+	@Override
+	public int atacar(Defendible objetivo) {
+		// TODO Auto-generated method stub
+		 int danio = this.puntosAtaque;
+	     objetivo.recibirDanio(danio);
+	     return danio;
+	}
+	
+	
 	
 
 	// TODO

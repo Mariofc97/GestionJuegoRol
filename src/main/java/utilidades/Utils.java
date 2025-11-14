@@ -91,5 +91,36 @@ public class Utils {
 		System.out.println(nombre + "tus puntos de via son\t");
 		return nombre;
 	}
+	
+	public static void combate(Personaje person, Criatura enemigo) {
+		System.out.println("Comienza el combate entre: " + person.getNombre() + " y " + enemigo.getNombre());
+		
+		while (person.estaVivo() && enemigo.estaVivo()) {
+			
+			//Turno personaje
+			int danioHecho = person.atacar(enemigo);
+			System.out.println(person.getNombre() + " hace " + danioHecho + " de daño al enemigo " + enemigo.getNombre());
+			System.out.println("La vida del enemigo es de " + enemigo.getPuntosVida());
+			
+			if (!enemigo.estaVivo()) {
+				System.out.println("¡" + enemigo.getNombre() + " ha sido derrotado!");
+				break;
+			}
+			
+			//Turno criatura
+			
+	        int danioRecibido = enemigo.atacar(person);   // <- aquí nace danioRecibido
+	        System.out.println(enemigo.getNombre() + " hace " + danioRecibido 
+	                + " de daño. Vida de " + person.getNombre() + ": " 
+	                + person.getPuntosVida());
+
+	        if (!person.estaVivo()) {
+	            System.out.println("¡" + person.getNombre() + " ha caído en combate!");
+	            break;
+	        }
+		}
+	}
+	
+	
 
 }
