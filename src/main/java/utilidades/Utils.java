@@ -114,8 +114,13 @@ public class Utils {
 
 	public static void combate(Personaje person, Criatura enemigo) {
 		System.out.println("Comienza el combate entre: " + person.getNombre() + " y " + enemigo.getNombre());
+		
+		if (person.tieneArmaEquipada() == false) {
+			System.out.println("El personaje " + person.getNombre() + " no tiene ningun arma equipada, asique el enemigo " + enemigo.getNombre() + " se mea en tu cara y mueres.");
+			person.setPuntosVida(0);
+		}
 
-		while (person.estaVivo() && enemigo.estaVivo()) {
+		while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {
 
 			// Turno personaje
 			int danioHecho = person.atacar(enemigo);
