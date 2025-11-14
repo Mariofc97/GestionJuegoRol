@@ -16,14 +16,12 @@ public class Episodio1 {
 		boolean key2 = false;
 		boolean key3 = false;
 
-		Scanner scan = new Scanner(System.in);
-
 		boolean salida = false;
 		do {
 
 			System.out.println("1. Llorar \t2. Pensar \t3. Salir \t4. Dormir");
-
-			int opcion = scan.nextInt();
+			
+			int opcion = Utils.pideDatoNumerico("número opción de la acción");
 
 			switch (opcion) {
 
@@ -38,7 +36,10 @@ public class Episodio1 {
 			case 2: {
 				Utils.invocacionCompañeroCriatura(personaje);
 				key2 = true;
-				System.out.println("Has aprendido a invocar criaturas." + notas.getCriaturas());
+				System.out.println("Has aprendido a invocar criaturas." + personaje.getCriaturas());
+				
+				personaje.setExperiencia(personaje.getExperiencia()+1);
+				personaje.setPuntosVida(personaje.getPuntosVida()+1);
 			}
 				break;
 
@@ -46,6 +47,7 @@ public class Episodio1 {
 				personaje.setPuntosVida(1);
 				System.out.println(Utils.desgraciaAleatorio() + personaje.getPuntosVida());
 				key3 = true; // <-- IMPORTANTE PARA PODER SALIR
+				
 			}
 				break;
 

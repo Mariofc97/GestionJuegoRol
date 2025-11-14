@@ -1,5 +1,7 @@
 package utilidades;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 import criaturas.Conejo;
@@ -72,8 +74,8 @@ public class Utils {
 		return tirada;
 	}
 
-	public static int dadoNumeroDefine(int numeroCaras) {
-		int tirada = (int) (Math.random() * numeroCaras + 1);
+	public static int dadoNumeroDefine(String string) {
+		int tirada = (int) (Math.random() * string + 1);
 		return tirada;
 	}
 
@@ -91,5 +93,20 @@ public class Utils {
 		System.out.println(nombre + "tus puntos de via son\t");
 		return nombre;
 	}
+	public static int pideDatoNumerico(String texto) {
+		int numero = 0;
+		System.out.println(texto);
+		Scanner scan = new Scanner(System.in);
+
+		try {
+			return scan.nextInt();
+		} catch (InputMismatchException | NumberFormatException e) {
+			System.out.println("No has introducido un valor correcto");
+			return pideDatoNumerico(texto);
+		}
+
+	}
+
+	
 
 }
