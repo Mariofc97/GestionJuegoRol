@@ -10,68 +10,64 @@ public class Episodio1 {
 
 //crear un menu:necesito un switch.
 
-	public static void episodio1(Personaje notas) { // notas es el nombre del personaje.
+	public static void episodio1(Personaje notas) {
+
 		boolean key1 = false;
 		boolean key2 = false;
 		boolean key3 = false;
 
-		boolean salida = false;
-		if (key1 == true && key2 == true && key3 == true) {
-			salida = true;
-		}
+		Scanner scan = new Scanner(System.in);
 
+		boolean salida = false;
 		do {
 
 			System.out.println("1. Llorar \t2. Pensar \t3. Salir \t4. Dormir");
-			// Scanner para leer lo que meta por teclado el jugador.
-			Scanner scan = new Scanner(System.in); // tengo que crear una variable"opcion" que sea un numero
+
 			int opcion = scan.nextInt();
-// necesitamos un bucle para que el menu se repita hasta que cumpla  una condicion de salida. 
+
 			switch (opcion) {
 
 			case 1: {
 				HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-
-				notas.getEquipo().add(hojadeortiga);// añadido una hoja al equipo de notas.
+				notas.getEquipo().add(hojadeortiga);
 				key1 = true;
-				// Llorar crea objeto hoja de ortiga y lo añade al personaje.
+				System.out.println("Has obtenido una Hoja de Ortiga.");
 			}
 				break;
+
 			case 2: {
-				utils.invocacionCompañeroCriatura(notas);
-				// Pensar enseña a invocar criaturas.
+				Utils.invocacionCompañeroCriatura(notas);
 				key2 = true;
+				System.out.println("Has aprendido a invocar criaturas.");
 			}
 				break;
 
 			case 3: {
-				notas.setPuntosVida(1); // Le ponemos la vida a uno.
-
-<<<<<<< HEAD
-				System.out.println(Utils.desgraciaAleatorio() + notas.getPuntosVida()); // utils.desgraciaAleatorio()
-																						// esta llamando directamente a
-=======
-				System.out.println(utils.desgraciaAleatorio() + notas.getPuntosVida()); // utils.desgraciaAleatorio()
-																						// esta llamando
-																						// directamente a
->>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
-																						// utils(la clase).
-				// Necesitamos que las distintas
-
-				// Salir de la cueva. Sale de la cueva y le pasa algo y le dejamos a un punto de
-				// vida.
+				notas.setPuntosVida(1);
+				System.out.println(Utils.desgraciaAleatorio() + notas.getPuntosVida());
+				key3 = true; // <-- IMPORTANTE PARA PODER SALIR
 			}
 				break;
 
 			case 4: {
-				// Dormir el personaje duerme y restauramos su vida al maximo.
 				notas.setPuntosVida(notas.getPuntosVidaMax());
+				System.out.println("Has dormido y recuperado toda la vida.");
 				key3 = true;
 			}
 				break;
 
+			default:
+				System.out.println("Opción no válida");
 			}
-		} while (!salida); // !no (no salida !salida)
+
+			// Actualizamos la condición de salida **dentro del bucle**
+			if (key1 && key2 && key3) {
+				salida = true;
+				System.out.println("Has cumplido todas las condiciones. Saliendo del episodio...");
+			}
+
+		} while (!salida);
 
 	}
+
 }
