@@ -3,11 +3,11 @@ package clases.razas;
 import clases.Raza;
 import personajes.Personaje;
 
-public class Llorente extends Raza {
+public class Mongol extends Raza {
 	
 	
-	public Llorente() {
-		super("D. Llorente", 2, 3, 6); //tipo, fuerza, inteligencia, int suerte
+	public Mongol() {
+		super("Mongol", 2, 3, 6); //tipo, fuerza, inteligencia, int suerte
 		// TODO Auto-generated constructor stub
 	}
 
@@ -24,6 +24,6 @@ public class Llorente extends Raza {
 	@Override
 	public String descripcionRasgos() {
 		// TODO Auto-generated method stub
-		return "Eres Llorente. Que cara de suertudo tienes! Te veo flojo, deberias salir a correr de vez en cuando. +2 suerte si PV<=30." ;
+		return "Eres un mongol. Que cara de suertudo tienes! Te veo flojo, deberias salir a correr de vez en cuando. +2 suerte si PV<=30." ;
 	}
 }
