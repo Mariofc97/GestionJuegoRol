@@ -5,6 +5,7 @@ import java.util.List;
 import clases.razas.Raza;
 import criaturas.Criatura;
 import equipo.Equipamiento;
+import equipo.armas.Armas;
 import equipo.objetos.Pocion;
 import interfaces.Atacable;
 import interfaces.Defendible;
@@ -177,6 +178,30 @@ public class Personaje implements Atacable, Defendible{
 		int danio = this.puntosAtaque;
 		objetivo.recibirDanio(danio);
 		return danio;
+	}
+	
+	public Armas getArmaEquipada() {
+		if (equipo == null) {
+			return null;
+		}
+		
+		for (Equipamiento e: equipo) {
+			if (e instanceof Armas) {
+				// casteamos e como objeto tipo Armas
+				return (Armas) e;
+			}
+		}
+		
+		return null;
+	}
+	
+	public boolean tieneArmaEquipada() {
+		Armas arma = getArmaEquipada();
+		if (arma!= null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	// PERSONAJE
