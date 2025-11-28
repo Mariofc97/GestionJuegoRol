@@ -40,7 +40,7 @@ public class Utils {
 		if (resultado) {
 
 			person.getCriaturas().add(compi);
-			System.out.println("Ahora tienes un compañero de viaje:" + person.getCriaturas().toString());
+			System.out.println("Ahora tienes un compañero de viaje:" + compi.getNombre());
 		} else {
 			System.out.println("No estas pensado en lo que debes, al invocar la criatura se rie de ti y te ataca.");
 			person.setPuntosVida(person.getPuntosVida() - compi.getPuntosAtaque());

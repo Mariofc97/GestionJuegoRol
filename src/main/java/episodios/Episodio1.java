@@ -12,10 +12,22 @@ import equipo.objetos.HojaParaLimpiar;
 import personajes.Personaje;
 import utilidades.Utils;
 
+/**
+ * Clase que implementa el episodio 1 del juego.
+ *
+ * Contiene un menú interactivo que permite al personaje realizar acciones
+ * (obtener objetos, aprender invocaciones, recibir desgracias o dormir).
+ *
+ * El logger se configura en un bloque estático para escribir en
+ * "episodio1.log".
+ */
 public class Episodio1 {
 
+	// Logger específico para esta clase
 	private static final Logger LOGGER = Logger.getLogger(Episodio1.class.getName());
 	static {
+		// Bloque estático para configurar el manejador de logs (FileHandler)
+		// Se añade un FileHandler que escribe en 'episodio1.log' en modo append.
 		try {
 			FileHandler fh = new FileHandler("episodio1.log", true); // append
 			fh.setFormatter(new SimpleFormatter());
@@ -25,22 +37,35 @@ public class Episodio1 {
 			LOGGER.setUseParentHandlers(false);
 
 			// Asegurarnos de cerrar el FileHandler al terminar la JVM
+			// Añadimos un shutdown hook que recorre los handlers y los cierra.
 			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 				for (Handler h : LOGGER.getHandlers()) {
 					try {
 						h.close();
 					} catch (Exception ignore) {
+						// Ignoramos excepciones en el cierre
 					}
 				}
 			}));
 		} catch (IOException | SecurityException e) {
+			// En caso de error al abrir el FileHandler, mostramos por stderr
 			System.err.println("No se pudo inicializar el logger: " + e.getMessage());
 		}
 	}
 
-	//crear un menu:necesito un switch.
+	// crear un menu:necesito un switch.
 
+	/**
+	 * Método principal del episodio 1 que ejecuta un menú interactivo para el
+	 * personaje.
+	 *
+	 * @param personaje instancia del personaje que participa en el episodio. Puede
+	 *                  ser null; en ese caso el método registrará y devolverá sin
+	 *                  ejecutar.
+	 */
 	public static void episodio1(Personaje personaje) { // personaje es el nombre del personaje.
+		// Comprobación inicial: si no nos pasan un personaje, salimos con un mensaje de
+		// error
 		if (personaje == null) {
 			LOGGER.warning("Se llamó a episodio1 con Personaje null");
 			System.out.println("Error: personaje no proporcionado.");
@@ -50,19 +75,25 @@ public class Episodio1 {
 		// Asegurarnos de que la lista de equipo exista para evitar NullPointerException
 		if (personaje.getEquipo() == null) {
 			try {
+				// Inicializamos una lista vacía si no existe
 				java.util.List equipoList = new java.util.ArrayList<>();
 				personaje.setEquipo(equipoList);
 				LOGGER.info("Se inicializó la lista de equipo para el personaje: " + personaje.getNombre());
 			} catch (Exception e) {
+				// Si falla la inicialización la registramos pero no abortamos el episodio
 				LOGGER.log(Level.WARNING, "No se pudo inicializar la lista de equipo", e);
 			}
 		}
 
+		// Flags que representan si el personaje ya ha realizado ciertas acciones
+		// key1: consiguió HojaParaLimpiar
+		// key2: aprendió a invocar criaturas
+		// key3: sufrió la desgracia o durmió (ambas ponen a 1 la vida o la restauran)
 		boolean key1 = false;
 		boolean key2 = false;
 		boolean key3 = false;
 
-		boolean salida = false;
+		boolean salida = false; // control del bucle principal
 
 		do {
 			try {
@@ -71,13 +102,16 @@ public class Episodio1 {
 				System.out.println("dila opcion del menu");
 				int opcion;
 				try {
+					// Pedimos un número al usuario mediante utilidades comunes
 					opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 					LOGGER.info(() -> "Opción elegida: " + opcion);
 				} catch (InputMismatchException | NumberFormatException ex) {
+					// Si la entrada no es un número, informamos y volvemos a mostrar el menú
 					LOGGER.log(Level.WARNING, "Entrada numérica no válida", ex);
 					System.out.println("Entrada no válida. Introduce un número.");
 					continue; // volver a mostrar menú
 				} catch (Exception ex) {
+					// Cualquier otro error al leer la opción lo registramos y reintentamos
 					LOGGER.log(Level.SEVERE, "Error obteniendo la opción del usuario", ex);
 					System.out.println("Se produjo un error al leer la opción. Inténtalo de nuevo.");
 					continue;
@@ -86,14 +120,16 @@ public class Episodio1 {
 				switch (opcion) {
 
 				case 1: {
+					// Caso 1: el personaje "llora" y obtiene una HojaParaLimpiar
 					try {
 						HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
 						personaje.getEquipo().add(hojadeortiga);
-						key1 = true;
+						key1 = true; // marcamos que consiguió el objeto
 						String msg = "Has obtenido una Hoja de Ortiga.";
 						System.out.println(msg);
 						LOGGER.info(msg + " Personaje: " + personaje.getNombre());
 					} catch (Exception e) {
+						// Registramos cualquier fallo al añadir el objeto
 						LOGGER.log(Level.SEVERE, "Error al añadir HojaParaLimpiar al equipo", e);
 						System.out.println("No se pudo añadir el objeto al equipo.");
 					}
@@ -101,9 +137,10 @@ public class Episodio1 {
 					break;
 
 				case 2: {
+					// Caso 2: aprender a invocar una criatura compañero
 					try {
 						Utils.invocacionCompañeroCriatura(personaje);
-						key2 = true;
+						key2 = true; // marcamos que aprendió la invocación
 						String msg = "Has aprendido a invocar criaturas.";
 						System.out.println(msg);
 						LOGGER.info(msg + " Personaje: " + personaje.getNombre());
@@ -115,12 +152,14 @@ public class Episodio1 {
 					break;
 
 				case 3: {
+					// Caso 3: acción que reduce la vida del personaje a 1 (desgracia)
 					try {
 						personaje.setPuntosVida(1);
 						String consecuencia = Utils.desgraciaAleatorio() + personaje.getPuntosVida();
 						System.out.println(consecuencia);
-						key3 = true; // <-- IMPORTANTE PARA PODER SALIR
-						LOGGER.info(() -> "Opción 3 ejecutada. " + consecuencia + " Personaje: " + personaje.getNombre());
+						key3 = true; // necesario para poder salir del episodio
+						LOGGER.info(
+								() -> "Opción 3 ejecutada. " + consecuencia + " Personaje: " + personaje.getNombre());
 					} catch (Exception e) {
 						LOGGER.log(Level.SEVERE, "Error al ejecutar opción 3", e);
 						System.out.println("No se pudo realizar la acción de la opción 3.");
@@ -129,11 +168,12 @@ public class Episodio1 {
 					break;
 
 				case 4: {
+					// Caso 4: dormir y recuperar toda la vida
 					try {
 						personaje.setPuntosVida(personaje.getPuntosVidaMax());
 						String msg = "Has dormido y recuperado toda la vida.";
 						System.out.println(msg);
-						key3 = true;
+						key3 = true; // dormir también cuenta como requisito para poder salir
 						LOGGER.info(msg + " Personaje: " + personaje.getNombre());
 					} catch (Exception e) {
 						LOGGER.log(Level.SEVERE, "Error al ejecutar opción 4", e);
@@ -143,11 +183,12 @@ public class Episodio1 {
 					break;
 
 				default:
+					// Opción inválida: avisar al usuario y registrar
 					System.out.println("Opción no válida");
 					LOGGER.warning("Opción no válida elegida: " + opcion + " Personaje: " + personaje.getNombre());
 				}
 
-				// Actualizamos la condición de salida **dentro del bucle** (única comprobación necesaria)
+				// Actualizamos la condición de salida: si se han cumplido las 3 claves salimos
 				if (key1 && key2 && key3) {
 					salida = true;
 					String msg = "Has cumplido todas las condiciones. Saliendo del episodio...";
