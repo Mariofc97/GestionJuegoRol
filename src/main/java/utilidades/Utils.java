@@ -54,7 +54,8 @@ public class Utils {
 	public static Criatura randomizarCriatura() {
 
 		int tirada = (int) (Math.random() * 4 + 1);
-
+// tememos que no usar el metodo por def para que añada el nombre
+		
 		switch (tirada) {
 		case 1:
 			return new Gusano();

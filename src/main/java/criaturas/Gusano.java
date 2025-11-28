@@ -5,47 +5,46 @@ public class Gusano extends Criatura {
 	private String subcionar;
 	private int PuntosDeVida = 5;
 	private int PuntosDeAtaque = 1;
-	
-public Gusano(String subcionar, String nombre, int nivel, int experiencia, int puntosVida, int puntosAtaque) {
-		super(nombre, nivel, experiencia, puntosVida, puntosAtaque);
-	this.subcionar = subcionar;
-		
-		
-		
+
+	public Gusano(String subcionar, String nombre, int nivel, int experiencia, int puntosVida, int puntosAtaque) {
+		super("Gusano", nivel, experiencia, puntosVida, puntosAtaque);
+		this.subcionar = subcionar;
+
 	}
 
-public Gusano() {
-	// TODO Auto-generated constructor stub
-}
+	public Gusano() {
+		super("Gusano", 1, 0, 20, 1);
 
-public String getSubcionar() {
-	return subcionar;
-}
+	}
 
-public void setSubcionar(String subcionar) {
-	this.subcionar = subcionar;
-}
+	public String getSubcionar() {
+		return subcionar;
+	}
 
-public int getPuntosDeVida() {
-	return PuntosDeVida;
-}
+	public void setSubcionar(String subcionar) {
+		this.subcionar = subcionar;
+	}
 
-public void setPuntosDeVida(int puntosDeVida) {
-	PuntosDeVida = puntosDeVida;
-}
+	public int getPuntosDeVida() {
+		return PuntosDeVida;
+	}
 
-public int getPuntosDeAtaque() {
-	return PuntosDeAtaque;
-}
+	public void setPuntosDeVida(int puntosDeVida) {
+		PuntosDeVida = puntosDeVida;
+	}
 
-public void setPuntosDeAtaque(int puntosDeAtaque) {
-	PuntosDeAtaque = puntosDeAtaque;
-}
+	public int getPuntosDeAtaque() {
+		return PuntosDeAtaque;
+	}
 
-@Override
-public String toString() {
-	return "Gusano [Subcionar=" + subcionar + ", PuntosDeVida=" + PuntosDeVida + ", PuntosDeAtaque=" + PuntosDeAtaque
-			+ "]";
-}
+	public void setPuntosDeAtaque(int puntosDeAtaque) {
+		PuntosDeAtaque = puntosDeAtaque;
+	}
+
+	@Override
+	public String toString() {
+		return "Gusano [Subcionar=" + subcionar + ", PuntosDeVida=" + PuntosDeVida + ", PuntosDeAtaque="
+				+ PuntosDeAtaque + "]";
+	}
 
 }
