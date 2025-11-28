@@ -40,7 +40,7 @@ public class Utils {
 		if (resultado) {
 
 			person.getCriaturas().add(compi);
-			System.out.println("Ahora tienes un compañero de viaje:" + compi.toString());
+			System.out.println("Ahora tienes un compañero de viaje:" + person.getCriaturas().toString());
 		} else {
 			System.out.println("No estas pensado en lo que debes, al invocar la criatura se rie de ti y te ataca.");
 			person.setPuntosVida(person.getPuntosVida() - compi.getPuntosAtaque());
@@ -114,12 +114,14 @@ public class Utils {
 
 	public static void combate(Personaje person, Criatura enemigo) {
 		System.out.println("Comienza el combate entre: " + person.getNombre() + " y " + enemigo.getNombre());
-		
+
 		if (person.tieneArmaEquipada() == false) {
-			System.out.println("El personaje " + person.getNombre() + " no tiene ningun arma equipada, asique el enemigo " + enemigo.getNombre() + " se mea en tu cara y te deja a un punto de vida.");
+			System.out
+					.println("El personaje " + person.getNombre() + " no tiene ningun arma equipada, asique el enemigo "
+							+ enemigo.getNombre() + " se mea en tu cara y te deja a un punto de vida.");
 			person.setPuntosVida(1);
 			System.out.println("Vuelves a la cueva con " + person.getPuntosVida() + " puntos de vida.");
-			
+
 		}
 
 		while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {

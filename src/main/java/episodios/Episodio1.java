@@ -40,19 +40,19 @@ public class Episodio1 {
 
 	//crear un menu:necesito un switch.
 
-	public static void episodio1(Personaje notas) { // notas es el nombre del personaje.
-		if (notas == null) {
+	public static void episodio1(Personaje personaje) { // personaje es el nombre del personaje.
+		if (personaje == null) {
 			LOGGER.warning("Se llamó a episodio1 con Personaje null");
 			System.out.println("Error: personaje no proporcionado.");
 			return;
 		}
 
 		// Asegurarnos de que la lista de equipo exista para evitar NullPointerException
-		if (notas.getEquipo() == null) {
+		if (personaje.getEquipo() == null) {
 			try {
 				java.util.List equipoList = new java.util.ArrayList<>();
-				notas.setEquipo(equipoList);
-				LOGGER.info("Se inicializó la lista de equipo para el personaje: " + notas.getNombre());
+				personaje.setEquipo(equipoList);
+				LOGGER.info("Se inicializó la lista de equipo para el personaje: " + personaje.getNombre());
 			} catch (Exception e) {
 				LOGGER.log(Level.WARNING, "No se pudo inicializar la lista de equipo", e);
 			}
@@ -66,7 +66,7 @@ public class Episodio1 {
 
 		do {
 			try {
-				LOGGER.info(() -> "Mostrando menú para personaje: " + notas.getNombre());
+				LOGGER.info(() -> "Mostrando menú para personaje: " + personaje.getNombre());
 				System.out.println("1. Llorar \t2. Pensar \t3. Salir \t4. Dormir");
 				System.out.println("dila opcion del menu");
 				int opcion;
@@ -88,11 +88,11 @@ public class Episodio1 {
 				case 1: {
 					try {
 						HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-						notas.getEquipo().add(hojadeortiga);
+						personaje.getEquipo().add(hojadeortiga);
 						key1 = true;
 						String msg = "Has obtenido una Hoja de Ortiga.";
 						System.out.println(msg);
-						LOGGER.info(msg + " Personaje: " + notas.getNombre());
+						LOGGER.info(msg + " Personaje: " + personaje.getNombre());
 					} catch (Exception e) {
 						LOGGER.log(Level.SEVERE, "Error al añadir HojaParaLimpiar al equipo", e);
 						System.out.println("No se pudo añadir el objeto al equipo.");
@@ -102,11 +102,11 @@ public class Episodio1 {
 
 				case 2: {
 					try {
-						Utils.invocacionCompañeroCriatura(notas);
+						Utils.invocacionCompañeroCriatura(personaje);
 						key2 = true;
 						String msg = "Has aprendido a invocar criaturas.";
 						System.out.println(msg);
-						LOGGER.info(msg + " Personaje: " + notas.getNombre());
+						LOGGER.info(msg + " Personaje: " + personaje.getNombre());
 					} catch (Exception e) {
 						LOGGER.log(Level.SEVERE, "Error en invocacionCompañeroCriatura", e);
 						System.out.println("Se produjo un error al aprender la invocación.");
@@ -116,11 +116,11 @@ public class Episodio1 {
 
 				case 3: {
 					try {
-						notas.setPuntosVida(1);
-						String consecuencia = Utils.desgraciaAleatorio() + notas.getPuntosVida();
+						personaje.setPuntosVida(1);
+						String consecuencia = Utils.desgraciaAleatorio() + personaje.getPuntosVida();
 						System.out.println(consecuencia);
 						key3 = true; // <-- IMPORTANTE PARA PODER SALIR
-						LOGGER.info(() -> "Opción 3 ejecutada. " + consecuencia + " Personaje: " + notas.getNombre());
+						LOGGER.info(() -> "Opción 3 ejecutada. " + consecuencia + " Personaje: " + personaje.getNombre());
 					} catch (Exception e) {
 						LOGGER.log(Level.SEVERE, "Error al ejecutar opción 3", e);
 						System.out.println("No se pudo realizar la acción de la opción 3.");
@@ -130,11 +130,11 @@ public class Episodio1 {
 
 				case 4: {
 					try {
-						notas.setPuntosVida(notas.getPuntosVidaMax());
+						personaje.setPuntosVida(personaje.getPuntosVidaMax());
 						String msg = "Has dormido y recuperado toda la vida.";
 						System.out.println(msg);
 						key3 = true;
-						LOGGER.info(msg + " Personaje: " + notas.getNombre());
+						LOGGER.info(msg + " Personaje: " + personaje.getNombre());
 					} catch (Exception e) {
 						LOGGER.log(Level.SEVERE, "Error al ejecutar opción 4", e);
 						System.out.println("No se pudo dormir correctamente.");
@@ -144,7 +144,7 @@ public class Episodio1 {
 
 				default:
 					System.out.println("Opción no válida");
-					LOGGER.warning("Opción no válida elegida: " + opcion + " Personaje: " + notas.getNombre());
+					LOGGER.warning("Opción no válida elegida: " + opcion + " Personaje: " + personaje.getNombre());
 				}
 
 				// Actualizamos la condición de salida **dentro del bucle** (única comprobación necesaria)
@@ -152,7 +152,7 @@ public class Episodio1 {
 					salida = true;
 					String msg = "Has cumplido todas las condiciones. Saliendo del episodio...";
 					System.out.println(msg);
-					LOGGER.info(msg + " Personaje: " + notas.getNombre());
+					LOGGER.info(msg + " Personaje: " + personaje.getNombre());
 				}
 
 			} catch (Throwable t) {
