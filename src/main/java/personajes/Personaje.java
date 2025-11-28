@@ -17,6 +17,7 @@ public class Personaje implements Atacable, Defendible{
 	private List<Criatura> criaturas;
 	private String nombre;
 	private int experiencia; // sube putnos de vida y ataque
+	private int nivel; // nivel de experiencia
 	private int puntosVidaMax; // maximo 100 puntos de vida
 	private int puntosVida;
 	private int puntosAtaque; // modificamos si raza
@@ -37,6 +38,8 @@ public class Personaje implements Atacable, Defendible{
         // aplica pasivas/bonos iniciales DESPUÉS de setear PV/ATQ
         raza.aplicarBonos(this);
     }
+    
+    
 
 	public Personaje(String tipo, int fuerza, int inteligencia, int suerte, List<Equipamiento> equipo,
 			List<Criatura> criaturas, String nombre) {
@@ -47,14 +50,15 @@ public class Personaje implements Atacable, Defendible{
 	}
 
 	public Personaje(String tipo, int fuerza, int inteligencia, int suerte, List<Equipamiento> equipo,
-			List<Criatura> criaturas, String nombre, int experiencia, int puntosVida, int puntosAtaque) {
+			List<Criatura> criaturas, String nombre, int experiencia, int puntosVida, int puntosAtaque, int nivel) {
 		super();
 		this.equipo = equipo;
 		this.criaturas = criaturas;
 		this.nombre = nombre;
-		this.experiencia = experiencia;
+		this.experiencia = 0; // la experiencia se inicializa desde 0
 		this.puntosVida = puntosVida;
 		this.puntosAtaque = puntosAtaque;
+		this.nivel = 1; // siempre se creara el personaje con nivel 1
 	}
 	
 	public int getSuerte() {
@@ -155,6 +159,20 @@ public class Personaje implements Atacable, Defendible{
 
 		return this.puntosVida;
 	}
+	
+	
+
+	public int getNivel() {
+		return nivel;
+	}
+
+
+
+	public void setNivel(int nivel) {
+		this.nivel = nivel;
+	}
+
+
 
 	@Override
 	public void recibirDanio(int danio) {
@@ -203,12 +221,36 @@ public class Personaje implements Atacable, Defendible{
 			return false;
 		}
 	}
-
-	// PERSONAJE
-	// public void ganarExperiencia(int experiencia);
-	// public void curar()
-	// public void usarPocion();
-	// public void recibirDaño(int);
-	// public int atacar (Atacable a); IMPLEMENTA ATACABLE
-	// public int defender(Defendible d); IMPLEMENTA DEFENDIBLE
+	
+	public void ganarExperiencia(int puntos) {
+		if (puntos <=0) {
+			return;
+		}
+		
+		System.out.println("El personaje " + nombre + " gana " + puntos + " de experiencia.");
+		this.experiencia += puntos;
+		subirNivelSiToca();
+	}
+	
+	// sencillo, se sube de nivel cada 100 puntos
+	
+	private int experienciaParaSiguienteNivel() {
+		return nivel * 100;
+	}
+	
+	public void subirNivelSiToca() {
+		boolean haSubido = false;
+		
+		while(this.experiencia >= experienciaParaSiguienteNivel()) {
+			this.experiencia -= experienciaParaSiguienteNivel();
+			this.nivel++;
+			haSubido = true;
+			
+			//TODO: DISTINGUIR ATRIBUTOS A MEJORA SI SUBE DE NIVEL EN FUNCION DE SI ES MONGOL, RAPANUI O TROGODITA
+			
+			
+		}
+	}
+	
+	
 }
