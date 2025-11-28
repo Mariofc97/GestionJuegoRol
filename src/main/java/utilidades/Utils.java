@@ -1,8 +1,12 @@
 package utilidades;
 
-import java.util.InputMismatchException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import criaturas.Conejo;
 import criaturas.Criatura;
@@ -10,10 +14,14 @@ import criaturas.Gusano;
 import criaturas.Mosquito;
 import criaturas.Raton;
 import equipo.Equipamiento;
+import equipo.Escudos;
+import equipo.armas.Armas;
+import equipo.objetos.Pocion;
 import personajes.Personaje;
 
 public class Utils {
 
+	protected static final Logger log = LoggerFactory.getLogger(Utils.class);
 	// TODO
 	// Metodos
 
@@ -114,12 +122,14 @@ public class Utils {
 
 	public static void combate(Personaje person, Criatura enemigo) {
 		System.out.println("Comienza el combate entre: " + person.getNombre() + " y " + enemigo.getNombre());
-		
+
 		if (person.tieneArmaEquipada() == false) {
-			System.out.println("El personaje " + person.getNombre() + " no tiene ningun arma equipada, asique el enemigo " + enemigo.getNombre() + " se mea en tu cara y te deja a un punto de vida.");
+			System.out
+					.println("El personaje " + person.getNombre() + " no tiene ningun arma equipada, asique el enemigo "
+							+ enemigo.getNombre() + " se mea en tu cara y te deja a un punto de vida.");
 			person.setPuntosVida(1);
 			System.out.println("Vuelves a la cueva con " + person.getPuntosVida() + " puntos de vida.");
-			
+
 		}
 
 		while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {
@@ -147,5 +157,204 @@ public class Utils {
 			}
 		}
 	}
+
+	private static void mostrarEquipoCompleto(Personaje person) {
+		List<Equipamiento> equipo = person.getEquipo();
+
+		if (equipo == null || equipo.isEmpty()) {
+			log.error("No llevas ningun objeto encima");
+			return;
+		}
+
+		System.out.println("\n--- EQUIPO COMPLETO ---");
+		for (int i = 0; i < equipo.size(); i++) {
+			Equipamiento e = equipo.get(i);
+			String tipoEq = obtenerTipoEquipamiento(e);
+			System.out.println((i + 1) + ". [" + tipoEq + "]" + e.getNombre() + " (peso: " + e.getPeso()
+					+ ", durabilidad: " + e.getDurabilidad() + ")");
+		}
+	}
+
+	private static String obtenerTipoEquipamiento(Equipamiento e) {
+		if (e instanceof Armas) {
+			return "Arma";
+		} else if (e instanceof Escudos) {
+			return "Escudo";
+		} else if (e instanceof Pocion) {
+			return "Pocion";
+		} else {
+			return "Objeto";
+		}
+	}
+
+	// Este menu es para ver armas pero tambien para EQUIPAR!
+	// Equipar: mover el arma elegida al principio de la lista para que
+	// getArmaEquipada() pueda encontrarla primero.
+	private static void menuArmas(Personaje person) {
+		List<Equipamiento> equipo = person.getEquipo();
+
+		if (equipo == null || equipo.isEmpty()) {
+			log.error("No llevas armas ni objetos");
+			return;
+		}
+
+		List<Armas> armas = new ArrayList<>();
+		for (Equipamiento e : equipo) {
+			if (e instanceof Armas) {
+				// casteo de equipo a arma
+				armas.add((Armas) e);
+			}
+		}
+
+		if (armas.isEmpty()) {
+			System.out.println("No tienes ningun arma en el inventario");
+			return;
+		}
+		System.out.println("\n--- ARMAS ---");
+		for (int i = 0; i < armas.size(); i++) {
+			Armas a = armas.get(i);
+			System.out.println((i + 1) + ". " + a.getNombre() + " daño: " + a.getPuntosDaño() + " ,tipo de daño: "
+					+ a.getTipoDaño());
+		}
+		
+        System.out.println((armas.size() + 1) + ". Volver");
+        int opcion = pideDatoNumerico("Elige un arma para equipar (o pulsa" + (armas.size() + 1) + " para volver):");
+
+        if (opcion < 1 || opcion > armas.size()) {
+            System.out.println("Volviendo sin cambiar el arma.");
+            return;
+        }
+
+        Armas seleccionada = armas.get(opcion - 1);
+
+        equipo.remove(seleccionada);
+        equipo.add(0, seleccionada);
+
+        System.out.println("Has equipado el arma: " + seleccionada.getNombre());
+
+	}
+	
+    private static void menuUsarPocion(Personaje person) {
+        List<Equipamiento> equipo = person.getEquipo();
+        if (equipo == null || equipo.isEmpty()) {
+            System.out.println("No tienes objetos en el inventario.");
+            return;
+        }
+
+        List<Pocion> pociones = new ArrayList<>();
+        for (Equipamiento e : equipo) {
+            if (e instanceof Pocion) {
+                pociones.add((Pocion) e);
+            }
+        }
+
+        if (pociones.isEmpty()) {
+            System.out.println("No tienes ninguna poción.");
+            return;
+        }
+
+        System.out.println("\n--- POCIONES ---");
+        for (int i = 0; i < pociones.size(); i++) {
+            Pocion p = pociones.get(i);
+            System.out.println((i + 1) + ". " + p.getNombre() + 
+                               " (cura: " + p.getPuntosVida() + " puntos de vida)");
+        }
+        System.out.println((pociones.size() + 1) + ". Volver");
+
+        int opcion = pideDatoNumerico("Elige una poción para usar (o " + (pociones.size() + 1) + " para volver):");
+
+        if (opcion < 1 || opcion > pociones.size()) {
+            System.out.println("No usas ninguna poción.");
+            return;
+        }
+
+        Pocion pocionSeleccionada = pociones.get(opcion - 1);
+        // Curar al personaje
+        person.usarPocion(pocionSeleccionada);
+        // Eliminar la poción del inventario
+        equipo.remove(pocionSeleccionada);
+
+        System.out.println("Has usado la poción " + pocionSeleccionada.getNombre() + 
+                           ". Vida actual(PV/PVMax): " + person.getPuntosVida() + "/" + person.getPuntosVidaMax());
+    }
+    
+    private static void menuTirarObjetoAlaMierda(Personaje person) {
+        List<Equipamiento> equipo = person.getEquipo();
+        if (equipo == null || equipo.isEmpty()) {
+            System.out.println("No tienes nada que tirar.");
+            return;
+        }
+
+        System.out.println("\n--- TIRAR OBJETO ---");
+        for (int i = 0; i < equipo.size(); i++) {
+            Equipamiento e = equipo.get(i);
+            String tipoOb = obtenerTipoEquipamiento(e);
+            System.out.println((i + 1) + ". [" + tipoOb + "] " + e.getNombre());
+        }
+        System.out.println((equipo.size() + 1) + ". Cancelar");
+
+        int opcion = pideDatoNumerico("Elige el objeto que quieres tirar (o pulsa " + (equipo.size() + 1) + " para cancelar):");
+
+        if (opcion < 1 || opcion > equipo.size()) {
+            System.out.println("No tiras ningún objeto.");
+            return;
+        }
+
+        Equipamiento aLaMierda = equipo.get(opcion - 1);
+        System.out.println("Has tirado: " + aLaMierda.getNombre() + " a la mierda, te mereces una hoja de ortiga por arma.");
+        equipo.remove(aLaMierda);
+    }
+    
+    public static int calcularPesoTotal(Personaje person) {
+    	int totalPeso = 0;
+    	if (person.getEquipo() != null) {
+    		for (Equipamiento e : person.getEquipo()) {
+    			totalPeso += e.getPeso();
+    		}
+    	}
+    	return totalPeso;
+    }
+    
+    public static void menuInventario(Personaje person) {
+    	if(person.getEquipo() == null) {
+    		person.setEquipo(new ArrayList<>());
+    	}
+    	
+    	boolean salirMenu = false;
+    	
+    	do {
+    		System.out.println("\n--- INVENTARIO DE " + person.getNombre() + " ---");
+            System.out.println("Vida: " + person.getPuntosVida() + "/" + person.getPuntosVidaMax());
+            System.out.println("Peso total: " + calcularPesoTotal(person) + " unidades");
+            System.out.println("---------------------------------------------");
+            System.out.println("1. Ver todo el equipo");
+            System.out.println("2. Ver armas / equipar arma");
+            System.out.println("3. Usar poción");
+            System.out.println("4. Tirar objeto a la mierda");
+            System.out.println("5. Volver");
+            
+            int opcion = pideDatoNumerico("Elige la opción deseada del inventario: ");
+            
+            switch (opcion) {
+            case 1:
+                mostrarEquipoCompleto(person);
+                break;
+            case 2:
+                menuArmas(person);
+                break;
+            case 3:
+                menuUsarPocion(person);
+                break;
+            case 4:
+                menuTirarObjetoAlaMierda(person);
+                break;
+            case 5:
+                salirMenu = true;
+                break;
+            default:
+                System.out.println("Opción no válida.");
+            }
+    	} while (!salirMenu);
+    }
 
 }
