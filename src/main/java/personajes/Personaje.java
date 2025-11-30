@@ -141,15 +141,6 @@ public class Personaje implements Atacable, Defendible{
 		this.criaturas = criaturas;
 	}
 
-	public int ganarExperiencia(int experienciaAñadida) {
-		this.experiencia = experiencia + experienciaAñadida;
-
-		System.out.println("El personaje " + nombre + " ha ganado " + experienciaAñadida + " puntos de experiencia");
-		System.out.println("Ahora mismo tiene " + experiencia + " de experiencia");
-
-		return this.experiencia;
-	}
-
 	public int usarPocion(Pocion pocion) {
 
 		int puntosVidaPocion = pocion.getPuntosVida();
@@ -222,17 +213,19 @@ public class Personaje implements Atacable, Defendible{
 		}
 	}
 	
-	public void ganarExperiencia(int puntos) {
-		if (puntos <=0) {
+	public void ganarExperiencia(int experienciaAñadida) {
+		if (experienciaAñadida <=0) {
+			System.out.println("El personaje no puede perder experiencia");
 			return;
 		}
 		
-		System.out.println("El personaje " + nombre + " gana " + puntos + " de experiencia.");
-		this.experiencia += puntos;
+		System.out.println("El personaje " + nombre + " gana " + experienciaAñadida + " de experiencia.");
+		this.experiencia += experienciaAñadida;
+		System.out.println("Ahora mismo tiene " + experiencia + " puntos de experiencia");
 		subirNivelSiToca();
 	}
 	
-	// sencillo, se sube de nivel cada 100 puntos
+	// sencillo, se sube de nivel cada 100 puntos de experiencia.
 	
 	private int experienciaParaSiguienteNivel() {
 		return nivel * 100;
@@ -246,10 +239,17 @@ public class Personaje implements Atacable, Defendible{
 			this.nivel++;
 			haSubido = true;
 			
-			//TODO: DISTINGUIR ATRIBUTOS A MEJORA SI SUBE DE NIVEL EN FUNCION DE SI ES MONGOL, RAPANUI O TROGODITA
-			
+            this.puntosVidaMax += 10;
+            this.puntosAtaque += 2;
+			//MARIO: PENDIENTE DISTINGUIR ATRIBUTOS A MEJORA SI SUBE DE NIVEL EN FUNCION DE SI ES MONGOL, RAPANUI O TROGODITA
+			// QUIZA CREANDO INSTANCIA Y REALIZANDO CASTEO
 			
 		}
+		
+        if (haSubido) {
+            System.out.println("¡" + nombre + " ha subido al nivel " + nivel + "!");
+            System.out.println("Vida máxima: " + puntosVidaMax + " | Ataque: " + puntosAtaque);
+        }
 	}
 	
 	
