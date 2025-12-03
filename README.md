@@ -116,32 +116,44 @@ src/main/java
    │
    └─ config                        # Configuración (opcional)
        └─ JuegoConfig.java (C)      # constantes de XP, daño, etc.
+       ...
+
+---
        
-   Ejemplo de excepciones con ReglaJuegoException.java:
-  	-Intentar equipar un arma que requiere nivel 10 y el personaje es nivel 3.
+## Estructura posible de base de datos
 
-	-Intentar coger un objeto que haría que supere el peso máximo permitido.
-	
-	-Intentar usar una poción cuando ya tienes la vida al máximo.
-	
-	-Intentar entrar a un episodio que requiere haber completado otro antes.
-	
-	-Intentar invocar una criatura cuando ya tienes el máximo de criaturas aliadas.
-	
-	Uso de Generic Dao:
-	Para no tener que reecribir el CRUD en 10 clases, tener una estructura mas limpia y reutilizada
-	
-	public interface GenericDao<T> {
+Para dar soporte al juego de rol y practicar operaciones entre Java y una base de datos, se ha diseñado un esquema relacional sencillo pero ampliable. Las tablas principales son:
 
-	    void save(T entity);
+- `razas`
+- `personajes`
+- `criaturas`
+- `equipos`
+- `inventarios_personaje`
+- `combates`
+- `turnos_combate` (opcional, para registrar el detalle de cada combate)
+
+---
 	
-	    void update(T entity);
-	
-	    void delete(T entity);
-	
-	    T findById(Long id);
-	
-	    List<T> findAll();
-	}
-	Esto sirve para cualquier entidad: Personaje, Criatura, Episorio, Inventario...
+## Anotaciones adicionales
+       
+Ejemplo de excepciones con ReglaJuegoException.java:
+- Intentar equipar un arma que requiere nivel 10 y el personaje es nivel 3.
+- Intentar coger un objeto que haría que supere el peso máximo permitido.
+- Intentar usar una poción cuando ya tienes la vida al máximo.
+- Intentar entrar a un episodio que requiere haber completado otro antes.
+- Intentar invocar una criatura cuando ya tienes el máximo de criaturas aliadas.
+
+Uso de Generic Dao:
+Para no tener que reecribir el CRUD en 10 clases, tener una estructura mas limpia y reutilizada
+
+```java
+public interface GenericDao<T> {
+    void save(T entity);
+    void update(T entity);
+    void delete(T entity);
+    T findById(Long id);
+    List<T> findAll();
+}
+
+---
    
