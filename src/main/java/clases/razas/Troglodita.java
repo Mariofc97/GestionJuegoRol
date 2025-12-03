@@ -2,10 +2,10 @@ package clases.razas;
 
 import personajes.Personaje;
 
-public class Trogodita extends Raza {
+public class Troglodita extends Raza {
 	
 	
-	public Trogodita() {
+	public Troglodita() {
 		super("Trogodita", 8, 2, 1); //tipo, fuerza, inteligencia, suergencia, int suertete
 		// TODO Auto-generated constructor stub
 	}
