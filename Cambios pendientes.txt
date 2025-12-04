@@ -1,0 +1,8 @@
+MARIO:
+	-Clase Inventario: Ahora esta vacia, creo que es buena idea sacar el metodo de utils y meterlo como un entity, siempre y cuando sea necesario que sus datos sean persistentes en la BD, es decir, que tengamos que hacer UPDATE, INSERTAR, CONSULTAR o ELIMINAR cosas del inventario.
+	-Rellenar HibernateUtil.java con getSessionFactory
+	-Diseñar BD con las relaciones pertinentes, OneToOne, etc.
+	-Cambiar los entities que consideremos que debemos incluir en la BD con las anotaciones de hibernate
+	-Probar en AppJuegoRol a llamar a getSessionFactory de la clase HibernateUtil, crear los objetos, la transaccion y hacerlos persistentes con session.persist() y tx.commit() para probar que los entities se crean correctamente.
+	
+	

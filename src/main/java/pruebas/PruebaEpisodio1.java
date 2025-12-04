@@ -3,10 +3,10 @@ package pruebas;
 import java.util.ArrayList;
 import java.util.List;
 
-import criaturas.Criatura;
-import equipo.Equipamiento;
-import personajes.Personaje;
-import episodios.Episodio1;
+import entities.Personaje;
+import entities.criatura.Criatura;
+import entities.episodios.Episodio1;
+import entities.equipo.Equipamiento;
 
 public class PruebaEpisodio1 {
 

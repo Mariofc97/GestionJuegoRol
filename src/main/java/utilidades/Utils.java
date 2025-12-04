@@ -8,16 +8,16 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import criaturas.Conejo;
-import criaturas.Criatura;
-import criaturas.Gusano;
-import criaturas.Mosquito;
-import criaturas.Raton;
-import equipo.Equipamiento;
-import equipo.Escudos;
-import equipo.armas.Armas;
-import equipo.objetos.Pocion;
-import personajes.Personaje;
+import entities.Personaje;
+import entities.criatura.Conejo;
+import entities.criatura.Criatura;
+import entities.criatura.Gusano;
+import entities.criatura.Mosquito;
+import entities.criatura.Raton;
+import entities.equipo.Armas;
+import entities.equipo.Equipamiento;
+import entities.equipo.Escudos;
+import entities.equipo.Pocion;
 
 public class Utils {
 
