@@ -5,4 +5,4 @@ MARIO:
 	-Cambiar los entities que consideremos que debemos incluir en la BD con las anotaciones de hibernate
 	-Probar en AppJuegoRol a llamar a getSessionFactory de la clase HibernateUtil, crear los objetos, la transaccion y hacerlos persistentes con session.persist() y tx.commit() para probar que los entities se crean correctamente.
 	
-	
+	-crear la tabla de usuarios en nuestra base de datos, va a ser obligatoria
