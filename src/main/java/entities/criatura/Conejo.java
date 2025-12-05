@@ -2,6 +2,11 @@ package entities.criatura;
 
 public class Conejo extends Criatura{
 
+	
+
+	public Conejo(String nombre, String alias, int nivel, int experiencia, int puntosVida, int puntosAtaque, String tipoAtaque) {
+		super("Conejo", alias, 1, 0, 25, 2, "Patada salto");
+	}
 
 	public Conejo() {
 		// TODO Auto-generated constructor stub
@@ -9,42 +14,6 @@ public class Conejo extends Criatura{
 	
 
 
-	public String getNombre() {
-		return nombre;
-	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public int getPuntosDeVida() {
-		return PuntosDeVida;
-	}
-
-	public void setPuntosDeVida(int puntosDeVida) {
-		PuntosDeVida = puntosDeVida;
-	}
-
-	public int getPuntosDeAtaque() {
-		return PuntosDeAtaque;
-	}
-
-	public void setPuntosDeAtaque(int puntosDeAtaque) {
-		PuntosDeAtaque = puntosDeAtaque;
-	}
-
-	public String getOrejazo() {
-		return orejazo;
-	}
-
-	public void setOrejazo(String orejazo) {
-		this.orejazo = orejazo;
-	}
-
-	@Override
-	public String toString() {
-		return "Conejo [PuntosDeVida=" + PuntosDeVida + ", PuntosDeAtaque=" + PuntosDeAtaque + ", orejazo=" + orejazo
-				+ ", toString()=" + super.toString() + "]";
-	}
 
 }
