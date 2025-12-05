@@ -12,4 +12,16 @@ MARIO:
 	-cambiar las clases de criaturas para que siempre que se cree una el nombre sea por defecto, y poner un alias para poder añadir.
 	quitaria nombre de la interfaz criatura y lo pondria en la clase principal de la criatura.
 	
+	-en case 1 hay que cambiar que las llaves sea true cuando se consiga el objeto igual para todos los menus..
+	
+	5 criaturas como maximo generar error si se intenta crear mas.
+	
+	limite de daño
+	
+	
+	crear usuarios en la base de datos. de perfil usuario normal y administrador. Usuario entite
+	
+	crear control de usuarios en la aplicacion.
+	
+	crear menu de administrador para gestionar usuarios.
 	
