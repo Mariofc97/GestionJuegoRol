@@ -61,20 +61,46 @@ public class Utils {
 	// generan mas
 	public static Criatura randomizarCriatura() {
 
-		int tirada = (int) (Math.random() * 4 + 1);
-// tememos que no usar el metodo por def para que añada el nombre
-		
+		int tirada = ThreadLocalRandom.current().nextInt(1, 5);
+
+		 Criatura c;
 		switch (tirada) {
-		case 1:System.out.println("Tirada de criatura: Gusano, quieres ponerele un alias?");
-		String aliasGusano= pideDato
-			return new Gusano();
+		case 1:
+			System.out.println("Tirada de criatura: Gusano.");
+			c = new Gusano();
+			break;
 		case 2:
-			return new Conejo();
+			System.out.println("Tirada de criatura: Conejo.");
+			c = new Conejo();
+			break;
 		case 3:
-			return new Mosquito();
+			System.out.println("Tirada de criatura: Mosquito.");
+			c = new Mosquito();
+			break;
 		default:
-			return new Raton();
+			System.out.println("Tirada de criatura: Raton.");
+			c = new Raton();
+			break;
 		}
+
+		// Preguntar opcionalmente por alias (seguro y no obliga a introducir)
+		Scanner scanner = new Scanner(System.in);
+		try {
+			System.out.println("¿Quieres ponerle un alias a la criatura? (s/n)");
+			String resp = scanner.nextLine();
+			if (resp != null && resp.trim().toLowerCase().startsWith("s")) {
+				System.out.println("Introduce el alias:");
+				String alias = scanner.nextLine();
+				if (alias != null && !alias.trim().isEmpty()) {
+					c.setAlias(alias.trim());
+				}
+			}
+		} catch (Exception e) {
+			// No queremos que una excepción al pedir alias rompa la creación
+			log.warn("No se pudo leer alias de la criatura", e);
+		}
+
+		return c;
 	}
 
 	/**
