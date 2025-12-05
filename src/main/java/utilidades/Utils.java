@@ -1,6 +1,8 @@
 package utilidades;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
@@ -48,7 +50,14 @@ public class Utils {
 		if (resultado) {
 
 			person.getCriaturas().add(compi);
-			System.out.println("Ahora tienes un compañero de viaje:" + compi.getNombre());
+			System.out.println("Ahora tienes un compañero de viaje " + compi.getNombre() + ", ¿quieres ponerle un alias?:");
+			String alias = pideDatoCadena("Introduce el alias deseado: ");
+			if (alias.isEmpty()) {
+				alias = compi.getNombre();
+			} else {
+				System.out.println("Has decidido llamar a tu criatura: " + alias);
+			}
+			compi.setAlias(alias);
 		} else {
 			System.out.println("No estas pensado en lo que debes, al invocar la criatura se rie de ti y te ataca.");
 			person.setPuntosVida(person.getPuntosVida() - compi.getPuntosAtaque());
@@ -66,9 +75,13 @@ public class Utils {
 		 Criatura c;
 		switch (tirada) {
 		case 1:
+<<<<<<< HEAD
 			System.out.println("Tirada de criatura: Gusano.");
 			c = new Gusano();
 			break;
+=======
+			return new Gusano();
+>>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
 		case 2:
 			System.out.println("Tirada de criatura: Conejo.");
 			c = new Conejo();
@@ -82,6 +95,7 @@ public class Utils {
 			c = new Raton();
 			break;
 		}
+<<<<<<< HEAD
 
 		// Preguntar opcionalmente por alias (seguro y no obliga a introducir)
 		Scanner scanner = new Scanner(System.in);
@@ -101,6 +115,9 @@ public class Utils {
 		}
 
 		return c;
+=======
+		
+>>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
 	}
 
 	/**
@@ -386,4 +403,59 @@ public class Utils {
 		} while (!salirMenu);
 	}
 
+<<<<<<< HEAD
 }
+=======
+	public static double pideDatoDecimal(String texto) {
+		double numero = 0;
+		boolean hayError;
+		do {
+
+			System.out.println(texto);
+			Scanner scan = new Scanner(System.in);
+
+			try {
+				numero = scan.nextDouble();
+				hayError = false;
+			} catch (InputMismatchException ime) {
+				hayError = true;
+				System.out.println("Valor introducido no correcto");
+			} finally {
+				scan.close();
+			}
+
+		} while (hayError);
+
+		return numero;
+
+	}
+
+	public static String pideDatoCadena(String texto) {
+		String dato = "";
+		System.out.println(texto);
+		Scanner scan = new Scanner(System.in);
+		dato = scan.nextLine();
+
+		return dato;
+	}
+
+	public static BigDecimal pideDatoBigDecimal(String texto) {
+
+		try {
+			System.out.println(texto);
+			Scanner scan = new Scanner(System.in);
+			BigDecimal numero = scan.nextBigDecimal();
+
+			return numero;
+
+		} catch (Exception e) {
+			System.out.println("Error general " + e.getMessage());
+			System.out.println("El dato introducido debe ser un número decimal (ej: 1234.56)");
+
+			// Volvemos a preguntar recursivamente
+			return pideDatoBigDecimal(texto);
+		}
+	}
+
+}
+>>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
