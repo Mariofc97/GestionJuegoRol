@@ -1,20 +1,11 @@
 package entities.criatura;
 
-public class Conejo extends Criatura{
+public class Conejo extends Criatura {
 
 	private int PuntosDeVida = 10;
 	private int PuntosDeAtaque = 4;
 	private String orejazo;
-	
-	public Conejo(String nombre, int nivel, int experiencia) {
-		super(nombre, nivel, experiencia);
-	//Tenemos dos constructores.
-	}
-
-	public Conejo(String nombre, int nivel, int experiencia, String orejazo) {
-		super(nombre, nivel, experiencia);
-		this.orejazo = orejazo;
-	}
+	private String nombre = "Conejo";
 
 	public Conejo() {
 		// TODO Auto-generated constructor stub
@@ -50,20 +41,4 @@ public class Conejo extends Criatura{
 				+ ", toString()=" + super.toString() + "]";
 	}
 
-
-
-	
-		
-		
-
-
-	
-	
-	
-	
-	
-	
-	
-}	
-	
-
+}
