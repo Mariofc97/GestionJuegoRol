@@ -28,6 +28,14 @@ public abstract class Criatura implements Atacable, Defendible {
 	}
 	
 
+	public Criatura(String alias, int nivel, int experiencia) {
+		super();
+		this.alias = alias;
+		this.nivel = nivel;
+		this.experiencia = experiencia;
+	}
+
+
 	public Criatura() {
 		super();
 	}
