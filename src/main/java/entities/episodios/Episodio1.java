@@ -114,7 +114,7 @@ public class Episodio1 {
 			try {
 				LOGGER.info(() -> "Mostrando menú para personaje: " + personaje.getNombre());
 				System.out.println(
-						"1. Llorar de forma desconsolado \t2. Pensar en un compañero de vieje \t3. Salir de la cueva \t4. Dormir y recuperar vida");
+						"1. Llorar de forma desconsolado \t2. Pensar en un compañero de vieje \t3. Salir de la cueva \t4. Dormir y recuperar vida \t5. Ver inventario/estado");
 				System.out.println("dila opcion del menu");
 				int opcion;
 				try {
@@ -181,7 +181,7 @@ public class Episodio1 {
 						personaje.setPuntosVida(1);
 //						String consecuencia = Utils.desgraciaAleatorio() + personaje.getPuntosVida();
 						System.out.println(
-								Utils.desgraciaAleatorio() + " Tu vida ahora es: " + personaje.getPuntosVida());
+								Utils.desgraciaAleatorio() + " Tu vida ahora es: " + personaje.getPuntosVida() + " y vuelves a la cueva, desgraciado.");
 						key3 = true; // necesario para poder salir del episodio
 						LOGGER.info(() -> "Opción 3 ejecutada.  Personaje: " + personaje.getNombre());
 
@@ -205,6 +205,19 @@ public class Episodio1 {
 						System.out.println("No se pudo dormir correctamente.");
 					}
 				}
+					break;
+				
+				case 5: {
+					// Caso 5: ver el estado del personaje
+					try {
+						Utils.menuInventario(personaje);
+						LOGGER.info("Mostrando inventario de: " + personaje.getNombre());
+					} catch (Exception e) {
+						LOGGER.log(Level.SEVERE, "Error al mostrar el inventario", e);
+						System.out.println("No se pudo mostrar el inventario.");
+					}
+				}
+				
 					break;
 
 				default:

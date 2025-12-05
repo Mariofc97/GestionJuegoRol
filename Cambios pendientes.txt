@@ -1,4 +1,5 @@
 MARIO:
+	-Añadir ver compi en el menu del inventario para ver los compañeros que tenemos.
 	-Clase Inventario: Ahora esta vacia, creo que es buena idea sacar el metodo de utils y meterlo como un entity, siempre y cuando sea necesario que sus datos sean persistentes en la BD, es decir, que tengamos que hacer UPDATE, INSERTAR, CONSULTAR o ELIMINAR cosas del inventario.
 	-Rellenar HibernateUtil.java con getSessionFactory
 	-Diseñar BD con las relaciones pertinentes, OneToOne, etc.

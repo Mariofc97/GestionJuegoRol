@@ -111,9 +111,9 @@ public class Utils {
 
 	// metodo nuevo.
 	public static String desgraciaAleatorio() {
-		String[] nombres = { "Hay tormenta y te cae un rayos vuelves a la cueva, hueles a pelo quemado.",
-				"Hay ventisca tropiezas y te caes por el acantilado de al lado de la cueva, consigues volver a la cueva a duras penas.",
-				"Esta helando y no tienes ropa, vuelves a la cueva con hipotermia.",
+		String[] nombres = { "Hay tormenta y te cae un rayo, hueles a pelo quemado.",
+				"Hay ventisca tropiezas y te caes por el acantilado de al lado de la cueva, te partes dos costillas.",
+				"Esta helando y no tienes ropa, coges una hipotermia.",
 				"Hay una ola de calor y te deshidratas, te rescatan los niños.",
 				"Habia un dientes de sable acechando y sales con vida gracias a que hueles muy mal y no ha querido comerte.",
 				"El día es explendido te distraes disfrutando de la tarde y un mamut te arrolla.",
@@ -146,7 +146,7 @@ public class Utils {
 		if (person.tieneArmaEquipada() == false) {
 			System.out
 					.println("El personaje " + person.getNombre() + " no tiene ningun arma equipada, asique el enemigo "
-							+ enemigo.getNombre() + " se mea en tu cara y te deja a un punto de vida.");
+							+ enemigo.getNombre() + " te pisa la cara y te deja a un punto de vida.");
 			person.setPuntosVida(1);
 			System.out.println("Vuelves a la cueva con " + person.getPuntosVida() + " puntos de vida.");
 
@@ -346,7 +346,7 @@ public class Utils {
 		do {
 			System.out.println("\n--- INVENTARIO DE " + person.getNombre() + " ---");
 			System.out.println("Vida: " + person.getPuntosVida() + "/" + person.getPuntosVidaMax());
-			System.out.println("Peso total: " + calcularPesoTotal(person) + " unidades");
+			System.out.println("Numero de objetos en inventario: " + calcularPesoTotal(person) + " unidades.");
 			System.out.println("---------------------------------------------");
 			System.out.println("1. Ver todo el equipo");
 			System.out.println("2. Ver armas / equipar arma");
