@@ -121,6 +121,14 @@ public abstract class Criatura implements Atacable, Defendible {
 		return danio;
 	}
 
+	@Override
+	public String toString() {
+		return "Criatura [nombre=" + nombre + ", alias=" + alias + ", nivel=" + nivel + ", experiencia=" + experiencia
+				+ ", puntosVida=" + puntosVida + ", puntosAtaque=" + puntosAtaque + ", tipoAtaque=" + tipoAtaque + "]";
+	}
+	
+	
+
 	// TODO
 	// Metodos:
 	// public int atacar (Atacable a); IMPLEMENTA ATACABLE
