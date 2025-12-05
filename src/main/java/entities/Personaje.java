@@ -178,7 +178,7 @@ public class Personaje implements Atacable, Defendible{
 	@Override
 	public boolean estaVivo() {
 		// TODO Auto-generated method stub
-		return this.puntosAtaque > 0;
+		return this.puntosVida > 0;
 	}
 
 	@Override
