@@ -15,8 +15,7 @@ public abstract class Criatura implements Atacable, Defendible {
 	private int experiencia;
 	private int puntosVida;
 	private int puntosAtaque;
-
-
+	private String tipoAtque;
 
 	public Criatura(String alias, int nivel, int experiencia, int puntosVida, int puntosAtaque) {
 		super();
@@ -26,20 +25,37 @@ public abstract class Criatura implements Atacable, Defendible {
 		this.puntosVida = puntosVida;
 		this.puntosAtaque = puntosAtaque;
 	}
-	
 
-	public Criatura(String alias, int nivel, int experiencia) {
+	public Criatura(String alias, int nivel, int experiencia, int puntosVida, int puntosAtaque, String tipoAtque) {
 		super();
 		this.alias = alias;
 		this.nivel = nivel;
 		this.experiencia = experiencia;
+		this.puntosVida = puntosVida;
+		this.puntosAtaque = puntosAtaque;
+		this.tipoAtque = tipoAtque;
 	}
 
+	public Criatura(String alias, int nivel, int experiencia, String tipoAtque) {
+		super();
+		this.alias = alias;
+		this.tipoAtque = tipoAtque;	
+		this.nivel = nivel;
+		this.experiencia = experiencia;
+	}
+	
+
+	public String getTipoAtque() {
+		return tipoAtque;
+	}
+
+	public void setTipoAtque(String tipoAtque) {
+		this.tipoAtque = tipoAtque;
+	}
 
 	public Criatura() {
 		super();
 	}
-
 
 	public int getNivel() {
 		return nivel;
@@ -68,17 +84,14 @@ public abstract class Criatura implements Atacable, Defendible {
 	public int getPuntosAtaque() {
 		return puntosAtaque;
 	}
-	
 
 	public String getAlias() {
 		return alias;
 	}
 
-
 	public void setAlias(String alias) {
 		this.alias = alias;
 	}
-
 
 	public void setPuntosAtaque(int puntosAtaque) {
 		this.puntosAtaque = puntosAtaque;
