@@ -6,3 +6,10 @@ MARIO:
 	-Probar en AppJuegoRol a llamar a getSessionFactory de la clase HibernateUtil, crear los objetos, la transaccion y hacerlos persistentes con session.persist() y tx.commit() para probar que los entities se crean correctamente.
 	
 	-crear la tabla de usuarios en nuestra base de datos, va a ser obligatoria
+	
+	
+	Dani:
+	-cambiar las clases de criaturas para que siempre que se cree una el nombre sea por defecto, y poner un alias para poder añadir.
+	quitaria nombre de la interfaz criatura y lo pondria en la clase principal de la criatura.
+	
+	
