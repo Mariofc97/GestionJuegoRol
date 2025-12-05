@@ -45,13 +45,12 @@ public class Utils {
 	public static Criatura invocacionCompañeroCriatura(Personaje person) {
 
 		Criatura compi = randomizarCriatura();
-		boolean resultado = dadoDiez() > 3;
+		boolean resultado = dadoDiez() > 1; // 90% de exito
 
 		if (resultado) {
 
 			person.getCriaturas().add(compi);
-			System.out.println(
-					"Ahora tienes un compañero de viaje " + compi.getNombre() + ", ¿quieres ponerle un alias?:");
+			System.out.println("Ahora tienes un compañero de viaje, ¿quieres ponerle un alias?:");
 			String alias = pideDatoCadena("Introduce el alias deseado: ");
 			if (alias.isEmpty()) {
 				alias = compi.getNombre();
@@ -62,6 +61,8 @@ public class Utils {
 		} else {
 			System.out.println("No estas pensado en lo que debes, al invocar la criatura se rie de ti y te ataca.");
 			person.setPuntosVida(person.getPuntosVida() - compi.getPuntosAtaque());
+			System.out.println("Te ha quitado " + compi.getPuntosAtaque() + " puntos de vida, te quedan "
+					+ person.getPuntosVida() + " puntos de vida.");
 		}
 
 		return compi;
@@ -92,26 +93,7 @@ public class Utils {
 			c = new Raton();
 			break;
 		}
-
-		// Preguntar opcionalmente por alias (seguro y no obliga a introducir)
-		Scanner scanner = new Scanner(System.in);
-		try {
-			System.out.println("¿Quieres ponerle un alias a la criatura? (s/n)");
-			String resp = scanner.nextLine();
-			if (resp != null && resp.trim().toLowerCase().startsWith("s")) {
-				System.out.println("Introduce el alias:");
-				String alias = scanner.nextLine();
-				if (alias != null && !alias.trim().isEmpty()) {
-					c.setAlias(alias.trim());
-				}
-			}
-		} catch (Exception e) {
-			// No queremos que una excepción al pedir alias rompa la creación
-			log.warn("No se pudo leer alias de la criatura", e);
-		}
-
 		return c;
-
 	}
 
 	/**
@@ -138,7 +120,6 @@ public class Utils {
 				"Los extraterrestre te secuestran y experimenta contigo, estas para el arrastre.",
 				"Esta lloviendo mucho y decides volver, pero al volver te pilla una riada, casi te ahogas." };
 		String nombre = nombres[ThreadLocalRandom.current().nextInt(nombres.length)];
-		System.out.println(nombre + "tus puntos de via son\t");
 		return nombre;
 	}
 
