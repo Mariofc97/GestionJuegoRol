@@ -10,12 +10,13 @@ public abstract class Criatura implements Atacable, Defendible {
 	// Son clases PUBLICAS que van extendidas de criatura, heredando sus atributos
 	// Conejo, raton, gusano (una criatura que le va a ayudar)
 
+	private String nombre;
 	private String alias;
 	private int nivel;
 	private int experiencia;
 	private int puntosVida;
 	private int puntosAtaque;
-	private String tipoAtque;
+	private String tipoAtaque;
 
 	public Criatura(String alias, int nivel, int experiencia, int puntosVida, int puntosAtaque) {
 		super();
@@ -26,35 +27,38 @@ public abstract class Criatura implements Atacable, Defendible {
 		this.puntosAtaque = puntosAtaque;
 	}
 
-	public Criatura(String alias, int nivel, int experiencia, int puntosVida, int puntosAtaque, String tipoAtque) {
+	public Criatura() {
 		super();
+	}
+
+	public Criatura(String nombre, String alias, int nivel, int experiencia, int puntosVida, int puntosAtaque,
+			String tipoAtaque) {
+		super();
+		this.nombre = nombre;
 		this.alias = alias;
 		this.nivel = nivel;
 		this.experiencia = experiencia;
 		this.puntosVida = puntosVida;
 		this.puntosAtaque = puntosAtaque;
-		this.tipoAtque = tipoAtque;
-	}
-
-	public Criatura(String alias, int nivel, int experiencia, String tipoAtque) {
-		super();
-		this.alias = alias;
-		this.tipoAtque = tipoAtque;	
-		this.nivel = nivel;
-		this.experiencia = experiencia;
+		this.tipoAtaque = tipoAtaque;
 	}
 	
+	
 
-	public String getTipoAtque() {
-		return tipoAtque;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setTipoAtque(String tipoAtque) {
-		this.tipoAtque = tipoAtque;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public Criatura() {
-		super();
+	public String getTipoAtaque() {
+		return tipoAtaque;
+	}
+
+	public void setTipoAtaque(String tipoAtaque) {
+		this.tipoAtaque = tipoAtaque;
 	}
 
 	public int getNivel() {

@@ -1,14 +1,31 @@
 package entities.criatura;
 
-public class Conejo extends Criatura {
+public class Conejo extends Criatura{
 
 	private int PuntosDeVida = 10;
 	private int PuntosDeAtaque = 4;
-	private String orejazo;
+	private String orejazo; // esto como funciona exactamente??
 	private String nombre = "Conejo";
 
 	public Conejo() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public Conejo(String alias, int nivel, int experiencia,
+			int puntosDeAtaque, String orejazo, String nombre) {
+		super(alias, nivel, experiencia);
+		PuntosDeAtaque = puntosDeAtaque;
+		this.orejazo = orejazo;
+		this.nombre = nombre;
+	}
+
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public int getPuntosDeVida() {
