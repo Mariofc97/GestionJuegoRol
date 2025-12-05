@@ -1,78 +1,14 @@
 package entities.criatura;
 
-public class Mosquito extends Criatura{
-	
-	private String picar;
-	private int PuntosDeVida = 4;
-	private int PuntosDeAtaque = 8;
-	
-	
-public Mosquito(String nombre, int nivel, int experiencia, String picar) {
-		super(nombre, nivel, experiencia);
-		this.picar = picar;
-		
+public class Mosquito extends Criatura {
+
+	public Mosquito(String nombre, String alias, int nivel, int experiencia, int puntosVida, int puntosAtaque,
+			String tipoAtaque) {
+		super("Mosquito", alias, 1, 0, 20, 1, "picadura");
 	}
 
-
-
-
-
-public Mosquito() {
-	// TODO Auto-generated constructor stub
-}
-
-
-
-
-
-public String getPicar() {
-	return picar;
-}
-
-
-
-
-
-public void setPicar(String picar) {
-	this.picar = picar;
-}
-
-
-
-
-
-public int getPuntosDeVida() {
-	return PuntosDeVida;
-}
-
-
-
-
-public void setPuntosDeVida(int puntosDeVida) {
-	PuntosDeVida = puntosDeVida;
-}
-
-
-
-
-
-public int getPuntosDeAtaque() {
-	return PuntosDeAtaque;
-}
-
-
-
-
-
-public void setPuntosDeAtaque(int puntosDeAtaque) {
-	PuntosDeAtaque = puntosDeAtaque;
-}
-
-
-
-
-
-
-	
+	public Mosquito() {
+		super();
+	}
 
 }
