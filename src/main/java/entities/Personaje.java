@@ -31,10 +31,6 @@ public class Personaje implements Atacable, Defendible{
         this.raza = raza;
         this.nombre = nombre;
 
-        // bases desde la raza
-        this.puntosVida = puntosVida;
-        this.puntosAtaque = puntosAtaque;
-
         // aplica pasivas/bonos iniciales DESPUÉS de setear PV/ATQ
         raza.aplicarBonos(this);
     }
