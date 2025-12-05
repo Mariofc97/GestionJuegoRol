@@ -50,7 +50,8 @@ public class Utils {
 		if (resultado) {
 
 			person.getCriaturas().add(compi);
-			System.out.println("Ahora tienes un compañero de viaje " + compi.getNombre() + ", ¿quieres ponerle un alias?:");
+			System.out.println(
+					"Ahora tienes un compañero de viaje " + compi.getNombre() + ", ¿quieres ponerle un alias?:");
 			String alias = pideDatoCadena("Introduce el alias deseado: ");
 			if (alias.isEmpty()) {
 				alias = compi.getNombre();
@@ -72,16 +73,12 @@ public class Utils {
 
 		int tirada = ThreadLocalRandom.current().nextInt(1, 5);
 
-		 Criatura c;
+		Criatura c;
 		switch (tirada) {
 		case 1:
-<<<<<<< HEAD
 			System.out.println("Tirada de criatura: Gusano.");
 			c = new Gusano();
 			break;
-=======
-			return new Gusano();
->>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
 		case 2:
 			System.out.println("Tirada de criatura: Conejo.");
 			c = new Conejo();
@@ -95,7 +92,6 @@ public class Utils {
 			c = new Raton();
 			break;
 		}
-<<<<<<< HEAD
 
 		// Preguntar opcionalmente por alias (seguro y no obliga a introducir)
 		Scanner scanner = new Scanner(System.in);
@@ -115,9 +111,7 @@ public class Utils {
 		}
 
 		return c;
-=======
-		
->>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
+
 	}
 
 	/**
@@ -403,9 +397,6 @@ public class Utils {
 		} while (!salirMenu);
 	}
 
-<<<<<<< HEAD
-}
-=======
 	public static double pideDatoDecimal(String texto) {
 		double numero = 0;
 		boolean hayError;
@@ -458,4 +449,3 @@ public class Utils {
 	}
 
 }
->>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
