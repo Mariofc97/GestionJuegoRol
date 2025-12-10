@@ -180,8 +180,8 @@ public class Episodio1 {
 						}
 						personaje.setPuntosVida(1);
 //						String consecuencia = Utils.desgraciaAleatorio() + personaje.getPuntosVida();
-						System.out.println(
-								Utils.desgraciaAleatorio() + " Tu vida ahora es: " + personaje.getPuntosVida() + " y vuelves a la cueva, desgraciado.");
+						System.out.println(Utils.desgraciaAleatorio() + " Tu vida ahora es: "
+								+ personaje.getPuntosVida() + " y vuelves a la cueva, llorando...");
 						key3 = true; // necesario para poder salir del episodio
 						LOGGER.info(() -> "Opción 3 ejecutada.  Personaje: " + personaje.getNombre());
 
@@ -206,7 +206,7 @@ public class Episodio1 {
 					}
 				}
 					break;
-				
+
 				case 5: {
 					// Caso 5: ver el estado del personaje
 					try {
@@ -217,7 +217,7 @@ public class Episodio1 {
 						System.out.println("No se pudo mostrar el inventario.");
 					}
 				}
-				
+
 					break;
 
 				default:
