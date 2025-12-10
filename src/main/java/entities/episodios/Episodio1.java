@@ -175,6 +175,12 @@ public class Episodio1 {
 				case 3: {
 					// Caso 3: acción que reduce la vida del personaje a 1 (desgracia)
 					try {
+						int cantidad = personaje.getPuntosVida();
+						if (cantidad <= 1) {
+							System.out.println(
+									"No se puede salir de la cueva con 1 de vida, duerme un poco y prueba de nuevo suicida!!!!");
+							break;
+						}
 						if (key1 && key2 && key3) {
 
 							String msg = "Has cumplido todas las condiciones. Saliendo del fuera de la cueva...";
