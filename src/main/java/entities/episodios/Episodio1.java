@@ -141,7 +141,7 @@ public class Episodio1 {
 						int cantidad = personaje.getEquipo().size();
 						if (cantidad >= 5) {
 							System.out.println("Te dan un torta... LLORON DEJA DE LLORAR!!!!!");
-							return;
+							break;
 						}
 						HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
 						personaje.getEquipo().add(hojadeortiga);
