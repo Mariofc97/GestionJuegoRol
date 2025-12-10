@@ -9,7 +9,7 @@ public class Raton extends Criatura {
 	}
 
 	public Raton() {
-		super();
+		super("Raton", null, 1, 0, 20, 1, "MordiscoInfeccioso");
 	}
 
 }
