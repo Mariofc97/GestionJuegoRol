@@ -12,7 +12,6 @@ MARIO:
 	Dani:
 	-en case 1 hay que cambiar que las llaves sea true cuando se consiga el objeto igual para todos los menus..
 	
-	5 criaturas como maximo generar error si se intenta crear mas.
 	
 	limite de daño
 	

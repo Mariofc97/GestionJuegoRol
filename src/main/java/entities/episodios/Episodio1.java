@@ -138,6 +138,11 @@ public class Episodio1 {
 				case 1: {
 					// Caso 1: el personaje "llora" y obtiene una HojaParaLimpiar
 					try {
+						int cantidad = personaje.getEquipo().size();
+						if (cantidad >= 5) {
+							System.out.println("Te dan un torta... LLORON DEJA DE LLORAR!!!!!");
+							return;
+						}
 						HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
 						personaje.getEquipo().add(hojadeortiga);
 						key1 = true; // marcamos que consiguió el objeto
