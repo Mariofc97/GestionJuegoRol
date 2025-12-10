@@ -198,6 +198,19 @@ public class Utils {
 					+ ", durabilidad: " + e.getDurabilidad() + ")");
 		}
 	}
+	
+	private static void mostrarCompaneros(Personaje person) {
+		List<Criatura> criaturasCompis = person.getCriaturas();
+		
+		for (Criatura criatura : criaturasCompis) {
+			if(criaturasCompis == null) {
+				log.error("No tienes criaturas aliadas asignadas");
+			} else {
+				
+				System.out.println("Criatura: " + criatura.getNombre() + "|Alias: " + criatura.getAlias() + "|Puntos de vida: " + criatura.getPuntosVida() + "|Puntos de ataque: " + criatura.getPuntosAtaque() );
+			}
+		}
+	}
 
 	private static String obtenerTipoEquipamiento(Equipamiento e) {
 		if (e instanceof Armas) {
@@ -356,7 +369,8 @@ public class Utils {
 			System.out.println("2. Ver armas / equipar arma");
 			System.out.println("3. Usar poción");
 			System.out.println("4. Tirar objeto a la mierda");
-			System.out.println("5. Volver");
+			System.out.println("5. Mostrar criaturas aliadas");
+			System.out.println("6. Volver");
 
 			int opcion = pideDatoNumerico("Elige la opción deseada del inventario: ");
 
@@ -374,6 +388,9 @@ public class Utils {
 				menuTirarObjetoAlaMierda(person);
 				break;
 			case 5:
+				mostrarCompaneros(person);;
+				break;
+			case 6:
 				salirMenu = true;
 				break;
 			default:
