@@ -43,7 +43,11 @@ public class Utils {
 	// invocacion();
 
 	public static Criatura invocacionCompañeroCriatura(Personaje person) {
-
+		int cantidad = person.getCriaturas().size();
+		if (cantidad >= 5) {
+			System.out.println("No puedes tener más de cinto compañeros");
+			return null;
+		}
 		Criatura compi = randomizarCriatura();
 		boolean resultado = dadoDiez() > 1; // 90% de exito
 
