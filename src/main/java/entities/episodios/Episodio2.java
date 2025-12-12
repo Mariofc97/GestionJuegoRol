@@ -16,7 +16,7 @@ public class Episodio2 {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Volver a la cueva \t5.Inventario \t6.Ver stado \t7.Ver armas \t8.Ir al rio");
+					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Volver a la cueva \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al bosque oscuro \t8.Ir al rio");
 			System.out.println("dila opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -24,7 +24,7 @@ public class Episodio2 {
 
 			case 1: {
 				// buscar bayas
-				
+				Utils.buscarBaya(personaje);
 
 				key1 = true;
 			}
@@ -32,6 +32,7 @@ public class Episodio2 {
 
 			case 2: {
 				// cazar
+				Utils.cazar(personaje);
 				key2 = true;
 			}
 				break;

@@ -10,7 +10,7 @@ import entities.equipo.Pocion;
 import entities.equipo.armas.Armas;
 import entities.raza.Raza;
 
-public class Personaje implements Atacable, Defendible{
+public class Personaje implements Atacable, Defendible {
 
 	private Raza raza;
 	private List<Equipamiento> equipo;
@@ -24,18 +24,16 @@ public class Personaje implements Atacable, Defendible{
 	private int inteligencia; // nos vale par pensar y crear
 	private int suerte;
 
-    public Personaje(Raza raza, String nombre) {
-        if (raza == null) {
-        	throw new IllegalArgumentException("La raza no puede ser null");
-        }
-        this.raza = raza;
-        this.nombre = nombre;
+	public Personaje(Raza raza, String nombre) {
+		if (raza == null) {
+			throw new IllegalArgumentException("La raza no puede ser null");
+		}
+		this.raza = raza;
+		this.nombre = nombre;
 
-        // aplica pasivas/bonos iniciales DESPUÉS de setear PV/ATQ
-        raza.aplicarBonos(this);
-    }
-    
-    
+		// aplica pasivas/bonos iniciales DESPUÉS de setear PV/ATQ
+		raza.aplicarBonos(this);
+	}
 
 	public Personaje(String tipo, int fuerza, int inteligencia, int suerte, List<Equipamiento> equipo,
 			List<Criatura> criaturas, String nombre) {
@@ -56,7 +54,7 @@ public class Personaje implements Atacable, Defendible{
 		this.puntosAtaque = puntosAtaque;
 		this.nivel = 1; // siempre se creara el personaje con nivel 1
 	}
-	
+
 	public int getSuerte() {
 		return suerte;
 	}
@@ -146,26 +144,20 @@ public class Personaje implements Atacable, Defendible{
 
 		return this.puntosVida;
 	}
-	
-	
 
 	public int getNivel() {
 		return nivel;
 	}
 
-
-
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
 	}
-
-
 
 	@Override
 	public void recibirDanio(int danio) {
 		// TODO Auto-generated method stub
 		this.puntosVida -= danio;
-		if(this.puntosVida < 0) {
+		if (this.puntosVida < 0) {
 			System.out.println(this.nombre + " esta muerto, tiene 0 puntos de vida");
 			this.puntosVida = 0;
 		}
@@ -184,69 +176,74 @@ public class Personaje implements Atacable, Defendible{
 		objetivo.recibirDanio(danio);
 		return danio;
 	}
-	
+
 	public Armas getArmaEquipada() {
 		if (equipo == null) {
 			return null;
 		}
-		
-		for (Equipamiento e: equipo) {
+
+		for (Equipamiento e : equipo) {
 			if (e instanceof Armas) {
 				// casteamos e como objeto tipo Armas
 				return (Armas) e;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public boolean tieneArmaEquipada() {
 		Armas arma = getArmaEquipada();
-		if (arma!= null) {
+		if (arma != null) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
+	public void ganarExperiencia() {
+		ganarExperiencia(10); // por defecto gana 10 puntos de experiencia
+	}
+
 	public void ganarExperiencia(int experienciaAñadida) {
-		if (experienciaAñadida <=0) {
+		if (experienciaAñadida <= 0) {
 			System.out.println("El personaje no puede perder experiencia");
 			return;
 		}
-		
+
 		System.out.println("El personaje " + nombre + " gana " + experienciaAñadida + " de experiencia.");
 		this.experiencia += experienciaAñadida;
-		System.out.println("Ahora mismo tiene " + experiencia + " puntos de experiencia");
+		System.out.println("Experiencia acumulada: " + experiencia);
 		subirNivelSiToca();
 	}
-	
+
 	// sencillo, se sube de nivel cada 100 puntos de experiencia.
-	
+
 	private int experienciaParaSiguienteNivel() {
 		return nivel * 100;
 	}
-	
+
 	public void subirNivelSiToca() {
+
 		boolean haSubido = false;
-		
-		while(this.experiencia >= experienciaParaSiguienteNivel()) {
+
+		while (this.experiencia >= experienciaParaSiguienteNivel()) {
 			this.experiencia -= experienciaParaSiguienteNivel();
 			this.nivel++;
 			haSubido = true;
-			
-            this.puntosVidaMax += 10;
-            this.puntosAtaque += 2;
-			//MARIO: PENDIENTE DISTINGUIR ATRIBUTOS A MEJORA SI SUBE DE NIVEL EN FUNCION DE SI ES MONGOL, RAPANUI O TROGODITA
+
+			this.puntosVidaMax += 10;
+			this.puntosAtaque += 2;
+			// MARIO: PENDIENTE DISTINGUIR ATRIBUTOS A MEJORA SI SUBE DE NIVEL EN FUNCION DE
+			// SI ES MONGOL, RAPANUI O TROGODITA
 			// QUIZA CREANDO INSTANCIA Y REALIZANDO CASTEO
-			
+
 		}
-		
-        if (haSubido) {
-            System.out.println("¡" + nombre + " ha subido al nivel " + nivel + "!");
-            System.out.println("Vida máxima: " + puntosVidaMax + " | Ataque: " + puntosAtaque);
-        }
+
+		if (haSubido) {
+			System.out.println("¡" + nombre + " ha subido al nivel " + nivel + "!");
+			System.out.println("Vida máxima: " + puntosVidaMax + " | Ataque: " + puntosAtaque);
+		}
 	}
-	
-	
+
 }
