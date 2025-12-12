@@ -24,21 +24,7 @@ public class Episodio2 {
 
 			case 1: {
 				// buscar bayas
-				int tirada = Utils.dadoDiez();
-				if (tirada <= 3) {
-					System.out.println(
-							"Encuentras una baya con una pinta irresistible, no huele a pis de animales... brilla bajo el sol de lo limpia que esta, te la comes... y.... maldición, suenan tus tripas como la peor tormenta que recuerdas, notas una sensación de sudor frio en el cuerpo, y empiezas a ver una luz... un voz que te recuerda.. cuidado con las bayas VENENOSAS.... por que son las que mejor aspecto tienen... Pierdes 5 de vida te has comido una baya venenosa.");
-					// personaje.setVida(personaje.getVida() - 5);
-					personaje.setPuntosVida(personaje.getPuntosVida() - 5);
-				} else if (tirada > 3 && tirada <= 7) {
-					System.out.println("Has encontrado algunas bayas");
-					personaje.getEquipo().add(new Baya("Baya", 10));
-				} else if (tirada > 7) {
-					System.out.println("Has encontrado muchas bayas");
-					personaje.getEquipo().add(new Baya("Baya", 10));
-					personaje.getEquipo().add(new Baya("Baya", 10));
-
-				}
+				
 
 				key1 = true;
 			}

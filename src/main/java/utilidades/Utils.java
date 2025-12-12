@@ -16,6 +16,8 @@ import entities.criatura.Criatura;
 import entities.criatura.Gusano;
 import entities.criatura.Mosquito;
 import entities.criatura.Raton;
+import entities.equipo.Baya;
+import entities.equipo.CarneSeca;
 import entities.equipo.Comida;
 import entities.equipo.Equipamiento;
 import entities.equipo.Escudos;
@@ -155,6 +157,10 @@ public class Utils {
 			person.setPuntosVida(1);
 			System.out.println("Vuelves a la cueva con " + person.getPuntosVida() + " puntos de vida.");
 
+		}
+		if (person.getCriaturas().size() == 0) {
+			System.err.println("No puedes combatir sin un compañero criatura, primero invoca uno.");
+			return;
 		}
 
 		while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {
@@ -355,7 +361,7 @@ public class Utils {
 		}
 		return totalPeso;
 	}
-	
+
 	public static void mostrarEstado(Personaje person) {
 		System.out.println("\n--- ESTADO DE " + person.getNombre() + " ---");
 		System.out.println("Nivel: " + person.getNivel());
@@ -463,22 +469,48 @@ public class Utils {
 		}
 	}
 
-	public static String cazar(Personaje person) {
+	public static void buscarBaya(Personaje personaje) {
 
+		int tirada = Utils.dadoDiez();
+		if (tirada <= 3) {
+			System.out.println(
+					"Encuentras una baya con una pinta irresistible, no huele a pis de animales... brilla bajo el sol de lo limpia que esta, te la comes... y.... maldición, suenan tus tripas como la peor tormenta que recuerdas, notas una sensación de sudor frio en el cuerpo, y empiezas a ver una luz... un voz que te recuerda.. cuidado con las bayas VENENOSAS.... por que son las que mejor aspecto tienen... Pierdes 5 de vida te has comido una baya venenosa.");
+			personaje.setPuntosVida(personaje.getPuntosVida() - 5);
+		} else if (tirada > 3 && tirada <= 7) {
+			System.out.println("Has encontrado algunas bayas");
+			personaje.getEquipo().add(new Baya("Baya", 10));
+		} else if (tirada > 7) {
+			System.out.println("Has encontrado muchas bayas");
+			personaje.getEquipo().add(new Baya("Baya", 10));
+			personaje.getEquipo().add(new Baya("Baya", 10));
+
+		}
+
+	}
+
+	public static String cazar(Personaje person) {
+		// añadir condicion para poder cazar
+		if (person.getCriaturas().size() == 0) {
+
+			return "No puedes cazar sin un compañero criatura, primero invoca uno.";
+		}
 		boolean exito = dadoDiez() > 3; // 70% de exito
 		Criatura presa = randomizarCriatura();
 
 		if (exito) {
-			Comida carne = new Comida(presa.getNombre() + " carne", 10);
+			// Comida carne = new Comida(presa.getNombre() + " carne", 10);
+			CarneSeca carneSeca = new CarneSeca(presa.getNombre() + " carne seca", 15);
 			// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA
 			// CRIATURA
-			person.getEquipo().add(carne);
-			return "Has cazado un " + presa.getNombre() + " carne de " + carne.getNombre() + " en el inventario.";
+			person.getEquipo().add(carneSeca);
+			return "Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
+					+ " en el inventario.";
 
 		} else {
 			int danioHecho = presa.atacar(person);
-			return "No has tenido suerte en la caza " + presa.getNombre() + " hace " + danioHecho
-					+ " de daño al personaje " + person.getNombre() + "La vida de nuestro personaje es: "
+			person.setPuntosVida(person.getPuntosVida() - danioHecho);
+			return "Eres mas debil que un" + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
+					+ " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
 					+ person.getPuntosVida();
 
 		}
