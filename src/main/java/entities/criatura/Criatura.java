@@ -117,6 +117,7 @@ public abstract class Criatura implements Atacable, Defendible {
 	public int atacar(Defendible objetivo) {
 		// TODO Auto-generated method stub
 		int danio = this.puntosAtaque;
+		
 		objetivo.recibirDanio(danio);
 		return danio;
 	}

@@ -204,6 +204,8 @@ public class Utils {
 			String tipoEq = obtenerTipoEquipamiento(e);
 			System.out.println((i + 1) + ". [" + tipoEq + "]" + e.getNombre() + " (peso: " + e.getPeso()
 					+ ", durabilidad: " + e.getDurabilidad() + ")");
+			// añadir diferenciacion entre armas, pociones, escudos, comida, etc
+			
 		}
 	}
 
