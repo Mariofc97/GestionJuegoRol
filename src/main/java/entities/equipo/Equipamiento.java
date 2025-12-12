@@ -18,6 +18,14 @@ public abstract class Equipamiento {
 		this.peso = peso;
 		this.durabilidad = durabilidad;
 	}
+	
+	
+
+	public Equipamiento() {
+		super();
+	}
+
+
 
 	public String getNombre() {
 		return nombre;

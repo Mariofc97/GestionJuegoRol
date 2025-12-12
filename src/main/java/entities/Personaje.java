@@ -5,9 +5,9 @@ import java.util.List;
 import core.Atacable;
 import core.Defendible;
 import entities.criatura.Criatura;
-import entities.equipo.Armas;
 import entities.equipo.Equipamiento;
 import entities.equipo.Pocion;
+import entities.equipo.armas.Armas;
 import entities.raza.Raza;
 
 public class Personaje implements Atacable, Defendible{

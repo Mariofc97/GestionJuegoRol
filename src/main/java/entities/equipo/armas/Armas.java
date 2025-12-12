@@ -1,4 +1,6 @@
-package entities.equipo;
+package entities.equipo.armas;
+
+import entities.equipo.Equipamiento;
 
 public abstract class Armas extends Equipamiento {
 	
@@ -16,6 +18,16 @@ public abstract class Armas extends Equipamiento {
 	public Armas(String nombre, int nivelRequerido, int peso, int durabilidad, String tipoDaño, int alcance,
 			int precision, int puntosDaño, int probCritico) {
 		super(nombre, nivelRequerido, peso, durabilidad);
+		this.tipoDaño = tipoDaño;
+		this.alcance = alcance;
+		this.precision = precision;
+		this.puntosDaño = puntosDaño;
+		this.probCritico = probCritico;
+	}
+	
+
+	public Armas(String tipoDaño, int alcance, int precision, int puntosDaño, int probCritico) {
+		super();
 		this.tipoDaño = tipoDaño;
 		this.alcance = alcance;
 		this.precision = precision;
