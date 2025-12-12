@@ -1,8 +1,8 @@
 package entities.episodios;
 
 import entities.Personaje;
-import entities.equipo.Baya;
-import entities.equipo.HojaParaLimpiar;
+import entities.equipo.objetos.Baya;
+import entities.equipo.objetos.HojaParaLimpiar;
 import utilidades.Utils;
 
 public class Episodio2 {

@@ -62,6 +62,7 @@ Anotaciones MARIO:
 				límites implementados (criaturas, daño)
 				PruebaEpisodio2 listo para ejecutarCrear
 				
+				
 			
 			  
 	

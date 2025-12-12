@@ -1,4 +1,6 @@
-package entities.equipo;
+package entities.equipo.objetos;
+
+import entities.equipo.Equipamiento;
 
 public class HojaParaLimpiar extends Equipamiento {
 	

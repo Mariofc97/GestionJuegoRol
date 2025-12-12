@@ -6,8 +6,8 @@ import core.Atacable;
 import core.Defendible;
 import entities.criatura.Criatura;
 import entities.equipo.Equipamiento;
-import entities.equipo.Pocion;
 import entities.equipo.armas.Armas;
+import entities.equipo.objetos.Pocion;
 import entities.raza.Raza;
 
 public class Personaje implements Atacable, Defendible {

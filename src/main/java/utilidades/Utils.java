@@ -16,13 +16,13 @@ import entities.criatura.Criatura;
 import entities.criatura.Gusano;
 import entities.criatura.Mosquito;
 import entities.criatura.Raton;
-import entities.equipo.Baya;
-import entities.equipo.CarneSeca;
-import entities.equipo.Comida;
 import entities.equipo.Equipamiento;
 import entities.equipo.Escudos;
-import entities.equipo.Pocion;
 import entities.equipo.armas.Armas;
+import entities.equipo.objetos.Baya;
+import entities.equipo.objetos.CarneSeca;
+import entities.equipo.objetos.Comida;
+import entities.equipo.objetos.Pocion;
 
 public class Utils {
 
@@ -172,6 +172,7 @@ public class Utils {
 			System.out.println("La vida del enemigo es de " + enemigo.getPuntosVida());
 
 			if (!enemigo.estaVivo()) {
+				person.ganarExperiencia();
 				System.out.println("¡" + enemigo.getNombre() + " ha sido derrotado!");
 				break;
 			}
@@ -503,6 +504,7 @@ public class Utils {
 			// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA
 			// CRIATURA
 			person.getEquipo().add(carneSeca);
+			person.ganarExperiencia();
 			return "Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
 					+ " en el inventario.";
 

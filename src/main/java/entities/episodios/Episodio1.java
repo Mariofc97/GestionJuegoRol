@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import entities.Personaje;
-import entities.equipo.HojaParaLimpiar;
+import entities.equipo.objetos.HojaParaLimpiar;
 import utilidades.Utils;
 
 /**
