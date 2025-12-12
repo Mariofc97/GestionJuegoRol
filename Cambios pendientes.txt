@@ -1,15 +1,73 @@
-MARIO:
-	-Añadir ver compi en el menu del inventario para ver los compañeros que tenemos.
+Anotaciones MARIO:
+
+	PARA MAS ADELANTE:
 	-Clase Inventario: Ahora esta vacia, creo que es buena idea sacar el metodo de utils y meterlo como un entity, siempre y cuando sea necesario que sus datos sean persistentes en la BD, es decir, que tengamos que hacer UPDATE, INSERTAR, CONSULTAR o ELIMINAR cosas del inventario.
-	-Rellenar HibernateUtil.java con getSessionFactory
 	-Diseñar BD con las relaciones pertinentes, OneToOne, etc.
 	-Cambiar los entities que consideremos que debemos incluir en la BD con las anotaciones de hibernate
+	-Migrar inventario completo a entidad persistente YA.
+	-Meter todas las anotaciones Hibernate en Personaje, Equipamiento, Criatura hoy.
+	-Montar DAOs/Services completos.
 	-Probar en AppJuegoRol a llamar a getSessionFactory de la clase HibernateUtil, crear los objetos, la transaccion y hacerlos persistentes con session.persist() y tx.commit() para probar que los entities se crean correctamente.
 	
-	-crear la tabla de usuarios en nuestra base de datos, va a ser obligatoria
+	PARA HOY 12/12/2025
+	IDEAS PARA GUION EPISODIO 2:
+	Dani = narrativa + menús + flujo de episodios
+		-Fabricar arma neandertal (garrote/lanza)
+		-Hablar con la tribu Unga-Bunga (NPC chamán + premio o timo)
+		-Ver inventario/estado (llama a Utils.menuInventario(personaje))
+		-Descansar en el sol (cura poco / riesgo mosquito)
+		-Ir al río (mini-evento: pierdes objeto o ganas “piedra afilada”)
+		-Avanzar al Episodio 3 (solo si cumples condiciones)
+		
+	Mario = mecánicas del juego (objetos, craft, combate, límites) + pruebas rápidas + Hibernate
+			Crear 1-2 armas concretas, es imprescindible para el guion, porque solo tenemos la clase Armas que es abstracta, necesitamos armas reales para equiparlas:
+			-	Crear 1 - 2 clases concretas que extiendan Armas, por ejemplo Garrote y Lanza con constructor que setee daño/tipo/precision,etc.
+			Crear comida reutilizando pocion, pero sin inventar 10 clases nuevas, ya que tenemos el metodo usarPocion::
+				-Crear dos instancias de Pocion tipo:
+					new Pocion("Bayas dudosas", 1, 1, 1, 5, 0);
+					new Pocion("Carne cruda", 1, 1, 1, 10, 0); ESO O CREAR CLASE COMIDA QUE EXTIENDA POCION
+			Crear helper de caza + combate (para que Dani lo llame):
+				-Hacer método utilitario, por ejemplo en Utils:
+
+					public static void eventoCaza(Personaje p){
+	
+						decide éxito/fracaso con dado
+						si fracaso: combate contra criatura random
+						si éxito: añadir carne y exp
+
+				
+			Reglas globales: cap de daño + máximo criaturas
+
+				En invocacionCompañeroCriatura:
+
+				si person.getCriaturas().size() >= 5 → throw new ReglaJuegoException("No puedes tener más de 5 criaturas")
+				En el Episodio1 (case 2) ya tienes try/catch: capturas ReglaJuegoException y muestras mensaje al usuario sin petar el juego.
+
+				Limitacion de daño: (por ejemplo, si un ataque hace 200 de daño, lo limitamos a 20 o 30)
+				Dentro de atacar():
+				Personaje.atacar(Defendible objetivo):
+					Si dañoCalculado > MAX_DAÑO: lo dejo en MAX_DAÑO para no romper el juego
+				Lanzar excepción solo si es “invalidez”
+					Ejemplos donde sí lanzaría ReglaJuegoException:
+						-daño negativo (< 0)
+						-daño absurdo por bug (> 999 o algo que indique overflow)
+						-ataque cuando el personaje no debería poder atacar (p.ej. sin arma si lo decidís como regla)
+
+
+
+				Resumen para mis tareas:
+				Garrote y Lanza creadas y equipables
+				eventoCaza() implementado
+				límites implementados (criaturas, daño)
+				PruebaEpisodio2 listo para ejecutarCrear
+				
+			
+			  
 	
 	
-	Dani:
+	
+	
+Anotaciones Dani:
 	añadir al episodio 1 el menu de inventario.
 	-en case 1 hay que cambiar que las llaves sea true cuando se consiga el objeto igual para todos los menus..
 	
@@ -23,4 +81,8 @@ MARIO:
 	crear control de usuarios en la aplicacion.
 	
 	crear menu de administrador para gestionar usuarios.
+	
+	Recolectar bayas (comida ligera / riesgo de “bayas del demonio”)
+
+	Cazar (da carne / riesgo combate)
 	
