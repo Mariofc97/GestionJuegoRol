@@ -4,7 +4,7 @@ public class Bumeran extends Armas{
 	
 	public Bumeran() {
 		
-		super("Bumeran",2, 7,50,8);
+		super("Bumeran corte",2, 7,50,8);
 		
 		
 		
