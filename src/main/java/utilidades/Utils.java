@@ -158,6 +158,10 @@ public class Utils {
 			System.out.println("Vuelves a la cueva con " + person.getPuntosVida() + " puntos de vida.");
 
 		}
+		if (person.getCriaturas().size() == 0) {
+			System.err.println("No puedes combatir sin un compañero criatura, primero invoca uno.");
+			return;
+		}
 
 		while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {
 
