@@ -460,15 +460,17 @@ public class Utils {
 		Criatura presa = randomizarCriatura();
 
 		if (exito) {
-			Comida carne = new Comida(presa.getNombre() + " carne", 10, 0);
-			// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA CRIATURA
+			Comida carne = new Comida(presa.getNombre() + " carne", 10);
+			// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA
+			// CRIATURA
 			person.getEquipo().add(carne);
 			return "Has cazado un " + presa.getNombre() + " carne de " + carne.getNombre() + " en el inventario.";
 
 		} else {
 			int danioHecho = presa.atacar(person);
 			return "No has tenido suerte en la caza " + presa.getNombre() + " hace " + danioHecho
-					+ " de daño al personaje " + person.getNombre() + "La vida de nuestro personaje es: " + person.getPuntosVida();
+					+ " de daño al personaje " + person.getNombre() + "La vida de nuestro personaje es: "
+					+ person.getPuntosVida();
 
 		}
 	}
