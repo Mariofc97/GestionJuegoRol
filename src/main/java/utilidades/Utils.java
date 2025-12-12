@@ -16,10 +16,10 @@ import entities.criatura.Criatura;
 import entities.criatura.Gusano;
 import entities.criatura.Mosquito;
 import entities.criatura.Raton;
-import entities.equipo.Armas;
 import entities.equipo.Equipamiento;
 import entities.equipo.Escudos;
 import entities.equipo.Pocion;
+import entities.equipo.armas.Armas;
 
 public class Utils {
 

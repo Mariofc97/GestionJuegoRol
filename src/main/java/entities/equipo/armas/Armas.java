@@ -1,4 +1,6 @@
-package entities.equipo;
+package entities.equipo.armas;
+
+import entities.equipo.Equipamiento;
 
 public abstract class Armas extends Equipamiento {
 	
