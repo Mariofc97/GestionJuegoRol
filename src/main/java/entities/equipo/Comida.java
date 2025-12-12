@@ -11,6 +11,17 @@ public class Comida extends Equipamiento {
 		this.puntosVida = puntosVida;
 		this.puntosMagia = puntosMagia;
 	}
+	
+	
+
+	public Comida(String nombre , int puntosVida, int puntosMagia) {
+		super();
+		this.setNombre(nombre);
+		this.puntosVida = puntosVida;
+		this.puntosMagia = puntosMagia;
+	}
+
+
 
 	public int getPuntosVida() {
 		return puntosVida;
