@@ -17,6 +17,7 @@ import entities.criatura.Gusano;
 import entities.criatura.Mosquito;
 import entities.criatura.Raton;
 import entities.equipo.Baya;
+import entities.equipo.CarneSeca;
 import entities.equipo.Comida;
 import entities.equipo.Equipamiento;
 import entities.equipo.Escudos;
@@ -356,7 +357,7 @@ public class Utils {
 		}
 		return totalPeso;
 	}
-	
+
 	public static void mostrarEstado(Personaje person) {
 		System.out.println("\n--- ESTADO DE " + person.getNombre() + " ---");
 		System.out.println("Nivel: " + person.getNivel());
@@ -484,21 +485,28 @@ public class Utils {
 	}
 
 	public static String cazar(Personaje person) {
+		// añadir condicion para poder cazar
+		if (person.getCriaturas().size() == 0) {
 
+			return "No puedes cazar sin un compañero criatura, primero invoca uno.";
+		}
 		boolean exito = dadoDiez() > 3; // 70% de exito
 		Criatura presa = randomizarCriatura();
 
 		if (exito) {
-			Comida carne = new Comida(presa.getNombre() + " carne", 10);
+			// Comida carne = new Comida(presa.getNombre() + " carne", 10);
+			CarneSeca carneSeca = new CarneSeca(presa.getNombre() + " carne seca", 15);
 			// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA
 			// CRIATURA
-			person.getEquipo().add(carne);
-			return "Has cazado un " + presa.getNombre() + " carne de " + carne.getNombre() + " en el inventario.";
+			person.getEquipo().add(carneSeca);
+			return "Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
+					+ " en el inventario.";
 
 		} else {
 			int danioHecho = presa.atacar(person);
-			return "No has tenido suerte en la caza " + presa.getNombre() + " hace " + danioHecho
-					+ " de daño al personaje " + person.getNombre() + "La vida de nuestro personaje es: "
+			person.setPuntosVida(person.getPuntosVida() - danioHecho);
+			return "Eres mas debil que un" + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
+					+ " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
 					+ person.getPuntosVida();
 
 		}
