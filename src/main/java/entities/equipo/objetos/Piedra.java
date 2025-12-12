@@ -1,5 +1,13 @@
 package entities.equipo.objetos;
 
-public class Piedra {
+import entities.equipo.Equipamiento;
+
+public class Piedra extends Equipamiento{
+
+	
+	
+	
+	
+	
 
 }
