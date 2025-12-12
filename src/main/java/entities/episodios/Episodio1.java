@@ -22,7 +22,7 @@ import utilidades.Utils;
  * "episodio1.log".
  */
 public class Episodio1 {
-
+static int contadorEpisodio1 = 0;
 	// Logger específico para esta clase
 	private static final Logger LOGGER = Logger.getLogger(Episodio1.class.getName());
 	static {
@@ -101,10 +101,20 @@ public class Episodio1 {
 		// key1: consiguió HojaParaLimpiar
 		// key2: aprendió a invocar criaturas
 		// key3: sufrió la desgracia o durmió (ambas ponen a 1 la vida o la restauran)
+		
 		boolean key1 = false;
 		boolean key2 = false;
 		boolean key3 = false;
-
+		if ( contadorEpisodio1 == 0) {
+			
+		key1 = false;
+		key2 = false;
+		key3 = false;
+		}else {
+			key1 = true;
+			key2 = true;
+			key3 = true;
+		}
 		boolean salida = false; // control del bucle principal
 		// contador de fallos consecutivos para evitar bucle infinito
 		int errorCount = 0;
@@ -183,7 +193,7 @@ public class Episodio1 {
 						}
 						if (key1 && key2 && key3) {
 
-							String msg = "Has cumplido todas las condiciones. Saliendo del fuera de la cueva...";
+							String msg = " Saliendo del fuera de la cueva...";
 							System.out.println(msg);
 							LOGGER.info(msg + " Personaje: " + personaje.getNombre());
 							salida = true;
