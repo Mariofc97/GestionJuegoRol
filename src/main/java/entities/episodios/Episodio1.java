@@ -138,6 +138,11 @@ public class Episodio1 {
 				case 1: {
 					// Caso 1: el personaje "llora" y obtiene una HojaParaLimpiar
 					try {
+						int cantidad = personaje.getEquipo().size();
+						if (cantidad >= 5) {
+							System.out.println("Te dan un torta... LLORON DEJA DE LLORAR!!!!!");
+							break;
+						}
 						HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
 						personaje.getEquipo().add(hojadeortiga);
 						key1 = true; // marcamos que consiguió el objeto
@@ -170,6 +175,12 @@ public class Episodio1 {
 				case 3: {
 					// Caso 3: acción que reduce la vida del personaje a 1 (desgracia)
 					try {
+						int cantidad = personaje.getPuntosVida();
+						if (cantidad <= 1) {
+							System.out.println(
+									"No se puede salir de la cueva con 1 de vida, duerme un poco y prueba de nuevo suicida!!!!");
+							break;
+						}
 						if (key1 && key2 && key3) {
 
 							String msg = "Has cumplido todas las condiciones. Saliendo del fuera de la cueva...";
@@ -180,8 +191,8 @@ public class Episodio1 {
 						}
 						personaje.setPuntosVida(1);
 //						String consecuencia = Utils.desgraciaAleatorio() + personaje.getPuntosVida();
-						System.out.println(
-								Utils.desgraciaAleatorio() + " Tu vida ahora es: " + personaje.getPuntosVida() + " y vuelves a la cueva, desgraciado.");
+						System.out.println(Utils.desgraciaAleatorio() + " Tu vida ahora es: "
+								+ personaje.getPuntosVida() + " y vuelves a la cueva, llorando...");
 						key3 = true; // necesario para poder salir del episodio
 						LOGGER.info(() -> "Opción 3 ejecutada.  Personaje: " + personaje.getNombre());
 
@@ -206,7 +217,7 @@ public class Episodio1 {
 					}
 				}
 					break;
-				
+
 				case 5: {
 					// Caso 5: ver el estado del personaje
 					try {
@@ -217,7 +228,7 @@ public class Episodio1 {
 						System.out.println("No se pudo mostrar el inventario.");
 					}
 				}
-				
+
 					break;
 
 				default:

@@ -65,13 +65,16 @@ Anotaciones MARIO:
 			  
 	
 	
+<<<<<<< HEAD
 	
 	
 Anotaciones Dani:
 	añadir al episodio 1 el menu de inventario.
+=======
+	Dani:
+>>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
 	-en case 1 hay que cambiar que las llaves sea true cuando se consiga el objeto igual para todos los menus..
 	
-	5 criaturas como maximo generar error si se intenta crear mas.
 	
 	limite de daño
 	
