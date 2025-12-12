@@ -24,6 +24,16 @@ public abstract class Armas extends Equipamiento {
 		this.puntosDaño = puntosDaño;
 		this.probCritico = probCritico;
 	}
+	
+
+	public Armas(String tipoDaño, int alcance, int precision, int puntosDaño, int probCritico) {
+		super();
+		this.tipoDaño = tipoDaño;
+		this.alcance = alcance;
+		this.precision = precision;
+		this.puntosDaño = puntosDaño;
+		this.probCritico = probCritico;
+	}
 
 	public String getTipoDaño() {
 		return tipoDaño;

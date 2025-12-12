@@ -16,6 +16,7 @@ import entities.criatura.Criatura;
 import entities.criatura.Gusano;
 import entities.criatura.Mosquito;
 import entities.criatura.Raton;
+import entities.equipo.Comida;
 import entities.equipo.Equipamiento;
 import entities.equipo.Escudos;
 import entities.equipo.Pocion;
@@ -447,6 +448,24 @@ public class Utils {
 
 			// Volvemos a preguntar recursivamente
 			return pideDatoBigDecimal(texto);
+		}
+	}
+	
+	public static String cazar(Personaje person) {
+		
+		boolean exito = dadoDiez() > 3; // 70% de exito
+		Criatura presa = randomizarCriatura();
+		
+		if(exito) {
+			Comida carne = new Comida(presa.getNombre() + " carne", 10, 0);
+			person.getEquipo().add(carne);
+			return "Has cazado un " + presa.getNombre() + " y obtenido " + carne.getPuntosVida() + " puntos de vida.";
+			
+			
+		} else {
+			
+			return "No has tenido suerte en la caza.";
+			
 		}
 	}
 

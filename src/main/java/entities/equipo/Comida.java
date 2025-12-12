@@ -1,29 +1,15 @@
 package entities.equipo;
 
-public class Comida {
+public class Comida extends Equipamiento {
 
-	private String nombre;
 	private int puntosVida;
 	private int puntosMagia;
 	
-	public Comida(int puntosVida, int puntosMagia) {
+
+	public Comida(String nombre, int nivelRequerido, int peso, int durabilidad, int puntosVida, int puntosMagia) {
+		super(nombre, nivelRequerido, peso, durabilidad);
 		this.puntosVida = puntosVida;
 		this.puntosMagia = puntosMagia;
-	}
-	
-	public Comida(String nombre, int puntosVida, int puntosMagia) {
-		super();
-		this.nombre = nombre;
-		this.puntosVida = puntosVida;
-		this.puntosMagia = puntosMagia;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 
 	public int getPuntosVida() {
