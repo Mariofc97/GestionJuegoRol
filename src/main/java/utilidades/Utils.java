@@ -355,6 +355,14 @@ public class Utils {
 		}
 		return totalPeso;
 	}
+	
+	public static void mostrarEstado(Personaje person) {
+		System.out.println("\n--- ESTADO DE " + person.getNombre() + " ---");
+		System.out.println("Nivel: " + person.getNivel());
+		System.out.println("Puntos de Vida: " + person.getPuntosVida() + "/" + person.getPuntosVidaMax());
+		System.out.println("Puntos de Ataque: " + person.getPuntosAtaque());
+		System.out.println("Peso total del inventario: " + calcularPesoTotal(person) + " unidades.");
+	}
 
 	public static void menuInventario(Personaje person) {
 		if (person.getEquipo() == null) {
@@ -365,36 +373,37 @@ public class Utils {
 
 		do {
 			System.out.println("\n--- INVENTARIO DE " + person.getNombre() + " ---");
-			System.out.println("Vida: " + person.getPuntosVida() + "/" + person.getPuntosVidaMax());
-			System.out.println("Numero de objetos en inventario: " + calcularPesoTotal(person) + " unidades.");
 			System.out.println("---------------------------------------------");
-			System.out.println("1. Ver todo el equipo");
-			System.out.println("2. Ver armas / equipar arma");
-			System.out.println("3. Usar poción");
-			System.out.println("4. Tirar objeto a la mierda");
-			System.out.println("5. Mostrar criaturas aliadas");
-			System.out.println("6. Volver");
+			System.out.println("1. Ver estado del personaje");
+			System.out.println("2. Ver todo el equipo");
+			System.out.println("3. Ver armas / equipar arma");
+			System.out.println("4. Usar poción");
+			System.out.println("5. Tirar objeto a la mierda");
+			System.out.println("6. Mostrar criaturas aliadas");
+			System.out.println("7. Volver");
 
 			int opcion = pideDatoNumerico("Elige la opción deseada del inventario: ");
 
 			switch (opcion) {
 			case 1:
-				mostrarEquipoCompleto(person);
+				mostrarEstado(person);
 				break;
 			case 2:
-				menuArmas(person);
+				mostrarEquipoCompleto(person);
 				break;
 			case 3:
-				menuUsarPocion(person);
+				menuArmas(person);
 				break;
 			case 4:
-				menuTirarObjetoAlaMierda(person);
+				menuUsarPocion(person);
 				break;
 			case 5:
-				mostrarCompaneros(person);
-				;
+				menuTirarObjetoAlaMierda(person);
 				break;
 			case 6:
+				mostrarCompaneros(person);
+				break;
+			case 7:
 				salirMenu = true;
 				break;
 			default:
