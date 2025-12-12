@@ -62,6 +62,14 @@ public abstract class Armas extends Equipamiento {
 	public void setProbCritico(int probCritico) {
 		this.probCritico = probCritico;
 	}
+
+	@Override
+	public String toString() {
+		return "Armas [tipoDaño=" + tipoDaño + ", alcance=" + alcance + ", precision=" + precision + ", puntosDaño="
+				+ puntosDaño + ", probCritico=" + probCritico + "]";
+	}
+	
+	
 	
 	//TODO
 	//IMPLEMENTA INTERFAZ EQUIPABLE
