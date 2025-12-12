@@ -2,6 +2,7 @@ package entities.episodios;
 
 import entities.Personaje;
 import entities.equipo.HojaParaLimpiar;
+import sun.jvm.hotspot.gc.parallel.PSYoungGen;
 import utilidades.Utils;
 
 public class Episodio2 {
@@ -15,7 +16,7 @@ public class Episodio2 {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Volver a la cueva \t5.Usar objeto \t6.Ver objetos \t7.Ver armas \t8.Ir al rio");
+					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Volver a la cueva \t5.Inventario \t6.Ver stado \t7.Ver armas \t8.Ir al rio");
 			System.out.println("dila opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -23,6 +24,19 @@ public class Episodio2 {
 
 			case 1: {
 				// buscar bayas
+				int tirada = Utils.dadoDiez();
+				if (tirada <= 3) {
+					System.out.println("Encuentras una baya venenosa y te la comes... Pierdes 5 de vida");
+					//personaje.setVida(personaje.getVida() - 5);
+					personaje.setPuntosVida(personaje.getPuntosVida() - 5);
+				} else if (tirada <= 7) {
+					System.out.println("Has encontrado algunas bayas");
+				//	personaje.getInventario().aniadirObjeto(new HojaParaLimpiar());
+				} else {
+					System.out.println("Has encontrado muchas bayas");
+					//personaje.getInventario().aniadirObjeto(new HojaParaLimpiar());
+					//personaje.getInventario().aniadirObjeto(new HojaParaLimpiar());
+				}
 
 				key1 = true;
 			}

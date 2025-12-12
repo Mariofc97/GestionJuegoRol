@@ -199,16 +199,18 @@ public class Utils {
 					+ ", durabilidad: " + e.getDurabilidad() + ")");
 		}
 	}
-	
+
 	private static void mostrarCompaneros(Personaje person) {
 		List<Criatura> criaturasCompis = person.getCriaturas();
-		
+
 		for (Criatura criatura : criaturasCompis) {
-			if(criaturasCompis == null) {
+			if (criaturasCompis == null) {
 				log.error("No tienes criaturas aliadas asignadas");
 			} else {
-				
-				System.out.println("Criatura: " + criatura.getNombre() + "|Alias: " + criatura.getAlias() + "|Puntos de vida: " + criatura.getPuntosVida() + "|Puntos de ataque: " + criatura.getPuntosAtaque() );
+
+				System.out.println(
+						"Criatura: " + criatura.getNombre() + "|Alias: " + criatura.getAlias() + "|Puntos de vida: "
+								+ criatura.getPuntosVida() + "|Puntos de ataque: " + criatura.getPuntosAtaque());
 			}
 		}
 	}
@@ -389,7 +391,8 @@ public class Utils {
 				menuTirarObjetoAlaMierda(person);
 				break;
 			case 5:
-				mostrarCompaneros(person);;
+				mostrarCompaneros(person);
+				;
 				break;
 			case 6:
 				salirMenu = true;
@@ -450,22 +453,25 @@ public class Utils {
 			return pideDatoBigDecimal(texto);
 		}
 	}
-	
+
 	public static String cazar(Personaje person) {
-		
+
 		boolean exito = dadoDiez() > 3; // 70% de exito
 		Criatura presa = randomizarCriatura();
-		
-		if(exito) {
-			Comida carne = new Comida(presa.getNombre() + " carne", 10, 0);
+
+		if (exito) {
+			Comida carne = new Comida(presa.getNombre() + " carne", 10);
+			// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA
+			// CRIATURA
 			person.getEquipo().add(carne);
-			return "Has cazado un " + presa.getNombre() + " y obtenido " + carne.getPuntosVida() + " puntos de vida.";
-			
-			
+			return "Has cazado un " + presa.getNombre() + " carne de " + carne.getNombre() + " en el inventario.";
+
 		} else {
-			
-			return "No has tenido suerte en la caza.";
-			
+			int danioHecho = presa.atacar(person);
+			return "No has tenido suerte en la caza " + presa.getNombre() + " hace " + danioHecho
+					+ " de daño al personaje " + person.getNombre() + "La vida de nuestro personaje es: "
+					+ person.getPuntosVida();
+
 		}
 	}
 
