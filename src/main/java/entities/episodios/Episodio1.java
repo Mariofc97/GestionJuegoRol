@@ -1,12 +1,8 @@
 package entities.episodios;
 
-import java.io.IOException;
 import java.util.InputMismatchException;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import entities.Personaje;
 import entities.equipo.objetos.HojaParaLimpiar;
@@ -25,34 +21,10 @@ public class Episodio1 {
 static int contadorEpisodio1 = 0;
 	// Logger específico para esta clase
 	private static final Logger LOGGER = Logger.getLogger(Episodio1.class.getName());
+
 	static {
-		// Bloque estático para configurar el manejador de logs (FileHandler)
-		// Se añade un FileHandler que escribe en 'episodio1.log' en modo append.
-		try {
-			FileHandler fh = new FileHandler("episodio1.log", true); // append
-			fh.setFormatter(new SimpleFormatter());
-			LOGGER.addHandler(fh);
-			LOGGER.setLevel(Level.ALL);
-			// Evitar duplicar mensajes en consola provenientes del logger padre
-			LOGGER.setUseParentHandlers(false);
-
-			// Asegurarnos de cerrar el FileHandler al terminar la JVM
-			// Añadimos un shutdown hook que recorre los handlers y los cierra.
-			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-				for (Handler h : LOGGER.getHandlers()) {
-					try {
-						h.close();
-					} catch (Exception ignore) {
-						// Ignoramos excepciones en el cierre
-					}
-				}
-			}));
-		} catch (IOException | SecurityException e) {
-			// En caso de error al abrir el FileHandler, mostramos por stderr
-			System.err.println("No se pudo inicializar el logger: " + e.getMessage());
-		}
+	    LOGGER.setUseParentHandlers(false); // evita que el logger escriba en consola
 	}
-
 	// crear un menu:necesito un switch.
 
 	/**
