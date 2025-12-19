@@ -241,13 +241,13 @@ static int contadorEpisodio1 = 0;
 									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
 									personaje.getEquipo().add(new Piedra("Piedra"));
 									System.out.println("has encontrado una hoja de ortiga");
-								}else if (tirada2==7 || tirada2==7) {
+								}else if (tirada2==7 || tirada2==8) {
 									System.out.println("despues de buscar un rato encuentras un objeto util");
 									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
 									personaje.getEquipo().add(new Palo("Palo"));
 									System.out.println("has encontrado una hoja de ortiga");}
 								else {
-									//
+									//tienes que ganar otro objeto de momento vacio
 								}
 								System.out.println("despues de buscar un rato encuentras un objeto util");
 								HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
