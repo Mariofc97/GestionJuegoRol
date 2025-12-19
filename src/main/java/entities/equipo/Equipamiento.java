@@ -6,7 +6,7 @@ public abstract class Equipamiento {
 	
 	//Tenemos que crear 
 
-	private String nombre;
+	protected String nombre;
 	private int nivelRequerido;
 	private int peso;
 	private int durabilidad;
