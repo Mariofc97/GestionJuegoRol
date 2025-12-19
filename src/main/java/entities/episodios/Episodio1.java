@@ -5,7 +5,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Personaje;
+import entities.equipo.objetos.Cuerda;
 import entities.equipo.objetos.HojaParaLimpiar;
+import entities.equipo.objetos.MojonSeco;
+import entities.equipo.objetos.Palo;
+import entities.equipo.objetos.Piedra;
 import utilidades.Utils;
 
 /**
@@ -96,7 +100,7 @@ static int contadorEpisodio1 = 0;
 			try {
 				LOGGER.info(() -> "Mostrando menú para personaje: " + personaje.getNombre());
 				System.out.println(
-						"1. Llorar de forma desconsolado \t2. Pensar en un compañero de vieje \t3. Salir de la cueva \t4. Dormir y recuperar vida \t5. Ver inventario/estado");
+						"1. Llorar de forma desconsolado \t2. Pensar en un compañero de vieje \t3. Salir de la cueva \t4. Dormir y recuperar vida \t5. Ver inventario/estado \t6. Buscar objeto");
 				System.out.println("dila opcion del menu");
 				int opcion;
 				try {
@@ -212,6 +216,53 @@ static int contadorEpisodio1 = 0;
 				}
 
 					break;
+					case 6: {
+						// Caso 6: buscar objeto
+						try {
+							int tirada = Utils.dadoDiez();
+							if (tirada<=2) {
+								System.out.println("metes la mano en un agujero, tocas algo y puensas... que suerte!!!! pero... resulta ser el nido de una serpiente que te muerde");
+								personaje.setPuntosVida(personaje.getPuntosVida()-5);
+								break;
+							} else if (tirada>2) {
+								int tirada2 = Utils.dadoDiez(); // con esta tirada escogemos el objeto
+								if (tirada2==1 || tirada2==2) {
+									System.out.println("despues de buscar un rato encuentras un objeto util");
+									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
+									personaje.getEquipo().add(new MojonSeco("Mojon Seco"));
+									System.out.println("has encontrado una hoja de ortiga");
+								} else if (tirada2==3 || tirada2==4) {
+									System.out.println("despues de buscar un rato encuentras un objeto util");
+									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
+									personaje.getEquipo().add(new Cuerda("Cuerda"));
+									System.out.println("has encontrado una hoja de ortiga");
+								} else if (tirada2==5 || tirada2==6) {
+									System.out.println("despues de buscar un rato encuentras un objeto util");
+									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
+									personaje.getEquipo().add(new Piedra("Piedra"));
+									System.out.println("has encontrado una hoja de ortiga");
+								}else if (tirada2==7 || tirada2==7) {
+									System.out.println("despues de buscar un rato encuentras un objeto util");
+									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
+									personaje.getEquipo().add(new Palo("Palo"));
+									System.out.println("has encontrado una hoja de ortiga");}
+								else {
+									//
+								}
+								System.out.println("despues de buscar un rato encuentras un objeto util");
+								HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
+								//personaje.getEquipo().add(hojadeortiga);
+								System.out.println("has encontrado una hoja de ortiga");
+							}
+							
+						//	Utils.buscarObjeto(personaje);
+							LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
+						} catch (Exception e) {
+							LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
+							System.out.println("No se pudo buscar el objeto.");
+						}
+					}
+						break;
 
 				default:
 					// Opción inválida: avisar al usuario y registrar
