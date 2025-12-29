@@ -54,7 +54,7 @@ public class Usuario implements Serializable {
 
     // ---------- ROL ----------
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @NotBlank
     @Column(name = "rol", nullable = false, length = 20)
     private String rol;
 

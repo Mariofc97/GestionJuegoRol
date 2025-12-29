@@ -435,8 +435,6 @@ public class Utils {
 			} catch (InputMismatchException ime) {
 				hayError = true;
 				System.out.println("Valor introducido no correcto");
-			} finally {
-				scan.close();
 			}
 
 		} while (hayError);

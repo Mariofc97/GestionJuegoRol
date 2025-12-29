@@ -22,7 +22,7 @@ public class Cuerda extends Equipamiento {
 	}
 
 	public void setNombre(String nombre) {
-		this.setNombre(nombre);
+		super.setNombre(nombre);
 	}
 
 	@Override

@@ -104,6 +104,10 @@ public abstract class Criatura implements Atacable, Defendible {
 	@Override
 	public void recibirDanio(int danio) {
 		// TODO Auto-generated method stub
+		this.puntosVida -= danio;
+		if (this.puntosVida < 0) {
+			this.puntosVida = 0;
+		}
 
 	}
 
