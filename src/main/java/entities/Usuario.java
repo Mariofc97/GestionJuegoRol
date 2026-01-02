@@ -2,11 +2,10 @@ package entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -177,12 +176,15 @@ public class Usuario implements Serializable {
     // ======== TO STRING ========
     @Override
     public String toString() {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String fecha = (fechaAlta == null) ? "null" : fechaAlta.format(fmt);
+
         return "Usuario [id=" + id
                 + ", username=" + username
                 + ", email=" + email
                 + ", rol=" + rol
                 + ", activo=" + activo
-                + ", fechaAlta=" + fechaAlta
+                + ", fechaAlta=" + fecha
                 + "]";
     }
 }
