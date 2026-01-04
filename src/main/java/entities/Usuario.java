@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -51,9 +52,10 @@ public class Usuario implements Serializable {
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    // ---------- ROL ----------
+ // ---------- ROL ----------
     @NotNull
     @NotBlank
+    @Pattern(regexp = "JUGADOR|ADMINISTRADOR", message = "Rol debe ser JUGADOR o ADMINISTRADOR")
     @Column(name = "rol", nullable = false, length = 20)
     private String rol;
 
@@ -66,12 +68,6 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "activo", nullable = false)
     private Boolean activo = Boolean.TRUE;
-
-    // ---------- IMAGEN DE PERFIL (ruta de archivo o URL) ----------
-    @Size(max = 250)
-    @Column(name = "imagen_perfil", length = 250)
-    private String imagenPerfil;  // Ruta o URL de la imagen del usuario
-
 
 
     // ======== CONSTRUCTORES ========
@@ -93,7 +89,7 @@ public class Usuario implements Serializable {
     public Usuario(@NotNull @NotBlank @Size(max = 30) String username,
 			@NotNull @NotBlank @Email @Size(max = 120) String email,
 			@NotNull @NotBlank @Size(min = 4, max = 100) String password, @NotNull String rol,
-			@NotNull LocalDateTime fechaAlta, @NotNull Boolean activo, @Size(max = 250) String imagenPerfil) {
+			@NotNull LocalDateTime fechaAlta, @NotNull Boolean activo) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -101,18 +97,16 @@ public class Usuario implements Serializable {
 		this.rol = rol;
 		this.fechaAlta = fechaAlta;
 		this.activo = activo;
-		this.imagenPerfil = imagenPerfil;
 	}
 
 	// Constructor completo (sin id)
     public Usuario(String username, String email, String password, String rol,
-                   Boolean activo, String imagenPerfil) {
+                   Boolean activo) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.rol = rol;
         this.activo = activo;
-        this.imagenPerfil = imagenPerfil;
     }
 
 
@@ -137,9 +131,6 @@ public class Usuario implements Serializable {
 
     public Boolean getActivo() { return activo; }
     public void setActivo(Boolean activo) { this.activo = activo; }
-
-    public String getImagenPerfil() { return imagenPerfil; }
-    public void setImagenPerfil(String imagenPerfil) { this.imagenPerfil = imagenPerfil; }
 
 
     // ======== PRE-PERSIST ========
