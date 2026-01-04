@@ -1,12 +1,15 @@
 package pruebas;
 
 import dto.UsuarioDto;
+import entities.Personaje;
+import service.PersonajeService;
 import service.UsuarioService;
+import service.impl.PersonajeServiceImpl;
 import service.impl.UsuarioServiceImpl;
 import utilidades.HibernateUtil;
 import utilidades.Utils;
 
-public class PruebaUsuarioDao {
+public class PruebaCapas {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -43,15 +46,20 @@ public class PruebaUsuarioDao {
 		HibernateUtil.crearConexion();
 		
 		UsuarioService usuarioService = new UsuarioServiceImpl();
+		PersonajeService personajeService = new PersonajeServiceImpl();
 		
 		boolean salir = false;
 		UsuarioDto usuarioLogueado = null;
+		Personaje personajeCreado = null;
 			while(!salir) {
 	            System.out.println("\n--- MENU ---");
 	            System.out.println("1) Registrar");
 	            System.out.println("2) Login");
 	            System.out.println("3) Listar usuarios");
 	            System.out.println("4) Salir");
+	            System.out.println("5) Crear personaje");
+	            System.out.println("6) Jugar Episodio 1");
+	            System.out.println("7) Cerrar sesión");
 	            int op = Utils.pideDatoNumerico("Opcion: ");
 	            
 	            try {
@@ -69,8 +77,8 @@ public class PruebaUsuarioDao {
 						String ul = Utils.pideDatoCadena("Username: ");
 						String pl = Utils.pideDatoCadena("Password: ");
 						
-						UsuarioDto logeado = usuarioService.login(ul, pl);
-						System.out.println("Usuario logueado OK -> " + logeado);
+						usuarioLogueado = usuarioService.login(ul, pl);
+						System.out.println("Usuario logueado OK -> " + usuarioLogueado);
 						//Aqui despues del login, ya podria crear personaje y empezar episodio 1
 						break;
 					case 3:
@@ -78,6 +86,27 @@ public class PruebaUsuarioDao {
 						break;
 					case 4:
 						salir = true;
+						break;
+					case 5:
+						if (usuarioLogueado == null) {
+							System.out.println("Para crear un personaje debes de hacer login primero");
+							break;
+						}
+						String name = Utils.pideDatoCadena("Nombre de personaje: ");
+						String raza = Utils.pideDatoCadena("Raza (MONGOL, RAPA NUI, TROGLODITA): ");
+						personajeCreado = personajeService.crearYGuardar(name, raza);
+						break;
+					case 6:
+					    if (usuarioLogueado == null) {
+					        System.out.println("Debes hacer login primero.");
+					        break;
+					    }
+					    // aquí empiezas el episodio (más adelante lo moveremos a service)
+					    //Epsodio1.episodio1(personajeCreado)
+						break;
+					case 7:
+						usuarioLogueado = null;
+						System.out.println("Sesion de usuario " + usuarioLogueado.getUsername() + " cerrada");
 						break;
 
 					default:

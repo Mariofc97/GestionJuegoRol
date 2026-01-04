@@ -9,20 +9,66 @@ import entities.equipo.Equipamiento;
 import entities.equipo.armas.Armas;
 import entities.equipo.objetos.Pocion;
 import entities.raza.Raza;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
+@Entity
+@Table(name = "TB_PERSONAJE")
 public class Personaje implements Atacable, Defendible {
-
-	private Raza raza;
-	private List<Equipamiento> equipo;
-	private List<Criatura> criaturas;
-	private String nombre;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personaje_seq")
+    @SequenceGenerator(name = "personaje_seq", sequenceName = "SEQ_PERSONAJE", allocationSize = 1)
+	private Long id;
+    
+    @Column(name = "nombre", nullable = false, length = 50)
+    private String nombre;
+    
+    @Column(name = "experiencia", nullable = false)
 	private int experiencia; // sube putnos de vida y ataque
+    
+    @Column(name = "nivel", nullable = false)
 	private int nivel; // nivel de experiencia
+    
+    @Column(name = "puntos_vida_max", nullable = false)
 	private int puntosVidaMax; // maximo 100 puntos de vida
+    
+    @Column(name = "puntos_vida", nullable = false)
 	private int puntosVida;
+    
+    @Column(name = "puntos_ataque", nullable = false)
 	private int puntosAtaque; // modificamos si raza
+    
+    @Column(name = "inteligencia", nullable = false)
 	private int inteligencia; // nos vale par pensar y crear
+    
+    @Column(name = "suerte", nullable = false)
 	private int suerte;
+	
+    // Guardamos la raza como String por simplicidad
+    @Column(name = "raza_tipo", nullable = false, length = 30)
+    private String razaTipo;
+	// utilizamos Transient para no persistir esto todavia, ya que esto complica mas el proyecto
+	
+	@Transient
+	private Raza raza;
+	
+	@Transient
+	private List<Equipamiento> equipo;
+	
+	@Transient
+	private List<Criatura> criaturas;
+
+	public Personaje(String nombre, String razaTipo) {
+		super();
+		this.nombre = nombre;
+		this.razaTipo = razaTipo;
+	}
 
 	public Personaje(Raza raza, String nombre) {
 		if (raza == null) {
@@ -135,6 +181,22 @@ public class Personaje implements Atacable, Defendible {
 		this.criaturas = criaturas;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getRazaTipo() {
+		return razaTipo;
+	}
+
+	public void setRazaTipo(String razaTipo) {
+		this.razaTipo = razaTipo;
+	}
+
 	public int usarPocion(Pocion pocion) {
 
 		int puntosVidaPocion = pocion.getPuntosVida();
@@ -245,5 +307,14 @@ public class Personaje implements Atacable, Defendible {
 			System.out.println("Vida máxima: " + puntosVidaMax + " | Ataque: " + puntosAtaque);
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "Personaje [id=" + id + ", nombre=" + nombre + ", experiencia=" + experiencia + ", nivel=" + nivel
+				+ ", puntosVidaMax=" + puntosVidaMax + ", puntosVida=" + puntosVida + ", puntosAtaque=" + puntosAtaque
+				+ ", inteligencia=" + inteligencia + ", suerte=" + suerte + ", razaTipo=" + razaTipo + "]";
+	}
+	
+	
 
 }
