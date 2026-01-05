@@ -9,6 +9,7 @@ import entities.equipo.Equipamiento;
 import entities.equipo.armas.Armas;
 import entities.equipo.objetos.Pocion;
 import entities.raza.Raza;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -55,20 +57,24 @@ public class Personaje implements Atacable, Defendible {
     
     @Column(name = "suerte", nullable = false)
 	private int suerte;
+    
+    @Column(name="episodio_actual", nullable = false)
+    private int episodioActual = 1;
 	
     // Guardamos la raza como String por simplicidad
     @Column(name = "raza_tipo", nullable = false, length = 30)
     private String razaTipo;
+    
 	// utilizamos Transient para no persistir esto todavia, ya que esto complica mas el proyecto
 	
 	@Transient
 	private Raza raza;
 	
-	@Transient
-	private List<Equipamiento> equipo;
-	
-	@Transient
-	private List<Criatura> criaturas;
+	@OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Equipamiento> equipo = new java.util.ArrayList<>();
+
+	@OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Criatura> criaturas = new java.util.ArrayList<>();
 
 	
 	public Personaje() {
