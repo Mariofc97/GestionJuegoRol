@@ -60,6 +60,7 @@ public class PruebaCapas {
 	            System.out.println("5) Crear personaje");
 	            System.out.println("6) Jugar Episodio 1");
 	            System.out.println("7) Cerrar sesión");
+	            System.out.println("8) Listar personajes por usuario");
 	            int op = Utils.pideDatoNumerico("Opcion: ");
 	            
 	            try {
@@ -94,7 +95,9 @@ public class PruebaCapas {
 						}
 						String name = Utils.pideDatoCadena("Nombre de personaje: ");
 						String raza = Utils.pideDatoCadena("Raza (MONGOL, RAPA NUI, TROGLODITA): ");
-						personajeCreado = personajeService.crearYGuardar(name, raza);
+						personajeCreado = personajeService.crearYGuardar(usuarioLogueado.getId(), name, raza);
+						
+						System.out.println("Personaje creado OK -> " + personajeCreado);
 						break;
 					case 6:
 					    if (usuarioLogueado == null) {
@@ -108,6 +111,15 @@ public class PruebaCapas {
 						usuarioLogueado = null;
 						System.out.println("Sesion de usuario " + usuarioLogueado.getUsername() + " cerrada");
 						break;
+					case 8:
+					    if (usuarioLogueado == null) {
+					        System.out.println("Debes hacer login primero.");
+					        break;
+					    }
+
+					    System.out.println("Personajes del usuario " + usuarioLogueado.getUsername() + ":");
+					    System.out.println(personajeService.listarPorUsuario(usuarioLogueado.getId()));
+					    break;
 
 					default:
 						System.out.println("Opcion invalida");

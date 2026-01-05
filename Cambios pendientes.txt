@@ -65,8 +65,264 @@ Anotaciones MARIO:
 				
 			NOTA PARA HACER POCIONES NECESITAMOS VAYAS MIERDA Y ORTIGA. JIJIJIJIJIJIJI
 			  
+ANOTACIONES MARIO PARA BD:
+
+Perfecto: si tu prioridad ahora es “BD definitiva” (tablas + relaciones) para GestionJuegoRol, el camino más sólido (sin complicaros) es:
+
+Persistir: Usuario, Personaje, Equipamiento, Criatura
+
+Relaciones:
+
+Usuario (1) -> (N) Personaje ✅ (ya lo estás haciendo)
+
+Personaje (1) -> (N) Equipamiento ✅ (inventario)
+
+Personaje (1) -> (N) Criatura ✅ (compañeros)
+
+Episodios NO son entidad. Con episodioActual/progresoEpisodio en Personaje ya guardas progreso.
+
+A partir de aquí, lo importante es que tu modelo sea persistible de verdad, y eso implica quitar @Transient y mapear bien listas y herencias.
+
+1) Paso clave: Personaje ya NO debe tener equipo y criaturas como @Transient
+
+Tu Personaje ahora mismo tiene:
+
+@Transient private List<Equipamiento> equipo;
+@Transient private List<Criatura> criaturas;
+
+
+Para BD definitiva, cámbialo a relaciones JPA:
+
+import jakarta.persistence.*;
+
+@OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Equipamiento> equipo = new java.util.ArrayList<>();
+
+@OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Criatura> criaturas = new java.util.ArrayList<>();
+
+
+✅ Eso te crea:
+
+TB_EQUIPAMIENTO.personaje_id (FK)
+
+TB_CRIATURA.personaje_id (FK)
+
+Y en Personaje añade también el progreso:
+
+@Column(name="episodio_actual", nullable=false)
+private int episodioActual = 1;
+
+2) Crear entidad Equipamiento (y cómo hacerlo sin volverte loco)
+
+Tienes muchas subclases (Cuerda, Palo, Piedra, Pocion, armas…), así que te recomiendo herencia SINGLE_TABLE (1 tabla) para no crear 20 tablas distintas.
+
+Equipamiento (base)
+@Entity
+@Table(name = "TB_EQUIPAMIENTO")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING, length = 30)
+public abstract class Equipamiento {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "equip_seq")
+    @SequenceGenerator(name = "equip_seq", sequenceName = "SEQ_EQUIPAMIENTO", allocationSize = 1)
+    private Long id;
+
+    @Column(name="nombre", nullable=false, length=80)
+    protected String nombre;
+
+    @Column(name="nivel_requerido", nullable=false)
+    private int nivelRequerido;
+
+    @Column(name="peso", nullable=false)
+    private int peso;
+
+    @Column(name="durabilidad", nullable=false)
+    private int durabilidad;
+
+    @ManyToOne(optional=false, fetch=FetchType.LAZY)
+    @JoinColumn(name="personaje_id", nullable=false)
+    private Personaje personaje;
+
+    public Equipamiento() {}
+
+    // getters/setters...
+}
+
+MUY IMPORTANTE (bug grande que te va a explotar si persistes):
+
+Muchos de tus objetos hacen esto:
+
+private String nombre = "Cuerda"; // MAL si lo persistes
+
+
+Eso duplica el campo nombre (uno en superclase y otro en subclase) y Hibernate puede:
+
+crear columnas duplicadas
+
+o mapear campos raros
+
+o petar al arrancar
+
+✅ Solución: elimina el nombre de las subclases y usa el nombre del padre.
+
+Ejemplo arreglado de Cuerda:
+
+@Entity
+@DiscriminatorValue("CUERDA")
+public class Cuerda extends Equipamiento {
+
+    public Cuerda() {
+        super();
+        this.nombre = "Cuerda";
+    }
+}
+
+
+(Exactamente lo mismo para Palo, Piedra, MojonSeco, Arco, etc.)
+
+3) Armas / Escudos / Pociones con herencia
+
+Tu Armas también puede ser parte de la tabla TB_EQUIPAMIENTO:
+
+@Entity
+@DiscriminatorValue("ARMA")
+public abstract class Armas extends Equipamiento {
+
+    @Column(name="tipo_danio")
+    private String tipoDaño;
+
+    @Column(name="alcance")
+    private Integer alcance;
+
+    @Column(name="precision")
+    private Integer precision;
+
+    @Column(name="puntos_danio")
+    private Integer puntosDaño;
+
+    @Column(name="prob_critico")
+    private Integer probCritico;
+
+    public Armas() {}
+}
+
+
+Luego tus armas concretas (Honda, Bumeran, etc.) solo deberían poner valores y NO tener un atributo nombre duplicado.
+
+4) Crear entidad Criatura con relación a Personaje
+
+Igual que con equipamiento: SINGLE_TABLE para que sea fácil.
+
+Criatura base
+@Entity
+@Table(name = "TB_CRIATURA")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING, length = 30)
+public abstract class Criatura {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "criatura_seq")
+    @SequenceGenerator(name = "criatura_seq", sequenceName = "SEQ_CRIATURA", allocationSize = 1)
+    private Long id;
+
+    @Column(name="nombre", nullable=false, length=50)
+    private String nombre;
+
+    @Column(name="alias", length=50)
+    private String alias;
+
+    @Column(name="nivel", nullable=false)
+    private int nivel;
+
+    @Column(name="experiencia", nullable=false)
+    private int experiencia;
+
+    @Column(name="puntos_vida", nullable=false)
+    private int puntosVida;
+
+    @Column(name="puntos_ataque", nullable=false)
+    private int puntosAtaque;
+
+    @Column(name="tipo_ataque", length=50)
+    private String tipoAtaque;
+
+    @ManyToOne(optional=false, fetch=FetchType.LAZY)
+    @JoinColumn(name="personaje_id", nullable=false)
+    private Personaje personaje;
+
+    public Criatura() {}
+    // getters/setters...
+}
+
+
+Y tus subclases (Conejo, Raton, etc.) igual: solo ponen valores.
+
+5) ¿Hace falta “Inventario” como entidad aparte?
+
+Para vuestro nivel, no. Es redundante si ya tienes:
+
+Personaje → List<Equipamiento>
+
+Solo crea Inventario si quieres cosas como:
+
+“capacidad máxima”
+
+“oro”
+
+“slots”
+
+etc.
+
+Pero si tu profe pide BD lista y relaciones, con Equipamiento ya lo cumples muy bien.
+
+6) Actualiza hibernate.cfg.xml (esto es obligatorio si no hay auto-scan)
+
+Como no quieres tocar HibernateUtil, tienes que mapear las nuevas entidades en hibernate.cfg.xml.
+
+Mínimo:
+
+<mapping class="entities.Usuario"/>
+<mapping class="entities.Personaje"/>
+
+<mapping class="entities.equipo.Equipamiento"/>
+<mapping class="entities.equipo.armas.Armas"/>
+<mapping class="entities.equipo.Escudos"/>
+<mapping class="entities.equipo.objetos.Pocion"/>
+<mapping class="entities.equipo.objetos.Cuerda"/>
+...
+<mapping class="entities.criatura.Criatura"/>
+<mapping class="entities.criatura.Conejo"/>
+...
+
+
+Sí: es largo, pero es “lo que hay” si no auto-detectas.
+
+Qué deberías hacer ahora (orden exacto, sin desviarte)
+
+	Añadir @OneToMany en Personaje para equipo y criaturas (quitar @Transient)
 	
+	Crear Equipamiento como Entity + ManyToOne a Personaje
 	
+	Eliminar campos duplicados nombre en subclases (Cuerda/Palo/Piedra/Arco/etc.)
+	
+	Crear Criatura como Entity + ManyToOne a Personaje
+	
+	Añadir en hibernate.cfg.xml todos los <mapping class="..."> nuevos
+	
+	Hacer una prueba simple:
+	
+	crear Usuario
+	
+	crear Personaje asociado
+	
+	añadir 1 Cuerda y 1 Conejo al personaje
+	
+	guardar personaje (con cascade)
+	
+	leerlo y comprobar que trae listas
+		
 <<<<<<< HEAD
 	
 	
