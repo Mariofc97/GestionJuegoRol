@@ -3,12 +3,16 @@ package entities;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -68,6 +72,9 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "activo", nullable = false)
     private Boolean activo = Boolean.TRUE;
+    
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Personaje> personajes = new ArrayList<>();
 
 
     // ======== CONSTRUCTORES ========
@@ -111,8 +118,18 @@ public class Usuario implements Serializable {
 
 
     // ======== GETTERS Y SETTERS ========
+    
+    
+    public List<Personaje> getPersonajes() {
+    	return personajes;
+    }
+    
+    public void setPersonajes(List<Personaje> personajes) {
+    	this.personajes = personajes;
+    }
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+
+	public void setId(Long id) { this.id = id; }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }

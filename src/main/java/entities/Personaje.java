@@ -14,6 +14,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -25,6 +27,10 @@ public class Personaje implements Atacable, Defendible {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personaje_seq")
     @SequenceGenerator(name = "personaje_seq", sequenceName = "SEQ_PERSONAJE", allocationSize = 1)
 	private Long id;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
     
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
@@ -64,6 +70,11 @@ public class Personaje implements Atacable, Defendible {
 	@Transient
 	private List<Criatura> criaturas;
 
+	
+	public Personaje() {
+		super();
+	}
+
 	public Personaje(String nombre, String razaTipo) {
 		super();
 		this.nombre = nombre;
@@ -99,6 +110,16 @@ public class Personaje implements Atacable, Defendible {
 		this.puntosVida = puntosVida;
 		this.puntosAtaque = puntosAtaque;
 		this.nivel = 1; // siempre se creara el personaje con nivel 1
+	}
+	
+	
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public int getSuerte() {
