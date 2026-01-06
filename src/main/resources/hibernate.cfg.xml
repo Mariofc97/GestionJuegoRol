@@ -31,6 +31,8 @@
         <!-- Entidad mapeada -->
          <mapping class = "entities.Usuario" /> 
          <mapping class ="entities.Personaje" />
+         <mapping class="entities.equipo.Equipamiento"/>
+		 <mapping class="entities.equipo.objetos.Cuerda"/>
         
   
     </session-factory>

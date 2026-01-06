@@ -73,7 +73,7 @@ public class Personaje implements Atacable, Defendible {
 	@OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Equipamiento> equipo = new java.util.ArrayList<>();
 
-	@OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Transient
 	private List<Criatura> criaturas = new java.util.ArrayList<>();
 
 	

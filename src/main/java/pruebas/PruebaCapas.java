@@ -61,6 +61,7 @@ public class PruebaCapas {
 	            System.out.println("6) Jugar Episodio 1");
 	            System.out.println("7) Cerrar sesión");
 	            System.out.println("8) Listar personajes por usuario");
+	            System.out.println("9) TEST: añadir Cuerda y guardar");
 	            int op = Utils.pideDatoNumerico("Opcion: ");
 	            
 	            try {
@@ -119,6 +120,29 @@ public class PruebaCapas {
 
 					    System.out.println("Personajes del usuario " + usuarioLogueado.getUsername() + ":");
 					    System.out.println(personajeService.listarPorUsuario(usuarioLogueado.getId()));
+					    break;
+					case 9:
+					    if (usuarioLogueado == null) {
+					        System.out.println("Debes hacer login primero.");
+					        break;
+					    }
+					    if (personajeCreado == null) {
+					        System.out.println("Primero crea un personaje (opción 5).");
+					        break;
+					    }
+
+					    // Creamos la cuerda
+					    entities.equipo.objetos.Cuerda cuerda = new entities.equipo.objetos.Cuerda();
+					    cuerda.setNombre("Cuerda"); // si tu constructor ya lo pone, esto no haría falta
+
+					    // IMPORTANTE: enlazar ambos lados (FK)
+					    cuerda.setPersonaje(personajeCreado);
+					    personajeCreado.getEquipo().add(cuerda);
+
+					    // Guardamos/actualizamos el personaje -> por cascade debe insertar EQUIPAMIENTO
+					    personajeCreado = personajeService.actualizar(personajeCreado);
+
+					    System.out.println("OK: añadida Cuerda y guardado personaje. Personaje = " + personajeCreado.getId());
 					    break;
 
 					default:

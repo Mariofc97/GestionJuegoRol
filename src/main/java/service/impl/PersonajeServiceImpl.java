@@ -121,4 +121,10 @@ public class PersonajeServiceImpl implements PersonajeService{
 		//No llamo a raza.aplicarBonos(p) porque eso son pasivas situacionales en funcion de la historia
 	}
 
+	@Override
+	public Personaje actualizar(Personaje p) {
+		// TODO Auto-generated method stub
+		return personajeDao.update(p);
+	}
+
 }
