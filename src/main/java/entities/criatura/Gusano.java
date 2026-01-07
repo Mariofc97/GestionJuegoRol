@@ -1,5 +1,10 @@
 package entities.criatura;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("GUSANO")
 public class Gusano extends Criatura {
 
 

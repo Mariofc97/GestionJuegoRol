@@ -73,7 +73,7 @@ public class Personaje implements Atacable, Defendible {
 	@OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Equipamiento> equipo = new java.util.ArrayList<>();
 
-	@Transient
+	@OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Criatura> criaturas = new java.util.ArrayList<>();
 
 	
@@ -245,6 +245,8 @@ public class Personaje implements Atacable, Defendible {
 	@Override
 	public void recibirDanio(int danio) {
 		// TODO Auto-generated method stub
+		if (danio <= 0) return;
+		
 		this.puntosVida -= danio;
 		if (this.puntosVida < 0) {
 			System.out.println(this.nombre + " esta muerto, tiene 0 puntos de vida");

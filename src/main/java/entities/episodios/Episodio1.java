@@ -234,7 +234,7 @@ static int contadorEpisodio1 = 0;
 								} else if (tirada2==3 || tirada2==4) {
 									System.out.println("despues de buscar un rato encuentras un objeto util");
 									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-									personaje.getEquipo().add(new Cuerda("Cuerda"));
+									personaje.getEquipo().add(new Cuerda());
 									System.out.println("has encontrado una hoja de ortiga");
 								} else if (tirada2==5 || tirada2==6) {
 									System.out.println("despues de buscar un rato encuentras un objeto util");

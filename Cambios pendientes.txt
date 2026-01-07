@@ -1,4 +1,58 @@
+
+
 Anotaciones MARIO:
+
+MARIO: revisar porque en PruebaCapas, cuando creo un personaje luego en el case 8 no se llega a listar.
+
+	Las clases de episodio estan dentro de entities.episodios, pero el enfoque correcto será:
+
+	mover la lógica a un EpisodioService / JuegoService
+
+	y guardar en BD el progreso con un campo en Personaje tipo progresoEpisodio (int).
+	
+Tarea fácil para delegar a Manu
+
+Objetivo: que todas las subclases de objetos (y/o armas) sean persistentes igual que Cuerda.
+
+✅ Solo tienen que repetir el patrón:
+
+@Entity
+@DiscriminatorValue("CUERDA")
+public class Cuerda extends Equipamiento {
+    public Cuerda() {
+        super("Cuerda", 1, 1, 100);
+    }
+}
+
+Lista de clases ideales para que él haga (rápidas)
+
+	En entities.equipo.objetos:
+	
+	Palo
+	
+	Piedra
+	
+	MojonSeco
+	
+	HojaParaLimpiar
+	
+	Baya
+	
+	CarneSeca
+	
+	Pocion
+	
+	En entities.equipo.armas (si también queremos persistir armas como subclases):
+	
+	Honda
+	
+	Arco
+	
+	Bumeran
+	
+	Cerbatana
+	
+	Cazamariposas
 
 	PARA MAS ADELANTE:
 	-Clase Inventario: Ahora esta vacia, creo que es buena idea sacar el metodo de utils y meterlo como un entity, siempre y cuando sea necesario que sus datos sean persistentes en la BD, es decir, que tengamos que hacer UPDATE, INSERTAR, CONSULTAR o ELIMINAR cosas del inventario.
@@ -64,31 +118,8 @@ Anotaciones MARIO:
 				
 				
 			NOTA PARA HACER POCIONES NECESITAMOS VAYAS MIERDA Y ORTIGA. JIJIJIJIJIJIJI
-			  
-ANOTACIONES MARIO PARA BD:
-
-	Añadir @OneToMany en Personaje para equipo y criaturas (quitar @Transient)
-	
-	Crear Equipamiento como Entity + ManyToOne a Personaje
-	
-	Eliminar campos duplicados nombre en subclases (Cuerda/Palo/Piedra/Arco/etc.)
-	
-	Crear Criatura como Entity + ManyToOne a Personaje
-	
-	Añadir en hibernate.cfg.xml todos los <mapping class="..."> nuevos
-	
-	Hacer una prueba simple:
-	
-	crear Usuario
-	
-	crear Personaje asociado
-	
-	añadir 1 Cuerda y 1 Conejo al personaje
-	
-	guardar personaje (con cascade)
-	
-	leerlo y comprobar que trae listas
-		
+			
+			
 <<<<<<< HEAD
 	
 	

@@ -1,5 +1,10 @@
 package entities.criatura;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("MOSQUITO")
 public class Mosquito extends Criatura {
 
 //	public Mosquito(String nombre, String alias, int nivel, int experiencia, int puntosVida, int puntosAtaque,

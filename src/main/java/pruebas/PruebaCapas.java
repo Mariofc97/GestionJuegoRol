@@ -1,7 +1,10 @@
 package pruebas;
 
+import java.util.List;
+
 import dto.UsuarioDto;
 import entities.Personaje;
+import entities.criatura.Conejo;
 import service.PersonajeService;
 import service.UsuarioService;
 import service.impl.PersonajeServiceImpl;
@@ -58,10 +61,11 @@ public class PruebaCapas {
 	            System.out.println("3) Listar usuarios");
 	            System.out.println("4) Salir");
 	            System.out.println("5) Crear personaje");
-	            System.out.println("6) Jugar Episodio 1");
+	            //System.out.println("6) Jugar Episodio 1");
 	            System.out.println("7) Cerrar sesión");
 	            System.out.println("8) Listar personajes por usuario");
 	            System.out.println("9) TEST: añadir Cuerda y guardar");
+	            System.out.println("10) TEST: AÑADIR CRIATURA A PERSONAJE CREADO");
 	            int op = Utils.pideDatoNumerico("Opcion: ");
 	            
 	            try {
@@ -76,13 +80,38 @@ public class PruebaCapas {
 						System.out.println("Usuario registrado OK -> " + registrado);
 						break;
 					case 2:
-						String ul = Utils.pideDatoCadena("Username: ");
-						String pl = Utils.pideDatoCadena("Password: ");
-						
-						usuarioLogueado = usuarioService.login(ul, pl);
-						System.out.println("Usuario logueado OK -> " + usuarioLogueado);
-						//Aqui despues del login, ya podria crear personaje y empezar episodio 1
-						break;
+					    String ul = Utils.pideDatoCadena("Username: ");
+					    String pl = Utils.pideDatoCadena("Password: ");
+
+					    usuarioLogueado = usuarioService.login(ul, pl);
+					    System.out.println("Usuario logueado OK -> " + usuarioLogueado);
+
+					    List<Personaje> personajes = personajeService.listarPorUsuario(usuarioLogueado.getId());
+
+					    if (personajes.isEmpty()) {
+					        personajeCreado = null;
+					        System.out.println("No tienes personajes todavía. Crea uno con opción 5.");
+					        break;
+					    } else {
+					        System.out.println("Elige personaje:");
+					        for (int i = 0; i < personajes.size(); i++) {
+					            System.out.println((i + 1) + ") " + personajes.get(i).getNombre()
+					                    + " [" + personajes.get(i).getRazaTipo() + "]"
+					                    + " (id=" + personajes.get(i).getId() + ")");
+					        }
+
+					        int idx = Utils.pideDatoNumerico("Opción: ") - 1;
+					        if (idx < 0 || idx >= personajes.size()) {
+					            personajeCreado = null;
+					            System.out.println("Opción inválida.");
+					            break;
+					        }
+					        personajeCreado = personajes.get(idx);
+					    }
+
+					    System.out.println("Personaje activo: " + personajeCreado);
+					 
+					    break;
 					case 3:
 						System.out.println("Usuarios: " + usuarioService.listar());
 						break;
@@ -98,7 +127,9 @@ public class PruebaCapas {
 						String raza = Utils.pideDatoCadena("Raza (MONGOL, RAPA NUI, TROGLODITA): ");
 						personajeCreado = personajeService.crearYGuardar(usuarioLogueado.getId(), name, raza);
 						
-						System.out.println("Personaje creado OK -> " + personajeCreado);
+						// MARIO: NO SE PORQUE EN EL CASE 8, NO SE LISTAN LOS PERSONAJES DEL USUARIO.
+						System.out.println("A que usuario pertenece ese personaje: f.k " 
+							    + (personajeCreado.getUsuario() == null ? "NULL" : personajeCreado.getUsuario().getId()));
 						break;
 					case 6:
 					    if (usuarioLogueado == null) {
@@ -144,7 +175,35 @@ public class PruebaCapas {
 
 					    System.out.println("OK: añadida Cuerda y guardado personaje. Personaje = " + personajeCreado.getId());
 					    break;
-
+					case 10:
+						if( usuarioLogueado == null) {
+							System.out.println("Debes hacer login primero.");
+							break;
+						}
+						
+						if(personajeCreado == null) {
+							System.out.println("Primero debes crea un personaje (opción 5).");
+							break;
+						}
+						
+						Conejo conejo1 = new Conejo();
+						
+						//añadir un Conejo al personajeCreado, setear personaje en la criatura, guardarlo, y luego recargar.
+						
+//						y siempre que añadas criatura:
+//
+//							criatura.setPersonaje(personaje);
+//							personaje.getCriaturas().add(criatura);
+						
+						//ENLAZAR F.K. con personaje
+						
+						conejo1.setPersonaje(personajeCreado);
+						personajeCreado.getCriaturas().add(conejo1);
+						
+						personajeCreado = personajeService.actualizar(personajeCreado);
+						
+						System.out.println("OK: criatura añadida y guardado. Criaturas actuales del personaje: " + personajeCreado.getCriaturas().size());
+						break;
 					default:
 						System.out.println("Opcion invalida");
 						break;

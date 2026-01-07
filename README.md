@@ -20,6 +20,32 @@ El juego permite crear personajes, gestionar inventario y equipo, combatir criat
 
 ---
 
+## Base de datos:
+
+	TABLAS PRINCIPALES
+
+		TB_USUARIO
+		
+		TB_PERSONAJE
+		
+		TB_EQUIPAMIENTO (herencia SINGLE_TABLE con discriminator tipo)
+		
+		TB_CRIATURA (cuando lo hagamos, también SINGLE_TABLE con discriminator tipo)
+
+	RELACIONES
+	
+		TB_USUARIO (1) ─── (N) TB_PERSONAJE
+		
+		TB_PERSONAJE.usuario_id (FK)
+		
+		TB_PERSONAJE (1) ─── (N) TB_EQUIPAMIENTO
+		
+		TB_EQUIPAMIENTO.personaje_id (FK)
+		
+		TB_PERSONAJE (1) ─── (N) TB_CRIATURA
+		
+		TB_CRIATURA.personaje_id (FK)
+
 ## Arquitectura por capas
 
 El proyecto sigue una arquitectura en capas:

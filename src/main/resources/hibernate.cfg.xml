@@ -33,6 +33,11 @@
          <mapping class ="entities.Personaje" />
          <mapping class="entities.equipo.Equipamiento"/>
 		 <mapping class="entities.equipo.objetos.Cuerda"/>
+		 <mapping class="entities.criatura.Criatura"/>
+		 <mapping class="entities.criatura.Conejo"/>
+		 <mapping class="entities.criatura.Gusano"/>
+		 <mapping class="entities.criatura.Mosquito"/>
+		 <mapping class="entities.criatura.Raton"/>
         
   
     </session-factory>
