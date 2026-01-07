@@ -5,6 +5,7 @@ import java.util.List;
 import dto.UsuarioDto;
 import entities.Personaje;
 import entities.criatura.Conejo;
+import lombok.var;
 import service.PersonajeService;
 import service.UsuarioService;
 import service.impl.PersonajeServiceImpl;
@@ -48,6 +49,10 @@ public class PruebaCapas {
 //		
 		HibernateUtil.crearConexion();
 		
+		var props = HibernateUtil.getSessionFactory().getSessionFactory().getProperties();
+		System.out.println("DEBUG cfg url = " + HibernateUtil.class.getClassLoader().getResource("hibernate.cfg.xml"));
+		System.out.println("DEBUG hbm2ddl.auto = " + props.get("hibernate.hbm2ddl.auto"));
+		
 		UsuarioService usuarioService = new UsuarioServiceImpl();
 		PersonajeService personajeService = new PersonajeServiceImpl();
 		
@@ -84,6 +89,7 @@ public class PruebaCapas {
 					    String pl = Utils.pideDatoCadena("Password: ");
 
 					    usuarioLogueado = usuarioService.login(ul, pl);
+					    System.out.println("ID usuario logueado: " + usuarioLogueado.getId());
 					    System.out.println("Usuario logueado OK -> " + usuarioLogueado);
 
 					    List<Personaje> personajes = personajeService.listarPorUsuario(usuarioLogueado.getId());
@@ -150,6 +156,7 @@ public class PruebaCapas {
 					    }
 
 					    System.out.println("Personajes del usuario " + usuarioLogueado.getUsername() + ":");
+					    System.out.println("Listando por usuario id = " + usuarioLogueado.getId());
 					    System.out.println(personajeService.listarPorUsuario(usuarioLogueado.getId()));
 					    break;
 					case 9:
