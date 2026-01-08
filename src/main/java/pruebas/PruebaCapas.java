@@ -132,10 +132,7 @@ public class PruebaCapas {
 						String name = Utils.pideDatoCadena("Nombre de personaje: ");
 						String raza = Utils.pideDatoCadena("Raza (MONGOL, RAPA NUI, TROGLODITA): ");
 						personajeCreado = personajeService.crearYGuardar(usuarioLogueado.getId(), name, raza);
-						
-						// MARIO: NO SE PORQUE EN EL CASE 8, NO SE LISTAN LOS PERSONAJES DEL USUARIO.
-						System.out.println("A que usuario pertenece ese personaje: f.k " 
-							    + (personajeCreado.getUsuario() == null ? "NULL" : personajeCreado.getUsuario().getId()));
+					
 						break;
 					case 6:
 					    if (usuarioLogueado == null) {
@@ -153,6 +150,12 @@ public class PruebaCapas {
 					    if (usuarioLogueado == null) {
 					        System.out.println("Debes hacer login primero.");
 					        break;
+					    }
+					    
+					    List<Personaje> lista = personajeService.listarPorUsuario(usuarioLogueado.getId());
+					    System.out.println("DEBUG size = " + lista.size());
+					    for (Personaje pj : lista) {
+					        System.out.println("DEBUG pj = " + pj);
 					    }
 
 					    System.out.println("Personajes del usuario " + usuarioLogueado.getUsername() + ":");

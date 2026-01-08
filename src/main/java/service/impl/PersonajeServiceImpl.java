@@ -71,18 +71,10 @@ public class PersonajeServiceImpl implements PersonajeService{
 		return p;
 	}
 	
-    @Override
-    public List<Personaje> listarPorUsuario(Long usuarioId) {
-        if (usuarioId == null) throw new RuntimeException("el ID del usuario es obligatorio");
-
-        Usuario u = usuarioDao.findById(usuarioId);
-        if (u == null) throw new RuntimeException("No existe usuario con id=" + usuarioId);
-
-        // Si tienes @OneToMany en Usuario, puedes devolver su lista:
-        // OJO: según cómo uses sesiones, esto puede ser LAZY y petar si la sesión está cerrada.
-        // En tu caso, como mantienes la session abierta durante el menú, debería ir bien.
-        return u.getPersonajes();
-    }
+	@Override
+	public List<Personaje> listarPorUsuario(Long usuarioId) {
+	    return personajeDao.findByUsuarioId(usuarioId);
+	}
 	
 	private Raza construirRaza(String razaTipo) throws ReglaJuegoException {
 		String rt = razaTipo.trim().toUpperCase();
@@ -126,5 +118,8 @@ public class PersonajeServiceImpl implements PersonajeService{
 		// TODO Auto-generated method stub
 		return personajeDao.update(p);
 	}
+
+	
+	
 
 }
