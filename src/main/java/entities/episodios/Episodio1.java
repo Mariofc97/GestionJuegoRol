@@ -42,6 +42,8 @@ static int contadorEpisodio1 = 0;
 	public static void episodio1(Personaje personaje) { // personaje es el nombre del personaje.
 		// Comprobación inicial: si no nos pasan un personaje, salimos con un mensaje de
 		// error
+		
+		
 		if (personaje == null) {
 			LOGGER.warning("Se llamó a episodio1 con Personaje null");
 			System.out.println("Error: personaje no proporcionado.");
@@ -72,6 +74,7 @@ static int contadorEpisodio1 = 0;
 				LOGGER.log(Level.WARNING, "No se pudo inicializar la lista de criaturas", e);
 			}
 		}
+		// FIXME: hay que declarar las keys como static para que se mantengan entre llamadas!!!!!!!!
 
 		// Flags que representan si el personaje ya ha realizado ciertas acciones
 		// key1: consiguió HojaParaLimpiar

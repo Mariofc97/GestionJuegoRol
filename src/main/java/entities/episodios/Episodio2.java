@@ -6,6 +6,7 @@ import entities.equipo.objetos.HojaParaLimpiar;
 import utilidades.Utils;
 
 public class Episodio2 {
+	// FIXME: hay que declarar las keys como static para que se mantengan entre llamadas!!!!!!!!
 	public static void episodio2(Personaje personaje) {
 		boolean key1 = false;
 		boolean key2 = false;
