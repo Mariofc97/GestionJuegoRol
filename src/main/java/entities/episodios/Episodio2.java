@@ -10,6 +10,7 @@ import utilidades.Utils;
 
 public class Episodio2 {
 	// FIXME: hay que declarar las keys como static para que se mantengan entre
+	//TODO: FALTA REPASAR CONTADOR DE EPISODIO2 PARA QUE FUNCIONE BIEN ENTRE
 	// llamadas!!!!!!!!
 	static int contadorEpisodio2 = 0;
 	// Logger específico para esta clase
