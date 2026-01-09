@@ -1,12 +1,24 @@
 package entities.episodios;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import entities.Personaje;
 import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.HojaParaLimpiar;
 import utilidades.Utils;
 
 public class Episodio2 {
-	// FIXME: hay que declarar las keys como static para que se mantengan entre llamadas!!!!!!!!
+	// FIXME: hay que declarar las keys como static para que se mantengan entre
+	// llamadas!!!!!!!!
+	static int contadorEpisodio1 = 0;
+	// Logger específico para esta clase
+	private static final Logger LOGGER = Logger.getLogger(Episodio2.class.getName());
+
+	static {
+		LOGGER.setUseParentHandlers(false); // evita que el logger escriba en consola
+	}
+
 	public static void episodio2(Personaje personaje) {
 		boolean key1 = false;
 		boolean key2 = false;
@@ -59,6 +71,15 @@ public class Episodio2 {
 				break;
 			case 6: {
 				// buscar materiales
+				// Caso 6: buscar objeto
+				// hacer el control de exdesde aqui.
+				try {
+					Utils.buscarObjeto(personaje);
+					LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
+				} catch (Exception e) {
+					LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
+					System.out.println("No se pudo buscar el objeto.");
+				}
 			}
 				break;
 			case 7: {
