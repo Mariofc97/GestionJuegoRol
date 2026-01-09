@@ -5,9 +5,9 @@ import java.util.List;
 
 import entities.Personaje;
 import entities.criatura.Criatura;
-import entities.episodios.Episodio1;
 import entities.episodios.Episodio2;
 import entities.equipo.Equipamiento;
+import utilidades.Utils;
 
 public class PruebaEpisodio2 {
 	public static void main(String[] args) {
@@ -22,7 +22,10 @@ public class PruebaEpisodio2 {
 		p.setPuntosVidaMax(100);
 		p.setPuntosVida(50);
 		p.setPuntosAtaque(10);
+		// añadir una criatura al personaje para probar
 
+		Criatura compi = Utils.randomizarCriatura();
+		p.getCriaturas().add(compi);
 		System.out.println("Iniciando prueba de Episodio 2 con el personaje: " + p.getNombre());
 		Episodio2.episodio2(p);
 		System.out.println("Fin de la prueba de Episodio 2.");

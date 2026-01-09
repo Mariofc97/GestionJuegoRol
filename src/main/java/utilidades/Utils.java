@@ -498,7 +498,7 @@ public class Utils {
 	public static String cazar(Personaje person) {
 		// añadir condicion para poder cazar
 		if (person.getCriaturas().size() == 0) {
-
+			System.out.println("No puedes cazar sin un compañero criatura, primero invoca uno.");
 			return "No puedes cazar sin un compañero criatura, primero invoca uno.";
 		}
 		boolean exito = dadoDiez() > 3; // 70% de exito
@@ -511,6 +511,7 @@ public class Utils {
 			// CRIATURA
 			person.getEquipo().add(carneSeca);
 			person.ganarExperiencia();
+			System.out.println("entra en exito de caza");
 			return "Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
 					+ " en el inventario.";
 
