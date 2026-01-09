@@ -613,6 +613,8 @@ public class Utils {
 			break;
 		}
 		
+		personaje.getEquipo().add(nuevaArma);
+		System.out.println("Has fabricado un " + nuevaArma.getNombre() + " y se ha añadido a tu inventario.");
 		return nuevaArma;
 	}
 
