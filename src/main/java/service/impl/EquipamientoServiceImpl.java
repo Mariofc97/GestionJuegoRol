@@ -46,8 +46,8 @@ public class EquipamientoServiceImpl {
 		String t = tipo.trim().toUpperCase();
 		
 		switch (t) {
-		case "CUERDA":
-			return new Cuerda();
+		case "ARCO":
+			return new ("");
 		case "PIERDA":
 			return new Piedra();
 		case "PALO":
