@@ -119,6 +119,13 @@ public class Episodio2 {
 				break;
 			case 5: {
 				// inventario
+				try {
+					Utils.menuInventario(personaje);
+					LOGGER.info("Mostrando inventario de: " + personaje.getNombre());
+				} catch (Exception e) {
+					LOGGER.log(Level.SEVERE, "Error al mostrar el inventario", e);
+					System.out.println("No se pudo mostrar el inventario.");
+				}
 			}
 				break;
 			case 6: {
