@@ -1,28 +1,17 @@
 package entities.equipo.objetos;
 
 import entities.equipo.Equipamiento;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
+
+@Entity	
+@DiscriminatorValue("BAYA")
 public class Baya extends Equipamiento {
 
-	private int puntosVida;
-
-	public Baya(String nombre, int nivelRequerido, int peso, int durabilidad, int puntosVida) {
-		super(nombre, nivelRequerido, peso, durabilidad);
-		this.puntosVida = puntosVida;
+	public Baya() {
+		super("Baya", 1, 2, 2); // ajusta valores
 	}
-
-	public Baya(String nombre, int puntosVida) {
-		super();
-		this.setNombre(nombre);
-		this.puntosVida = puntosVida;
-	}
-
-	public int getPuntosVida() {
-		return puntosVida;
-	}
-
-	public void setPuntosVida(int puntosVida) {
-		this.puntosVida = puntosVida;
-	}
+	
 
 }

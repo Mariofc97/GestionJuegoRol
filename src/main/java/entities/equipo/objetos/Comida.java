@@ -1,28 +1,15 @@
 package entities.equipo.objetos;
 
 import entities.equipo.Equipamiento;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
+@Entity
+@DiscriminatorValue("COMIDA")
 public class Comida extends Equipamiento {
 
-	private int puntosVida;
-
-	public Comida(String nombre, int nivelRequerido, int peso, int durabilidad, int puntosVida) {
-		super(nombre, nivelRequerido, peso, durabilidad);
-		this.puntosVida = puntosVida;
-	}
-
-	public Comida(String nombre, int puntosVida) {
-		super();
-		this.setNombre(nombre);
-		this.puntosVida = puntosVida;
-	}
-
-	public int getPuntosVida() {
-		return puntosVida;
-	}
-
-	public void setPuntosVida(int puntosVida) {
-		this.puntosVida = puntosVida;
+	public Comida() {
+		super("Comida", 1, 3, 2); // ajusta valores
 	}
 
 }
