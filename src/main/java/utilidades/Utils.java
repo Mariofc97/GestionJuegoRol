@@ -310,7 +310,8 @@ public class Utils {
 		System.out.println("\n--- POCIONES ---");
 		for (int i = 0; i < pociones.size(); i++) {
 			Pocion p = pociones.get(i);
-			System.out.println((i + 1) + ". " + p.getNombre() + " (cura: " + p.getPuntosVida() + " puntos de vida)");
+			//FIXME: completar curacion pocion EL SYSO FALTA GETPUNTOSVIDA
+			System.out.println((i + 1) + ". " + p.getNombre() + " (cura: "  + " puntos de vida)");
 		}
 		System.out.println((pociones.size() + 1) + ". Volver");
 
@@ -530,7 +531,7 @@ public class Utils {
 			System.out.println(
 					"metes la mano en un agujero, tocas algo y puensas... que suerte!!!! pero... resulta ser el nido de una serpiente que te muerde");
 			personaje.setPuntosVida(personaje.getPuntosVida() - 5);
-			break;
+			return;
 		} else if (tirada > 2) {
 			int tirada2 = Utils.dadoDiez(); // con esta tirada escogemos el objeto
 			if (tirada2 == 1 || tirada2 == 2) {

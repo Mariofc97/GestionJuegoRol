@@ -132,7 +132,7 @@ public class Episodio1 {
 							System.out.println("Te dan un torta... LLORON DEJA DE LLORAR!!!!!");
 							break;
 						}
-						HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
+						HojaParaLimpiar hojadeortiga = new HojaParaLimpiar();
 						personaje.getEquipo().add(hojadeortiga);
 						key1 = true; // marcamos que consiguió el objeto
 						String msg = "Has obtenido una Hoja de Ortiga.";
