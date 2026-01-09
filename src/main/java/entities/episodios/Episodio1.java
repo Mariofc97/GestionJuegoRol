@@ -221,47 +221,15 @@ public class Episodio1 {
 					break;
 				case 6: {
 					// Caso 6: buscar objeto
+					// hacer el control de exdesde aqui.
 					try {
-						int tirada = Utils.dadoDiez();
-						if (tirada <= 2) {
-							System.out.println(
-									"metes la mano en un agujero, tocas algo y puensas... que suerte!!!! pero... resulta ser el nido de una serpiente que te muerde");
-							personaje.setPuntosVida(personaje.getPuntosVida() - 5);
-							break;
-						} else if (tirada > 2) {
-							int tirada2 = Utils.dadoDiez(); // con esta tirada escogemos el objeto
-							if (tirada2 == 1 || tirada2 == 2) {
-								System.out.println("despues de buscar un rato encuentras un objeto util");
-								// HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-								personaje.getEquipo().add(new MojonSeco("Mojon Seco"));
-								System.out.println("has encontrado una hoja de ortiga");
-							} else if (tirada2 == 3 || tirada2 == 4) {
-								System.out.println("despues de buscar un rato encuentras un objeto util");
-								personaje.getEquipo().add(new Cuerda());
-								System.out.println("has encontrado una hoja de ortiga");
-							} else if (tirada2 == 5 || tirada2 == 6) {
-								System.out.println("despues de buscar un rato encuentras un objeto util");
-								personaje.getEquipo().add(new Piedra("Piedra"));
-								System.out.println("has encontrado una hoja de ortiga");
-							} else if (tirada2 == 7 || tirada2 == 8) {
-								System.out.println("despues de buscar un rato encuentras un objeto util");
-								personaje.getEquipo().add(new Palo("Palo"));
-								System.out.println("has encontrado una hoja de ortiga");
-							} else {
-								// tienes que ganar otro objeto de momento vacio
-							}
-							System.out.println("despues de buscar un rato encuentras un objeto util");
-							HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-							// personaje.getEquipo().add(hojadeortiga);
-							System.out.println("has encontrado una hoja de ortiga");
-						}
-
-						// Utils.buscarObjeto(personaje);
+						Utils.buscarObjeto(personaje);
 						LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
 					} catch (Exception e) {
 						LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
 						System.out.println("No se pudo buscar el objeto.");
 					}
+
 				}
 					break;
 
