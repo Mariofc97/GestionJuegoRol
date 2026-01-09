@@ -10,7 +10,7 @@ import jakarta.persistence.Entity;
 public class Bumeran extends Armas {
 
 	public Bumeran() {
-		super("Bumeran", 7, 7, 13, 6);
+		super("Bumeran", 7, 1, 13, 6);
 	}
 
 	

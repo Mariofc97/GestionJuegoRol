@@ -9,6 +9,6 @@ import jakarta.persistence.Entity;
 
 public class MojonSeco extends Equipamiento {
 public MojonSeco() {
-		super("Mojón Seco", 1, 3, 5); // ajusta valores
+		super("Mojón Seco", 1, 1, 5); // ajusta valores
 	}
 }

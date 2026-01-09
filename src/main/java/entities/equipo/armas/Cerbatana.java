@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 public class Cerbatana extends Armas {
 	public Cerbatana() {
 
-		super("Dardo venenoso", 8, 10, 10, 6);
+		super("Dardo venenoso", 8, 1, 10, 6);
 
 	}
 }

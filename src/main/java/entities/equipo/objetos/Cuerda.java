@@ -9,6 +9,6 @@ import jakarta.persistence.Entity;
 public class Cuerda extends Equipamiento {
 
     public Cuerda() {
-        super("Cuerda", 1, 4, 95); // ajusta valores
+        super("Cuerda", 1, 1, 95); // ajusta valores
     }
 }

@@ -11,7 +11,7 @@ public class Arco extends Armas{
 	String nombre = "Arco";
 
 	public Arco() {
-		super("Arco", 9, 9, 17,15); // ajusta valores
+		super("Arco", 9, 1, 17,15); // ajusta valores
 	}
 	
 

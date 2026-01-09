@@ -9,7 +9,7 @@ import jakarta.persistence.Entity;
 public class Comida extends Equipamiento {
 
 	public Comida() {
-		super("Comida", 1, 3, 2); // ajusta valores
+		super("Comida", 1, 1, 2); // ajusta valores
 	}
 
 }

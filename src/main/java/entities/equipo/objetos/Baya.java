@@ -10,7 +10,7 @@ import jakarta.persistence.Entity;
 public class Baya extends Equipamiento {
 
 	public Baya() {
-		super("Baya", 1, 2, 2); // ajusta valores
+		super("Baya", 1, 1, 2); // ajusta valores
 	}
 	
 

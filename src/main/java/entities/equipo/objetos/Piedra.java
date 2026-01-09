@@ -11,7 +11,7 @@ import jakarta.persistence.Entity;
 public class Piedra extends Equipamiento{
 
 public Piedra() {
-		super("Piedra", 8, 5, 100); // ajusta valores
+		super("Piedra", 8, 1, 100); // ajusta valores
 	
 	
 	

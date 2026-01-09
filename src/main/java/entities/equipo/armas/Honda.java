@@ -10,7 +10,7 @@ import jakarta.persistence.Entity;
 public class Honda extends Armas {
 
 	public Honda() {
-		super("Honda", 6, 2,16, 10);
+		super("Honda", 6, 1,16, 10);
 	}
 	
 }

@@ -10,7 +10,7 @@ import jakarta.persistence.Entity;
 public class Cazamariposas extends Armas {
 
 	public Cazamariposas() {
-		super("Malla limita visión",3,2,1,6);
+		super("Malla limita visión",3,1,1,6);
 		
 		
 		

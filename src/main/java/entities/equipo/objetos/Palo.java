@@ -15,6 +15,6 @@ public class Palo extends Equipamiento {
 	
 
 public Palo() {
-		super("Palo", 2, 7, 100); // ajusta valores
+		super("Palo", 2, 1, 100); // ajusta valores
 	}
 }

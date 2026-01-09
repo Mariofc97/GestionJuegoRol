@@ -12,6 +12,6 @@ import jakarta.persistence.Entity;
 public class HojaParaLimpiar extends Equipamiento {
 	
 public HojaParaLimpiar() {
-	super("Hoja para limpiar", 1, 3, 10); // ajusta valores
+	super("Hoja para limpiar", 1, 1, 10); // ajusta valores
 }
 }
