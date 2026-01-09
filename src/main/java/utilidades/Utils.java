@@ -519,7 +519,7 @@ public class Utils {
 		} else {
 			int danioHecho = presa.atacar(person);
 			person.setPuntosVida(person.getPuntosVida() - danioHecho);
-			System.out.println("Eres mas debil que un" + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
+			System.out.println("Eres mas debil que un " + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
 					+ " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
 					+ person.getPuntosVida());
 			return "Eres mas debil que un" + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho

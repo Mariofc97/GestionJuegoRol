@@ -6,6 +6,11 @@ import dao.impl.EquipamientoDaoImpl;
 import dao.impl.PersonajeDaoImpl;
 import dto.EquipamientoDto;
 import entities.equipo.Equipamiento;
+import entities.equipo.objetos.Cuerda;
+import entities.equipo.objetos.MojonSeco;
+import entities.equipo.objetos.Palo;
+import entities.equipo.objetos.Piedra;
+import entities.equipo.objetos.Pocion;
 
 public class EquipamientoServiceImpl {
 
@@ -35,5 +40,29 @@ public class EquipamientoServiceImpl {
 				personajeId
 				);
 				
+	}
+	
+	private Equipamiento construirEquipamiento(String tipo) {
+		String t = tipo.trim().toUpperCase();
+		
+		switch (t) {
+		case "CUERDA":
+			return new Cuerda();
+		case "PIERDA":
+			return new Piedra();
+		case "PALO":
+			return new Palo();
+		case "MOJON SECO":
+			return new MojonSeco();
+		case "POCION":
+			return new Pocion();
+		case "PALO":
+			return new Palo();
+		case "PALO":
+			return new Palo();
+
+		default:
+			break;
+		}
 	}
 }
