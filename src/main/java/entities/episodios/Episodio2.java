@@ -91,7 +91,7 @@ public class Episodio2 {
 				try {
 					int puntosdeExperienciaAntesCazar = personaje.getExperiencia();
 					Utils.cazar(personaje);
-					if (personaje.getExperiencia() >= puntosdeExperienciaAntesCazar) {
+					if (personaje.getExperiencia() > puntosdeExperienciaAntesCazar) {
 						key2 = true;
 						LOGGER.info("El personaje " + personaje.getNombre() + " ha cazado con éxito.");
 					}
