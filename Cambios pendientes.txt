@@ -3,6 +3,7 @@
 Anotaciones MARIO:
 
 tenemos que poder usar tanto POCIONES, como CARNE SECA para curarnos.
+tengo que mejorar el metodo construirArma de utils, ahora mismo se mete siempre por la excepcion, ademas debemos de eliminar los objetos necesarios en el equipamiento para la fabricacion cuando sea satisfactoria
 
 MARIO: revisar porque en PruebaCapas, cuando creo un personaje luego en el case 8 no se llega a listar.
 
