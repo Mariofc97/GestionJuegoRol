@@ -42,27 +42,28 @@ public class EquipamientoServiceImpl {
 				
 	}
 	
-	private Equipamiento construirEquipamiento(String tipo) {
-		String t = tipo.trim().toUpperCase();
-		
-		switch (t) {
-		case "ARCO":
-			return new ("");
-		case "PIERDA":
-			return new Piedra();
-		case "PALO":
-			return new Palo();
-		case "MOJON SECO":
-			return new MojonSeco();
-		case "POCION":
-			return new Pocion();
-		case "PALO":
-			return new Palo();
-		case "PALO":
-			return new Palo();
-
-		default:
-			break;
-		}
-	}
+	// tiene que ir en utils
+//	private Equipamiento construirEquipamiento(String tipo) {
+//		String t = tipo.trim().toUpperCase();
+//		
+//		switch (t) {
+//		case "ARCO":
+//			return new ("");
+//		case "PIERDA":
+//			return new Piedra();
+//		case "PALO":
+//			return new Palo();
+//		case "MOJON SECO":
+//			return new MojonSeco();
+//		case "POCION":
+//			return new Pocion();
+//		case "PALO":
+//			return new Palo();
+//		case "PALO":
+//			return new Palo();
+//
+//		default:
+//			break;
+//		}
+//	}
 }

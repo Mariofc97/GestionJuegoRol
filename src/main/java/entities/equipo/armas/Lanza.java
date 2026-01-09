@@ -4,11 +4,11 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("CERBATANA")
-public class Cerbatana extends Armas {
-	public Cerbatana() {
+@DiscriminatorValue("LANZA")
+public class Lanza extends Armas {
+	public Lanza() {
 
-		super("Dardo venenoso", 8, 1, 10, 6);
+		super("Lanzamiento de lanza", 8, 1, 10, 6);
 
 	}
 }

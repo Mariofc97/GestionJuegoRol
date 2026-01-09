@@ -6,7 +6,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,11 @@ import entities.criatura.Mosquito;
 import entities.criatura.Raton;
 import entities.equipo.Equipamiento;
 import entities.equipo.Escudos;
+import entities.equipo.armas.Arco;
 import entities.equipo.armas.Armas;
+import entities.equipo.armas.Bumeran;
+import entities.equipo.armas.Cazamariposas;
+import entities.equipo.armas.Lanza;
 import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.CarneSeca;
 import entities.equipo.objetos.Cuerda;
@@ -28,6 +31,7 @@ import entities.equipo.objetos.MojonSeco;
 import entities.equipo.objetos.Palo;
 import entities.equipo.objetos.Piedra;
 import entities.equipo.objetos.Pocion;
+import exceptions.ReglaJuegoException;
 
 public class Utils {
 
@@ -566,6 +570,50 @@ public class Utils {
 
 		// Utils.buscarObjeto(personaje);
 
+	}
+	
+	public static Armas construirArma(Personaje personaje, String tipo) throws ReglaJuegoException {
+		String t = Utils.pideDatoCadena("Selecciona el arma que quieres fabricar: ");
+		t = tipo.trim().toUpperCase();
+		
+		Armas nuevaArma = null;
+		switch (t) {
+		case "ARCO":
+			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "CUERDA" || personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO") {
+				nuevaArma = new Arco();
+			} else {
+				throw new ReglaJuegoException("Necesitas un palo y una cuerda para fabricar el arco");
+			}
+		case "BUMERAN":
+			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO") {
+				nuevaArma = new Bumeran();
+			} else {
+				throw new ReglaJuegoException("Necesitas un palo para fabricar el bumeran");
+			}
+		case "CAZAMARIPOSAS":
+			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO" || personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "MOJON SECO") {
+				nuevaArma = new Cazamariposas();
+			} else {
+				throw new ReglaJuegoException("Necesitas un palo y un excremento para fabricar el cazamariposas");
+			}
+		case "LANZA":
+			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO" || personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "MOJON SECO") {
+				nuevaArma = new Lanza();
+			} else {
+				throw new ReglaJuegoException("Necesitas un palo y una pierda para fabricar el lanza");
+			}
+		case "HONDA":
+			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "CUERDA") {
+				nuevaArma = new Lanza();
+			} else {
+				throw new ReglaJuegoException("Necesitas una cuerda para fabricar la honda");
+			}
+		default:
+			System.out.println("Opcion invalida");
+			break;
+		}
+		
+		return nuevaArma;
 	}
 
 }
