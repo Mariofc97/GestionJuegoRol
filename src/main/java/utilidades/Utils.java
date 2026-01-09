@@ -516,15 +516,15 @@ public class Utils {
 			person.getEquipo().add(carneSeca);
 			person.ganarExperiencia();
 			System.out.println("Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
-			+ " en el inventario.");
+					+ " en el inventario.");
 			return "Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
 					+ " en el inventario.";
 
 		} else {
 			int danioHecho = presa.atacar(person);
 			person.setPuntosVida(person.getPuntosVida() - danioHecho);
-			System.out.println("Eres mas debil que un " + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
-					+ " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
+			System.out.println("Eres mas debil que un " + presa.getNombre() + ", y al intentar cazarlo te hace "
+					+ danioHecho + " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
 					+ person.getPuntosVida());
 			return "Eres mas debil que un" + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
 					+ " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
@@ -571,39 +571,43 @@ public class Utils {
 		// Utils.buscarObjeto(personaje);
 
 	}
-	
-	public static Armas construirArma(Personaje personaje, String tipo) throws ReglaJuegoException {
-		String t = Utils.pideDatoCadena("Selecciona el arma que quieres fabricar: ");
-		t = tipo.trim().toUpperCase();
-		
+
+	public static Armas construirArma(Personaje personaje) throws ReglaJuegoException {
+		String t = Utils.pideDatoCadena(
+				"Selecciona el arma que quieres fabricar: (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA)");
+		String tipo = t.trim().toUpperCase();
+
 		Armas nuevaArma = null;
-		switch (t) {
+		switch (tipo) {
 		case "ARCO":
-			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "CUERDA" || personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO") {
+			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "CUERDA"
+					|| personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO") {
 				nuevaArma = new Arco();
 			} else {
 				throw new ReglaJuegoException("Necesitas un palo y una cuerda para fabricar el arco");
 			}
 		case "BUMERAN":
-			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO") {
+			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO") {
 				nuevaArma = new Bumeran();
 			} else {
 				throw new ReglaJuegoException("Necesitas un palo para fabricar el bumeran");
 			}
 		case "CAZAMARIPOSAS":
-			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO" || personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "MOJON SECO") {
+			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO"
+					|| personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "MOJON SECO") {
 				nuevaArma = new Cazamariposas();
 			} else {
 				throw new ReglaJuegoException("Necesitas un palo y un excremento para fabricar el cazamariposas");
 			}
 		case "LANZA":
-			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO" || personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "MOJON SECO") {
+			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO"
+					|| personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "MOJON SECO") {
 				nuevaArma = new Lanza();
 			} else {
 				throw new ReglaJuegoException("Necesitas un palo y una pierda para fabricar el lanza");
 			}
 		case "HONDA":
-			if(personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "CUERDA") {
+			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "CUERDA") {
 				nuevaArma = new Lanza();
 			} else {
 				throw new ReglaJuegoException("Necesitas una cuerda para fabricar la honda");
@@ -612,7 +616,7 @@ public class Utils {
 			System.out.println("Opcion invalida");
 			break;
 		}
-		
+
 		personaje.getEquipo().add(nuevaArma);
 		System.out.println("Has fabricado un " + nuevaArma.getNombre() + " y se ha añadido a tu inventario.");
 		return nuevaArma;

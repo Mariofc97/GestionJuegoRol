@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import entities.Personaje;
 import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.HojaParaLimpiar;
+import exceptions.ReglaJuegoException;
 import utilidades.Utils;
 
 public class Episodio2 {
@@ -107,6 +108,13 @@ public class Episodio2 {
 
 			case 3: {
 				// crear arma
+				
+				try {
+					Utils.construirArma(personaje);
+				} catch (ReglaJuegoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				key3 = true; // <-- IMPORTANTE PARA PODER SALIR
 			}
 				break;
