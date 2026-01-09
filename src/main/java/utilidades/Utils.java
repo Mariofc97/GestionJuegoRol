@@ -6,6 +6,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,11 @@ import entities.equipo.Escudos;
 import entities.equipo.armas.Armas;
 import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.CarneSeca;
-import entities.equipo.objetos.Comida;
+import entities.equipo.objetos.Cuerda;
+import entities.equipo.objetos.HojaParaLimpiar;
+import entities.equipo.objetos.MojonSeco;
+import entities.equipo.objetos.Palo;
+import entities.equipo.objetos.Piedra;
 import entities.equipo.objetos.Pocion;
 
 public class Utils {
@@ -205,7 +210,7 @@ public class Utils {
 			System.out.println((i + 1) + ". [" + tipoEq + "]" + e.getNombre() + " (peso: " + e.getPeso()
 					+ ", durabilidad: " + e.getDurabilidad() + ")");
 			// añadir diferenciacion entre armas, pociones, escudos, comida, etc
-			
+
 		}
 	}
 
@@ -516,6 +521,45 @@ public class Utils {
 					+ person.getPuntosVida();
 
 		}
+	}
+
+	public static void buscarObjeto(Personaje personaje) {
+
+		int tirada = Utils.dadoDiez();
+		if (tirada <= 2) {
+			System.out.println(
+					"metes la mano en un agujero, tocas algo y puensas... que suerte!!!! pero... resulta ser el nido de una serpiente que te muerde");
+			personaje.setPuntosVida(personaje.getPuntosVida() - 5);
+			break;
+		} else if (tirada > 2) {
+			int tirada2 = Utils.dadoDiez(); // con esta tirada escogemos el objeto
+			if (tirada2 == 1 || tirada2 == 2) {
+				System.out.println("despues de buscar un rato encuentras un objeto util");
+				personaje.getEquipo().add(new MojonSeco());
+				System.out.println("has encontrado un Mojon seco");
+			} else if (tirada2 == 3 || tirada2 == 4) {
+				System.out.println("despues de buscar un rato encuentras un objeto util");
+				personaje.getEquipo().add(new Cuerda());
+				System.out.println("has encontrado una Cuerda");
+			} else if (tirada2 == 5 || tirada2 == 6) {
+				System.out.println("despues de buscar un rato encuentras un objeto util");
+				personaje.getEquipo().add(new Piedra());
+				System.out.println("has encontrado una Piedra");
+			} else if (tirada2 == 7 || tirada2 == 8) {
+				System.out.println("despues de buscar un rato encuentras un objeto util");
+				personaje.getEquipo().add(new Palo());
+				System.out.println("has encontrado un Palo");
+			} else {
+				// tienes que ganar otro objeto de momento vacio
+				System.out.println("despues de buscar un rato encuentras un objeto util");
+				personaje.getEquipo().add(new HojaParaLimpiar());
+				System.out.println("has encontrado una hoja de ortiga");
+			}
+
+		}
+
+		// Utils.buscarObjeto(personaje);
+
 	}
 
 }
