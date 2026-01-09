@@ -310,8 +310,8 @@ public class Utils {
 		System.out.println("\n--- POCIONES ---");
 		for (int i = 0; i < pociones.size(); i++) {
 			Pocion p = pociones.get(i);
-			//FIXME: completar curacion pocion EL SYSO FALTA GETPUNTOSVIDA
-			System.out.println((i + 1) + ". " + p.getNombre() + " (cura: "  + " puntos de vida)");
+			// FIXME: completar curacion pocion EL SYSO FALTA GETPUNTOSVIDA
+			System.out.println((i + 1) + ". " + p.getNombre() + " (cura: " + p.getPuntosDeVida() + " puntos de vida)");
 		}
 		System.out.println((pociones.size() + 1) + ". Volver");
 
