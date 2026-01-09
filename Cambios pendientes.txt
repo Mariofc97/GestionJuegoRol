@@ -2,6 +2,8 @@
 
 Anotaciones MARIO:
 
+tenemos que poder usar tanto POCIONES, como CARNE SECA para curarnos.
+
 MARIO: revisar porque en PruebaCapas, cuando creo un personaje luego en el case 8 no se llega a listar.
 
 	Las clases de episodio estan dentro de entities.episodios, pero el enfoque correcto será:
