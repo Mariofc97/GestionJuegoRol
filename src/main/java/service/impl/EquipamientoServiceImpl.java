@@ -24,5 +24,16 @@ public class EquipamientoServiceImpl {
 		} else {
 			e.getPersonaje().getId();
 		}
+		
+		return new EquipamientoDto(
+				e.getId(),
+				tipo,
+				e.getNombre(),
+				e.getPeso(),
+				e.getDurabilidad(),
+				e.getNivelRequerido(),
+				personajeId
+				);
+				
 	}
 }
