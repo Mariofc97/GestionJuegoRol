@@ -22,12 +22,12 @@ import utilidades.Utils;
  * "episodio1.log".
  */
 public class Episodio1 {
-static int contadorEpisodio1 = 0;
+	static int contadorEpisodio1 = 0;
 	// Logger específico para esta clase
 	private static final Logger LOGGER = Logger.getLogger(Episodio1.class.getName());
 
 	static {
-	    LOGGER.setUseParentHandlers(false); // evita que el logger escriba en consola
+		LOGGER.setUseParentHandlers(false); // evita que el logger escriba en consola
 	}
 	// crear un menu:necesito un switch.
 
@@ -42,8 +42,7 @@ static int contadorEpisodio1 = 0;
 	public static void episodio1(Personaje personaje) { // personaje es el nombre del personaje.
 		// Comprobación inicial: si no nos pasan un personaje, salimos con un mensaje de
 		// error
-		
-		
+
 		if (personaje == null) {
 			LOGGER.warning("Se llamó a episodio1 con Personaje null");
 			System.out.println("Error: personaje no proporcionado.");
@@ -74,22 +73,23 @@ static int contadorEpisodio1 = 0;
 				LOGGER.log(Level.WARNING, "No se pudo inicializar la lista de criaturas", e);
 			}
 		}
-		// FIXME: hay que declarar las keys como static para que se mantengan entre llamadas!!!!!!!!
+		// FIXME: hay que declarar las keys como static para que se mantengan entre
+		// llamadas!!!!!!!!
 
 		// Flags que representan si el personaje ya ha realizado ciertas acciones
 		// key1: consiguió HojaParaLimpiar
 		// key2: aprendió a invocar criaturas
 		// key3: sufrió la desgracia o durmió (ambas ponen a 1 la vida o la restauran)
-		
+
 		boolean key1 = false;
 		boolean key2 = false;
 		boolean key3 = false;
-		if ( contadorEpisodio1 == 0) {
-			
-		key1 = false;
-		key2 = false;
-		key3 = false;
-		}else {
+		if (contadorEpisodio1 == 0) {
+
+			key1 = false;
+			key2 = false;
+			key3 = false;
+		} else {
 			key1 = true;
 			key2 = true;
 			key3 = true;
@@ -219,53 +219,51 @@ static int contadorEpisodio1 = 0;
 				}
 
 					break;
-					case 6: {
-						// Caso 6: buscar objeto
-						try {
-							int tirada = Utils.dadoDiez();
-							if (tirada<=2) {
-								System.out.println("metes la mano en un agujero, tocas algo y puensas... que suerte!!!! pero... resulta ser el nido de una serpiente que te muerde");
-								personaje.setPuntosVida(personaje.getPuntosVida()-5);
-								break;
-							} else if (tirada>2) {
-								int tirada2 = Utils.dadoDiez(); // con esta tirada escogemos el objeto
-								if (tirada2==1 || tirada2==2) {
-									System.out.println("despues de buscar un rato encuentras un objeto util");
-									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-									personaje.getEquipo().add(new MojonSeco("Mojon Seco"));
-									System.out.println("has encontrado una hoja de ortiga");
-								} else if (tirada2==3 || tirada2==4) {
-									System.out.println("despues de buscar un rato encuentras un objeto util");
-									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-									personaje.getEquipo().add(new Cuerda());
-									System.out.println("has encontrado una hoja de ortiga");
-								} else if (tirada2==5 || tirada2==6) {
-									System.out.println("despues de buscar un rato encuentras un objeto util");
-									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-									personaje.getEquipo().add(new Piedra("Piedra"));
-									System.out.println("has encontrado una hoja de ortiga");
-								}else if (tirada2==7 || tirada2==8) {
-									System.out.println("despues de buscar un rato encuentras un objeto util");
-									//HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-									personaje.getEquipo().add(new Palo("Palo"));
-									System.out.println("has encontrado una hoja de ortiga");}
-								else {
-									//tienes que ganar otro objeto de momento vacio
-								}
+				case 6: {
+					// Caso 6: buscar objeto
+					try {
+						int tirada = Utils.dadoDiez();
+						if (tirada <= 2) {
+							System.out.println(
+									"metes la mano en un agujero, tocas algo y puensas... que suerte!!!! pero... resulta ser el nido de una serpiente que te muerde");
+							personaje.setPuntosVida(personaje.getPuntosVida() - 5);
+							break;
+						} else if (tirada > 2) {
+							int tirada2 = Utils.dadoDiez(); // con esta tirada escogemos el objeto
+							if (tirada2 == 1 || tirada2 == 2) {
 								System.out.println("despues de buscar un rato encuentras un objeto util");
-								HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
-								//personaje.getEquipo().add(hojadeortiga);
+								// HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
+								personaje.getEquipo().add(new MojonSeco("Mojon Seco"));
 								System.out.println("has encontrado una hoja de ortiga");
+							} else if (tirada2 == 3 || tirada2 == 4) {
+								System.out.println("despues de buscar un rato encuentras un objeto util");
+								personaje.getEquipo().add(new Cuerda());
+								System.out.println("has encontrado una hoja de ortiga");
+							} else if (tirada2 == 5 || tirada2 == 6) {
+								System.out.println("despues de buscar un rato encuentras un objeto util");
+								personaje.getEquipo().add(new Piedra("Piedra"));
+								System.out.println("has encontrado una hoja de ortiga");
+							} else if (tirada2 == 7 || tirada2 == 8) {
+								System.out.println("despues de buscar un rato encuentras un objeto util");
+								personaje.getEquipo().add(new Palo("Palo"));
+								System.out.println("has encontrado una hoja de ortiga");
+							} else {
+								// tienes que ganar otro objeto de momento vacio
 							}
-							
-						//	Utils.buscarObjeto(personaje);
-							LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
-						} catch (Exception e) {
-							LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
-							System.out.println("No se pudo buscar el objeto.");
+							System.out.println("despues de buscar un rato encuentras un objeto util");
+							HojaParaLimpiar hojadeortiga = new HojaParaLimpiar("Hoja Ortiga", 1, 1, 1);
+							// personaje.getEquipo().add(hojadeortiga);
+							System.out.println("has encontrado una hoja de ortiga");
 						}
+
+						// Utils.buscarObjeto(personaje);
+						LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
+					} catch (Exception e) {
+						LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
+						System.out.println("No se pudo buscar el objeto.");
 					}
-						break;
+				}
+					break;
 
 				default:
 					// Opción inválida: avisar al usuario y registrar

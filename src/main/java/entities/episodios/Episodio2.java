@@ -54,15 +54,15 @@ public class Episodio2 {
 			}
 				break;
 			case 5: {
-				// Usar objeto
+				// inventario
 			}
 				break;
 			case 6: {
-				// Ver objetos
+				// buscar materiales
 			}
 				break;
 			case 7: {
-				// Ver armas
+				// ir al bosque oscuro
 			}
 				break;
 
