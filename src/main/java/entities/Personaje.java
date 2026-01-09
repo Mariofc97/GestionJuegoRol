@@ -226,7 +226,7 @@ public class Personaje implements Atacable, Defendible {
 
 	public int usarPocion(Pocion pocion) {
 
-		int puntosVidaPocion = pocion.getPuntosVida();
+		int puntosVidaPocion = pocion.getPuntosDeVida();
 
 		this.puntosVida = puntosVida + puntosVidaPocion;
 		System.out.println("El personaje " + nombre + " se ha curado " + puntosVidaPocion + " puntos de vida gracias");
