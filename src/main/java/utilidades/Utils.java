@@ -484,11 +484,11 @@ public class Utils {
 			personaje.setPuntosVida(personaje.getPuntosVida() - 5);
 		} else if (tirada > 3 && tirada <= 7) {
 			System.out.println("Has encontrado algunas bayas");
-			personaje.getEquipo().add(new Baya("Baya", 10));
+			personaje.getEquipo().add(new Baya());
 		} else if (tirada > 7) {
 			System.out.println("Has encontrado muchas bayas");
-			personaje.getEquipo().add(new Baya("Baya", 10));
-			personaje.getEquipo().add(new Baya("Baya", 10));
+			personaje.getEquipo().add(new Baya());
+			personaje.getEquipo().add(new Baya());
 
 		}
 
@@ -505,7 +505,7 @@ public class Utils {
 
 		if (exito) {
 			// Comida carne = new Comida(presa.getNombre() + " carne", 10);
-			CarneSeca carneSeca = new CarneSeca(presa.getNombre() + " carne seca", 15);
+			CarneSeca carneSeca = new CarneSeca();
 			// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA
 			// CRIATURA
 			person.getEquipo().add(carneSeca);
