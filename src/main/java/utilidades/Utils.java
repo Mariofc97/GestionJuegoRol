@@ -511,13 +511,17 @@ public class Utils {
 			// CRIATURA
 			person.getEquipo().add(carneSeca);
 			person.ganarExperiencia();
-			System.out.println("entra en exito de caza");
+			System.out.println("Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
+			+ " en el inventario.");
 			return "Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
 					+ " en el inventario.";
 
 		} else {
 			int danioHecho = presa.atacar(person);
 			person.setPuntosVida(person.getPuntosVida() - danioHecho);
+			System.out.println("Eres mas debil que un" + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
+					+ " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
+					+ person.getPuntosVida());
 			return "Eres mas debil que un" + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
 					+ " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
 					+ person.getPuntosVida();
