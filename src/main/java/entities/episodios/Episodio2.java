@@ -11,7 +11,7 @@ import utilidades.Utils;
 
 public class Episodio2 {
 	// FIXME: hay que declarar las keys como static para que se mantengan entre
-	//TODO: FALTA REPASAR CONTADOR DE EPISODIO2 PARA QUE FUNCIONE BIEN ENTRE
+	// TODO: FALTA REPASAR CONTADOR DE EPISODIO2 PARA QUE FUNCIONE BIEN ENTRE
 	// llamadas!!!!!!!!
 	static int contadorEpisodio2 = 0;
 	// Logger específico para esta clase
@@ -56,18 +56,18 @@ public class Episodio2 {
 			}
 		}
 
-		boolean key1 = false;
-		boolean key2 = false;
-		boolean key3 = false;
+		boolean episodio2key1 = false;
+		boolean episodio2key2 = false;
+		boolean episodio2key3 = false;
 		if (contadorEpisodio2 == 0) {
 
-			key1 = false;
-			key2 = false;
-			key3 = false;
+			episodio2key1 = false;
+			episodio2key2 = false;
+			episodio2key3 = false;
 		} else {
-			key1 = true;
-			key2 = true;
-			key3 = true;
+			episodio2key1 = true;
+			episodio2key2 = true;
+			episodio2key3 = true;
 		}
 		boolean salida = false;
 
@@ -84,7 +84,7 @@ public class Episodio2 {
 				// buscar bayas
 				Utils.buscarBaya(personaje);
 
-				key1 = true;
+				episodio2key1 = true;
 			}
 				break;
 
@@ -95,7 +95,7 @@ public class Episodio2 {
 					System.out.println("Intentando cazar...");
 					Utils.cazar(personaje);
 					if (personaje.getExperiencia() > puntosdeExperienciaAntesCazar) {
-						key2 = true;
+						episodio2key2 = true;
 						System.out.println("Caza realizada con éxito.");
 						LOGGER.info("El personaje " + personaje.getNombre() + " ha cazado con éxito.");
 					}
@@ -107,21 +107,21 @@ public class Episodio2 {
 				break;
 
 			case 3: {
-			    try {
-			        Utils.construirArma(personaje);
-			        key3 = true;
-			    } catch (ReglaJuegoException e) {
-			        System.out.println("No puedes fabricar: " + e.getMessage());
-			    }
+				try {
+					Utils.construirArma(personaje);
+					episodio2key3 = true;
+				} catch (ReglaJuegoException e) {
+					System.out.println("No puedes fabricar: " + e.getMessage());
+				}
 			}
-			break;
+				break;
 
 			case 4: {
 				// volver a la cueva
 				// llamamos al episodio 1 y sumamos uno a contadorEpisodio1!!!!!!!
 				Episodio1.contadorEpisodio1++;
 
-				key3 = true;
+				episodio2key3 = true;
 
 			}
 				break;
@@ -150,13 +150,13 @@ public class Episodio2 {
 				break;
 			case 7: {
 				// ir al bosque oscuro
-			if (key1 && key2 && key3) {
-				salida = true;
-				System.out.println("Ya puedes ir al bosque oscuro.");
+				if (episodio2key1 && episodio2key2 && episodio2key3) {
+					salida = true;
+					System.out.println("Ya puedes ir al bosque oscuro.");
 				}
 				break;
 
-						}
+			}
 
 			default:
 				System.out.println("Opción no válida");

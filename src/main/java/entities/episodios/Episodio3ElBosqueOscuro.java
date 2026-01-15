@@ -48,9 +48,9 @@ public class Episodio3ElBosqueOscuro {
 			}
 		}
 
-		boolean key1 = false;
-		boolean key2 = false;
-		boolean key3 = false;
+		boolean bosqueOscurokey1 = false;
+		boolean bosqueOscurokey2 = false;
+		boolean bosqueOscurokey3 = false;
 		if (contadorEpisodio3 == 0) {
 			System.out.println(
 					"Te adentras en el Bosque Oscuro, un lugar lleno de misterios y peligros. A medida que avanzas, sientes que los árboles susurran a tu alrededor.");
