@@ -277,7 +277,7 @@ public class Utils {
 		}
 
 		System.out.println((armas.size() + 1) + ". Volver");
-		int opcion = pideDatoNumerico("Elige un arma para equipar (o pulsa" + (armas.size() + 1) + " para volver):");
+		int opcion = pideDatoNumerico("Elige un arma para equipar (o pulsa " + (armas.size() + 1) + " para volver):");
 
 		if (opcion < 1 || opcion > armas.size()) {
 			System.out.println("Volviendo sin cambiar el arma.");
