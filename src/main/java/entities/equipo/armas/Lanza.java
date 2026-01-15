@@ -6,9 +6,9 @@ import jakarta.persistence.Entity;
 @Entity
 @DiscriminatorValue("LANZA")
 public class Lanza extends Armas {
-	public Lanza() {
 
-		super("Lanzamiento de lanza", 8, 1, 10, 6);
-
-	}
+    public Lanza() {
+        super("PUNZANTE", 2, 65, 7, 15);
+        setNombre("Lanza");
+    }
 }

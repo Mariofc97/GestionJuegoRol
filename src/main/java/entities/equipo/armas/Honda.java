@@ -4,13 +4,11 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("HONDA")		
-
-
+@DiscriminatorValue("HONDA")
 public class Honda extends Armas {
 
-	public Honda() {
-		super("Honda", 6, 1,16, 10);
-	}
-	
+    public Honda() {
+        super("PIEDRA", 3, 60, 5, 10);
+        setNombre("Honda");
+    }
 }
