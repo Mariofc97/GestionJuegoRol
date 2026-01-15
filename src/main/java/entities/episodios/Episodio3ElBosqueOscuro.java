@@ -50,7 +50,7 @@ public class Episodio3ElBosqueOscuro {
 				LOGGER.log(java.util.logging.Level.WARNING, "No se pudo inicializar la lista de criaturas", e);
 			}
 		}
-
+boolean salida = false;
 		boolean bosqueOscurokey1 = false;
 		boolean bosqueOscurokey2 = false;
 		boolean bosqueOscurokey3 = false;
@@ -138,7 +138,7 @@ public class Episodio3ElBosqueOscuro {
 				break;
 			case 7: {
 				// ir al rio hay q hacer las key
-				if (episodio2key1 && episodio2key2 && episodio2key3) {
+				if (bosqueOscurokey1 && bosqueOscurokey2 && bosqueOscurokey3) {
 					salida = true;
 					System.out.println("Ya puedes ir al bosque oscuro.");
 				}
