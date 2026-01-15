@@ -1,5 +1,146 @@
 package entities.episodios;
 
-public class Episodio4Rio {
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import entities.Personaje;
+import exceptions.ReglaJuegoException;
+import utilidades.Utils;
+
+public class Episodio4Rio {
+	static int contadorEpisodio4 = 0;
+	private static final Logger LOGGER = Logger.getLogger(Episodio4Rio.class.getName());
+	static {
+		LOGGER.setUseParentHandlers(false); // evita que el logger escriba en consola
+	}
+
+	// comienza las validaciones de personaje y listas
+	public static void episodio4Rio(Personaje personaje) {
+		if (personaje == null) {
+			LOGGER.warning("Se llamó a episodio3ElBosqueOscuro con Personaje null");
+			System.out.println("Error: personaje no proporcionado.");
+			return;
+		}
+
+		// Asegurarnos de que la lista de equipo exista para evitar NullPointerException
+		if (personaje.getEquipo() == null) {
+			try {
+				// Inicializamos una lista vacía si no existe
+
+				java.util.List<entities.equipo.Equipamiento> equipoList = new java.util.ArrayList<>();
+				personaje.setEquipo(equipoList);
+				LOGGER.info("Se inicializó la lista de equipo para el personaje: " + personaje.getNombre());
+			} catch (Exception e) {
+				// Si falla la inicialización la registramos pero no abortamos el episodio
+				LOGGER.log(java.util.logging.Level.WARNING, "No se pudo inicializar la lista de equipo", e);
+			}
+		}
+
+		// Asegurarnos de que la lista de criaturas exista para evitar
+		// NullPointerException
+		if (personaje.getCriaturas() == null) {
+			try {
+				java.util.List<entities.criatura.Criatura> criaturasList = new java.util.ArrayList<>();
+				personaje.setCriaturas(criaturasList);
+				LOGGER.info("Se inicializó la lista de criaturas para el personaje: " + personaje.getNombre());
+			} catch (Exception e) {
+				LOGGER.log(java.util.logging.Level.WARNING, "No se pudo inicializar la lista de criaturas", e);
+			}
+		}
+		boolean salida = false;
+		boolean Riokey1 = false;
+		boolean Riokey2 = false;
+		boolean Riokey3 = false;
+		if (contadorEpisodio4 == 0) {
+			System.out.println(
+					"Tras atravesar el bosque oscuro, llegas a un río caudaloso que bloquea tu camino. El agua corre lentamente, limpia y clara ... enseguida se te ocurren muchas cosas que podrias haces.");
+			contadorEpisodio4++;
+		}
+		// comienza la logica del episodio
+		do {
+
+			System.out.println(
+					"1. Buscar bayas \t2. Pescar \t3. Crear arma \t4. Bañarte \t5.Inventario y estado \t6.Buscar materales. \7.Desafiar Jefe del Clan.");
+			System.out.println("di la opcion del menu");
+			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
+
+			switch (opcion) {
+
+			case 1: {
+				// buscar bayas
+				// TODO: HAY Q AÑADIR QUE AL BUSCAR BAYAS NOS ENCONTRAMOS CON UN JABALI Y PELA
+				// BOSH FACIL
+				Utils.buscarBaya(personaje);
+
+			}
+				break;
+
+			case 2: {
+				// pescar
+				Riokey1 = true;
+
+			}
+				break;
+
+			case 3: {
+				try {
+					// TODO: FALTA AÑADIR TRAMPA PARA PELEA CON JABALI O LOBO
+					Utils.construirArma(personaje);
+					Riokey3 = true;
+
+				} catch (ReglaJuegoException e) {
+					System.out.println("No puedes fabricar: " + e.getMessage());
+				}
+			}
+				break;
+
+			case 4: {
+				// bañarte
+				System.out.println(
+						"Te bañas en el río, sintiendo el agua fresca y revitalizante que recorre tu cuerpo, observando el paisaje a tu alrededor, notas que algo se mueve en el agua... que es esa mancha enorme??? se dirige hacia ti rapidamente... Te ataca PezPrehistoricoGigante!");
+				// añadir combate con pez prehistorico gigante
+				Riokey2 = true;
+			}
+				break;
+			case 5: {
+				// inventario
+				try {
+					Utils.menuInventario(personaje);
+					LOGGER.info("Mostrando inventario de: " + personaje.getNombre());
+				} catch (Exception e) {
+					LOGGER.log(Level.SEVERE, "Error al mostrar el inventario", e);
+					System.out.println("No se pudo mostrar el inventario.");
+				}
+			}
+				break;
+			case 6: {
+				// buscar materiales
+				// Caso 6: buscar objeto
+				try {
+					Utils.buscarObjeto(personaje);
+					LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
+				} catch (Exception e) {
+					LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
+					System.out.println("No se pudo buscar el objeto.");
+				}
+			}
+				break;
+			case 7: {
+				// ir al rio hay q hacer las key
+				if (Riokey1 && Riokey2 && Riokey3) {
+					salida = true;
+					System.out.println(
+							"Despues de todo, has superado todos obstaculos, te siente distinto, lo piensa y... has matado un jabali, un lobo, has derrotado a una mostruosa criatura ancestral que vivia en el rio... creo que es hora de volver al Clan y enfrentarse con el Jefe y demostrar que ya no eres el lloron que abandono la cueva...");
+				}
+				break;
+
+			}
+
+			default:
+				System.out.println("Opción no válida");
+			}
+
+		} while (!salida);
+
+	}
 }

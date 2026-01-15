@@ -63,7 +63,7 @@ boolean salida = false;
 
 			System.out.println(
 					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Usar trampa \t5.Inventario y estado \t6.Buscar materales. \7.Ir al rio.");
-			System.out.println("dila opcion del menu");
+			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
 			switch (opcion) {

@@ -74,7 +74,7 @@ public class Episodio2 {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Volver a la cueva \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al bosque oscuro");
+					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Esconderse del miedo \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al bosque oscuro");
 			System.out.println("dila opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -117,9 +117,9 @@ public class Episodio2 {
 				break;
 
 			case 4: {
-				// volver a la cueva
-				// llamamos al episodio 1 y sumamos uno a contadorEpisodio1!!!!!!!
-				Episodio1.contadorEpisodio1++;
+				// esconderse del miedo
+				System.out.println(
+						"Te escondes entre los arbustos, intentando calmar tu respiración agitada y el latido acelerado de tu corazón. Mientras esperas, escuchas los sonidos del bosque que poco a poco vuelven a la normalidad. Después de unos minutos, te sientes lo suficientemente tranquilo como para salir de tu escondite.");
 
 				episodio2key3 = true;
 
