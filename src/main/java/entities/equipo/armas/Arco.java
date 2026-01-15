@@ -10,7 +10,7 @@ public class Arco extends Armas {
     public Arco() {
         super(
             "Arco",   // nombre
-            1,        // nivelRequerido
+            3,        // nivelRequerido
             3,        // peso
             60,       // durabilidad
             "FLECHAS",// tipoDaño

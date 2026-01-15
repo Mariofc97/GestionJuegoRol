@@ -21,9 +21,11 @@ import entities.equipo.Escudos;
 import entities.equipo.armas.Arco;
 import entities.equipo.armas.Armas;
 import entities.equipo.armas.Bumeran;
+import entities.equipo.armas.CanaPescar;
 import entities.equipo.armas.Cazamariposas;
 import entities.equipo.armas.Honda;
 import entities.equipo.armas.Lanza;
+import entities.equipo.armas.Trampa;
 import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.CarneSeca;
 import entities.equipo.objetos.Cuerda;
@@ -580,7 +582,7 @@ public class Utils {
 	    }
 
 	    String t = Utils.pideDatoCadena(
-	            "Selecciona el arma que quieres fabricar: (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA)");
+	            "Selecciona el arma que quieres fabricar: (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA, CAÑA PESCA, TRAMPA)");
 	    String tipo = t.trim().toUpperCase();
 
 	    Armas nuevaArma = null;
@@ -727,6 +729,66 @@ public class Utils {
 	            nuevaArma = new Honda(); // antes tenías Lanza por error
 	            break;
 	        }
+	        case "CAÑA PESCA": {
+	        	boolean tieneCuerda = false;
+	            boolean tienePalo = false;
+	            boolean tieneBaya = false;
+	        	
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (e instanceof Cuerda) tieneCuerda = true;
+	                if (e instanceof Palo) tienePalo = true;
+	                if (e instanceof Baya) tieneBaya = true;
+	            }
+	        	
+	        	if (!tieneCuerda || !tienePalo || !tieneBaya) {
+	        		throw new ReglaJuegoException("Necesitas una Cuerda, Baya y Palo para fabricar la CAÑA PESCA.");
+	        	}
+	        	
+	        	Equipamiento cuerdaAEliminar = null;
+	        	Equipamiento paloAEliminar = null;
+	        	Equipamiento bayaAEliminar = null;
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
+	                if (cuerdaAEliminar == null && e instanceof Cuerda) cuerdaAEliminar = e;
+	                if (bayaAEliminar == null && e instanceof Baya) bayaAEliminar = e;
+	            }
+	        	personaje.getEquipo().remove(cuerdaAEliminar);
+	        	personaje.getEquipo().remove(paloAEliminar);
+	        	personaje.getEquipo().remove(bayaAEliminar);
+	        	
+	        	nuevaArma = new CanaPescar(); // antes tenías Lanza por error
+	        	break;
+	        }
+	        case "TRAMPA": {
+	        	boolean tieneCuerda = false;
+	        	boolean tienePalo = false;
+	        	boolean tienePiedra = false;
+	        	
+	        	for (Equipamiento e : personaje.getEquipo()) {
+	        		if (e instanceof Cuerda) tieneCuerda = true;
+	        		if (e instanceof Palo) tienePalo = true;
+	        		if (e instanceof Piedra) tienePiedra = true;
+	        	}
+	        	
+	        	if (!tieneCuerda || !tienePalo || !tienePiedra) {
+	        		throw new ReglaJuegoException("Necesitas una Cuerda, Baya y Piedra para fabricar la TRAMPA.");
+	        	}
+	        	
+	        	Equipamiento cuerdaAEliminar = null;
+	        	Equipamiento paloAEliminar = null;
+	        	Equipamiento piedraAEliminar = null;
+	        	for (Equipamiento e : personaje.getEquipo()) {
+	        		if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
+	        		if (cuerdaAEliminar == null && e instanceof Cuerda) cuerdaAEliminar = e;
+	        		if (piedraAEliminar == null && e instanceof Piedra) piedraAEliminar = e;
+	        	}
+	        	personaje.getEquipo().remove(cuerdaAEliminar);
+	        	personaje.getEquipo().remove(paloAEliminar);
+	        	personaje.getEquipo().remove(piedraAEliminar);
+	        	
+	        	nuevaArma = new Trampa(); // antes tenías Lanza por error
+	        	break;
+	        }
 
 	        default:
 	            throw new ReglaJuegoException("Opción inválida: " + tipo);
@@ -734,7 +796,7 @@ public class Utils {
 
 	    // Añadir el arma al inventario
 	    personaje.getEquipo().add(nuevaArma);
-	    System.out.println("Has fabricado un " + nuevaArma.getClass().getSimpleName() + " y se ha añadido a tu inventario.");
+	    System.out.println("Has fabricado un " + nuevaArma.getNombre() + " y se ha añadido a tu inventario.");
 
 	    return nuevaArma;
 	}

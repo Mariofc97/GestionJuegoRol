@@ -10,7 +10,7 @@ public class Bumeran extends Armas {
     public Bumeran() {
         super(
             "Bumerán", // nombre
-            1,         // nivelRequerido
+            2,         // nivelRequerido
             2,         // peso
             55,        // durabilidad
             "GOLPE",   // tipoDaño
