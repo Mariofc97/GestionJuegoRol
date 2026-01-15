@@ -74,7 +74,7 @@ public class Episodio2 {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Volver a la cueva \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al bosque oscuro \t8.Ir al rio");
+					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Volver a la cueva \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al bosque oscuro");
 			System.out.println("dila opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -150,20 +150,13 @@ public class Episodio2 {
 				break;
 			case 7: {
 				// ir al bosque oscuro
-			}
-				break;
-
-			case 8: {
-				// Ir al rioç
-				// Actualizamos la condición de salida **dentro del bucle**
-				if (key1 && key2 && key3) {
-					salida = true;
-					System.out.println("Ya puedes ir al rio a darte lavarte, que se te huele en todo el valle....");
-					break;
+			if (key1 && key2 && key3) {
+				salida = true;
+				System.out.println("Ya puedes ir al bosque oscuro.");
 				}
-
-			}
 				break;
+
+						}
 
 			default:
 				System.out.println("Opción no válida");
