@@ -107,17 +107,14 @@ public class Episodio2 {
 				break;
 
 			case 3: {
-				// crear arma
-				
-				try {
-					Utils.construirArma(personaje);
-				} catch (ReglaJuegoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				key3 = true; // <-- IMPORTANTE PARA PODER SALIR
+			    try {
+			        Utils.construirArma(personaje);
+			        key3 = true;
+			    } catch (ReglaJuegoException e) {
+			        System.out.println("No puedes fabricar: " + e.getMessage());
+			    }
 			}
-				break;
+			break;
 
 			case 4: {
 				// volver a la cueva

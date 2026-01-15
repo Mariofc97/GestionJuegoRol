@@ -22,6 +22,7 @@ import entities.equipo.armas.Arco;
 import entities.equipo.armas.Armas;
 import entities.equipo.armas.Bumeran;
 import entities.equipo.armas.Cazamariposas;
+import entities.equipo.armas.Honda;
 import entities.equipo.armas.Lanza;
 import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.CarneSeca;
@@ -573,53 +574,169 @@ public class Utils {
 	}
 
 	public static Armas construirArma(Personaje personaje) throws ReglaJuegoException {
-		String t = Utils.pideDatoCadena(
-				"Selecciona el arma que quieres fabricar: (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA)");
-		String tipo = t.trim().toUpperCase();
 
-		Armas nuevaArma = null;
-		switch (tipo) {
-		case "ARCO":
-			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "CUERDA"
-					|| personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO") {
-				nuevaArma = new Arco();
-			} else {
-				throw new ReglaJuegoException("Necesitas un palo y una cuerda para fabricar el arco");
-			}
-		case "BUMERAN":
-			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO") {
-				nuevaArma = new Bumeran();
-			} else {
-				throw new ReglaJuegoException("Necesitas un palo para fabricar el bumeran");
-			}
-		case "CAZAMARIPOSAS":
-			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO"
-					|| personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "MOJON SECO") {
-				nuevaArma = new Cazamariposas();
-			} else {
-				throw new ReglaJuegoException("Necesitas un palo y un excremento para fabricar el cazamariposas");
-			}
-		case "LANZA":
-			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "PALO"
-					|| personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "MOJON SECO") {
-				nuevaArma = new Lanza();
-			} else {
-				throw new ReglaJuegoException("Necesitas un palo y una pierda para fabricar el lanza");
-			}
-		case "HONDA":
-			if (personaje.getEquipo().getClass().getSimpleName().toUpperCase() == "CUERDA") {
-				nuevaArma = new Lanza();
-			} else {
-				throw new ReglaJuegoException("Necesitas una cuerda para fabricar la honda");
-			}
-		default:
-			System.out.println("Opcion invalida");
-			break;
-		}
+	    if (personaje == null || personaje.getEquipo() == null) {
+	        throw new ReglaJuegoException("Personaje o inventario no disponible.");
+	    }
 
-		personaje.getEquipo().add(nuevaArma);
-		System.out.println("Has fabricado un " + nuevaArma.getNombre() + " y se ha añadido a tu inventario.");
-		return nuevaArma;
+	    String t = Utils.pideDatoCadena(
+	            "Selecciona el arma que quieres fabricar: (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA)");
+	    String tipo = t.trim().toUpperCase();
+
+	    Armas nuevaArma = null;
+
+	    switch (tipo) {
+
+	        case "ARCO": {
+	            boolean tienePalo = false;
+	            boolean tieneCuerda = false;
+
+	            // 1) Comprobar materiales
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (e instanceof Palo) tienePalo = true;
+	                if (e instanceof Cuerda) tieneCuerda = true;
+	            }
+
+	            if (!tienePalo || !tieneCuerda) {
+	                throw new ReglaJuegoException("Necesitas un Palo y una Cuerda para fabricar el ARCO.");
+	            }
+
+	            // 2) Consumir materiales (eliminar 1 de cada)
+	            Equipamiento paloAEliminar = null;
+	            Equipamiento cuerdaAEliminar = null;
+
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
+	                if (cuerdaAEliminar == null && e instanceof Cuerda) cuerdaAEliminar = e;
+	            }
+
+	            personaje.getEquipo().remove(paloAEliminar);
+	            personaje.getEquipo().remove(cuerdaAEliminar);
+
+	            // 3) Crear arma
+	            nuevaArma = new Arco();
+	            break;
+	        }
+
+	        case "BUMERAN": {
+	            boolean tienePalo = false;
+
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (e instanceof Palo) {
+	                    tienePalo = true;
+	                    break;
+	                }
+	            }
+
+	            if (!tienePalo) {
+	                throw new ReglaJuegoException("Necesitas un Palo para fabricar el BUMERAN.");
+	            }
+
+	            Equipamiento paloAEliminar = null;
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (e instanceof Palo) {
+	                    paloAEliminar = e;
+	                    break;
+	                }
+	            }
+	            personaje.getEquipo().remove(paloAEliminar);
+
+	            nuevaArma = new Bumeran();
+	            break;
+	        }
+
+	        case "CAZAMARIPOSAS": {
+	            boolean tienePalo = false;
+	            boolean tieneMojon = false;
+
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (e instanceof Palo) tienePalo = true;
+	                if (e instanceof MojonSeco) tieneMojon = true;
+	            }
+
+	            if (!tienePalo || !tieneMojon) {
+	                throw new ReglaJuegoException("Necesitas un Palo y un Mojón Seco para fabricar el CAZAMARIPOSAS.");
+	            }
+
+	            Equipamiento paloAEliminar = null;
+	            Equipamiento mojonAEliminar = null;
+
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
+	                if (mojonAEliminar == null && e instanceof MojonSeco) mojonAEliminar = e;
+	            }
+
+	            personaje.getEquipo().remove(paloAEliminar);
+	            personaje.getEquipo().remove(mojonAEliminar);
+
+	            nuevaArma = new Cazamariposas();
+	            break;
+	        }
+
+	        case "LANZA": {
+	            boolean tienePalo = false;
+	            boolean tienePiedra = false;
+
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (e instanceof Palo) tienePalo = true;
+	                if (e instanceof Piedra) tienePiedra = true;
+	            }
+
+	            if (!tienePalo || !tienePiedra) {
+	                throw new ReglaJuegoException("Necesitas un Palo y una Piedra para fabricar la LANZA.");
+	            }
+
+	            Equipamiento paloAEliminar = null;
+	            Equipamiento piedraAEliminar = null;
+
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
+	                if (piedraAEliminar == null && e instanceof Piedra) piedraAEliminar = e;
+	            }
+
+	            personaje.getEquipo().remove(paloAEliminar);
+	            personaje.getEquipo().remove(piedraAEliminar);
+
+	            nuevaArma = new Lanza();
+	            break;
+	        }
+
+	        case "HONDA": {
+	            boolean tieneCuerda = false;
+
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (e instanceof Cuerda) {
+	                    tieneCuerda = true;
+	                    break;
+	                }
+	            }
+
+	            if (!tieneCuerda) {
+	                throw new ReglaJuegoException("Necesitas una Cuerda para fabricar la HONDA.");
+	            }
+
+	            Equipamiento cuerdaAEliminar = null;
+	            for (Equipamiento e : personaje.getEquipo()) {
+	                if (e instanceof Cuerda) {
+	                    cuerdaAEliminar = e;
+	                    break;
+	                }
+	            }
+	            personaje.getEquipo().remove(cuerdaAEliminar);
+
+	            nuevaArma = new Honda(); // antes tenías Lanza por error
+	            break;
+	        }
+
+	        default:
+	            throw new ReglaJuegoException("Opción inválida: " + tipo);
+	    }
+
+	    // Añadir el arma al inventario
+	    personaje.getEquipo().add(nuevaArma);
+	    System.out.println("Has fabricado un " + nuevaArma.getClass().getSimpleName() + " y se ha añadido a tu inventario.");
+
+	    return nuevaArma;
 	}
 
 }
