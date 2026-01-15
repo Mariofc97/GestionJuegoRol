@@ -8,7 +8,16 @@ import jakarta.persistence.Entity;
 public class Cazamariposas extends Armas {
 
     public Cazamariposas() {
-        super("GOLPE", 2, 80, 4, 8);
-        setNombre("Cazamariposas");
+        super(
+            "Cazamariposas", // nombre
+            1,               // nivelRequerido
+            2,               // peso
+            40,              // durabilidad
+            "GOLPE",         // tipoDaño
+            2,               // alcance
+            80,              // precision
+            4,               // puntosDaño
+            8                // probCritico
+        );
     }
 }

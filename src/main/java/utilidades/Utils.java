@@ -273,7 +273,7 @@ public class Utils {
 		for (int i = 0; i < armas.size(); i++) {
 			Armas a = armas.get(i);
 			System.out.println((i + 1) + ". " + a.getNombre() + " daño: " + a.getPuntosDaño() + " ,tipo de daño: "
-					+ a.getTipoDaño());
+					+ a.getTipoDaño() + ", Precision: " + a.getPrecision());
 		}
 
 		System.out.println((armas.size() + 1) + ". Volver");

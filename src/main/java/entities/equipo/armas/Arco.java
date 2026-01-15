@@ -8,7 +8,16 @@ import jakarta.persistence.Entity;
 public class Arco extends Armas {
 
     public Arco() {
-        super("FLECHAS", 4, 70, 6, 10); // alcance, precision, daño, crit
-        setNombre("Arco");
+        super(
+            "Arco",   // nombre
+            1,        // nivelRequerido
+            3,        // peso
+            60,       // durabilidad
+            "FLECHAS",// tipoDaño
+            4,        // alcance
+            70,       // precision
+            6,        // puntosDaño
+            10        // probCritico
+        );
     }
 }

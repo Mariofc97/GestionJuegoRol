@@ -8,7 +8,16 @@ import jakarta.persistence.Entity;
 public class Lanza extends Armas {
 
     public Lanza() {
-        super("PUNZANTE", 2, 65, 7, 15);
-        setNombre("Lanza");
+        super(
+            "Lanza",    // nombre
+            1,          // nivelRequerido
+            4,          // peso
+            70,         // durabilidad
+            "PUNZANTE", // tipoDaño
+            2,          // alcance
+            65,         // precision
+            7,          // puntosDaño
+            15          // probCritico
+        );
     }
 }

@@ -8,7 +8,16 @@ import jakarta.persistence.Entity;
 public class Bumeran extends Armas {
 
     public Bumeran() {
-        super("GOLPE", 3, 75, 5, 12);
-        setNombre("Bumerán");
+        super(
+            "Bumerán", // nombre
+            1,         // nivelRequerido
+            2,         // peso
+            55,        // durabilidad
+            "GOLPE",   // tipoDaño
+            3,         // alcance
+            75,        // precision
+            5,         // puntosDaño
+            12         // probCritico
+        );
     }
 }

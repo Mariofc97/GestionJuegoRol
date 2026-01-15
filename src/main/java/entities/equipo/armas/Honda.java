@@ -8,7 +8,16 @@ import jakarta.persistence.Entity;
 public class Honda extends Armas {
 
     public Honda() {
-        super("PIEDRA", 3, 60, 5, 10);
-        setNombre("Honda");
+        super(
+            "Honda",   // nombre
+            1,         // nivelRequerido
+            2,         // peso
+            50,        // durabilidad
+            "LATIGAZO",  // tipoDaño
+            3,         // alcance
+            60,        // precision
+            5,         // puntosDaño
+            10         // probCritico
+        );
     }
 }
