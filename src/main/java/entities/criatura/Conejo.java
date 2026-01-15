@@ -14,7 +14,7 @@ public class Conejo extends Criatura{
 //	}
 
 	public Conejo() {
-		super("Conejo", null, 1, 3, 20, 2, "Patada salto");
+		super("Conejo", null, 1, 3, 50, 2, "Patada salto");
 		// TODO Auto-generated constructor stub
 	}
 	

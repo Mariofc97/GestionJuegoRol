@@ -13,7 +13,10 @@ public class PezPrehistoricoGigante  extends Criatura {
 	
 	
 	public PezPrehistoricoGigante() {
-		super("Pez Prehistorico Gigante", null, 10, , 30, 50, "Mordisco Devastador");
+		super("PezPrehistoricoGigante", null, 1, 9, 35, 40, "Mordisco Devastador");
+		//super("Pez Prehistorico Gigante", null, 10, , 30, 50, "Mordisco Devastador");
 	}
 
 }
+
+

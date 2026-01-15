@@ -13,7 +13,7 @@ public class Gusano extends Criatura {
 //	}
 
 	public Gusano() {
-		super("Gusano", null, 1, 0, 15, 2, "Disparo de seda");
+		super("Gusano", null, 1, 0, 70, 2, "Disparo de seda");
 		// TODO Auto-generated constructor stub
 	}
 

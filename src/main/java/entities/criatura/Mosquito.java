@@ -14,7 +14,7 @@ public class Mosquito extends Criatura {
 //	}
 
 	public Mosquito() {
-		super("Mosquito", null, 1, 0, 20, 1, "PicaduraFatal");
+		super("Mosquito", null, 1, 0, 10, 10, "PicaduraFatal");
 	}
 
 }

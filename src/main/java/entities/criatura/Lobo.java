@@ -13,7 +13,7 @@ public class Lobo extends Criatura {
 	
 	
 	public Lobo() {
-		super("Lobo", null, 1, 8, 5, 50, "Mordisco feroz");
+		super("Lobo", null, 1, 8, 30, 35, "Mordisco feroz");
 		// TODO Auto-generated constructor stub
 	}
 

@@ -10,7 +10,7 @@ import jakarta.persistence.Entity;
 public class Jabali extends Criatura {
 
 	public Jabali() {
-		super("Jabalí", null, 11, 35, 50, 60, "Cornada");
+		super("Jabalí", null, 11, 35,40, 25, "Cornada");
 	}
 
 }

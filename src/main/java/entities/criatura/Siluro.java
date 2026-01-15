@@ -12,7 +12,7 @@ public class Siluro extends Criatura {
 	
 	
 	public Siluro() {
-		super("Siluro", null, 10, 0, 30, 55, "Mordisco");
+		super("Siluro", null, 10, 0, 30, 30, "Mordisco");
 	}
 
 }
