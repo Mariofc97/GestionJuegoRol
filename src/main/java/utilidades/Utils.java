@@ -259,6 +259,7 @@ public class Utils {
 		}
 	}
 
+	
 	private static String obtenerTipoEquipamiento(Equipamiento e) {
 		if (e instanceof Armas) {
 			return "Arma";

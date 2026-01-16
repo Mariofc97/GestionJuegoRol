@@ -194,16 +194,12 @@ public class Episodio1 {
 
 				case 4: {
 					// Caso 4: dormir y recuperar toda la vida
-					try {
-						personaje.setPuntosVida(personaje.getPuntosVidaMax());
-						String msg = "Has dormido y recuperado toda la vida.";
-						System.out.println(msg);
-						key3 = true; // dormir también cuenta como requisito para poder salir
-						LOGGER.info(msg + " Personaje: " + personaje.getNombre());
-					} catch (Exception e) {
-						LOGGER.log(Level.SEVERE, "Error al ejecutar opción 4", e);
-						System.out.println("No se pudo dormir correctamente.");
-					}
+					Utils.recuperarVida(personaje);
+					String msg = "Has dormido y recuperado toda la vida.";
+					System.out.println(msg);
+					key3 = true; // dormir también cuenta como requisito para poder salir
+					LOGGER.info(msg + " Personaje: " + personaje.getNombre());
+
 				}
 					break;
 

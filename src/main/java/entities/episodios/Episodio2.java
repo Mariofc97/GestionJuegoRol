@@ -74,7 +74,7 @@ public class Episodio2 {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Esconderse del miedo \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al bosque oscuro");
+					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Esconderse del miedo \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al bosque oscuro. \t8.Descansar");
 			System.out.println("dila opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -157,7 +157,20 @@ public class Episodio2 {
 				break;
 
 			}
-
+			case 8: {
+				// descansar
+				try {
+					personaje.setPuntosVida(personaje.getPuntosVidaMax());
+					String msg = "Has descansado y recuperado toda la vida.";
+					System.out.println(msg);
+					LOGGER.info(msg + " Personaje: " + personaje.getNombre());
+				} catch (Exception e) {
+					LOGGER.log(Level.SEVERE, "Error al ejecutar opción descansar", e);
+					System.out.println("No se pudo descansar correctamente.");
+				}
+			}
+				break;
+				
 			default:
 				System.out.println("Opción no válida");
 			}

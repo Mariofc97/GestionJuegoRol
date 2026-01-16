@@ -62,7 +62,7 @@ boolean salida = false;
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Usar trampa \t5.Inventario y estado \t6.Buscar materales. \7.Ir al rio.");
+					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Usar trampa \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al rio. \t8.Descansar");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -72,7 +72,12 @@ boolean salida = false;
 				// buscar bayas
 				// TODO: HAY Q AÑADIR QUE AL BUSCAR BAYAS NOS ENCONTRAMOS CON UN JABALI Y PELA
 				// BOSH FACIL
-				Utils.buscarBaya(personaje);
+				try {
+					Utils.buscarBaya(personaje);
+				} catch (ReglaJuegoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 				break;
@@ -107,7 +112,8 @@ boolean salida = false;
 				break;
 
 			case 4: {
-				// USAR TRAMPA
+				
+				System.out.println("Bien has atrapado un conejo!!!! te hacercas despacio pero... siente como algo te esta acechando.... la trampa era para el conejo,,, pero,,, ");// USAR TRAMPA
 				// TODO: AQUI CUANDO USAMOS TRAMPO ATRAPAMOS UN CONEJO O SIMILAR, PERO ATRAEMOS
 				// UN LOBO PELEA BOSH FACIL
 
@@ -145,6 +151,17 @@ boolean salida = false;
 				break;
 
 			}
+			case 8: {
+				// descansar y recuperar vida
+				Utils.recuperarVida(personaje);
+				String msg = "Has descansado y recuperado toda la vida.";
+				System.out.println(msg);
+				bosqueOscurokey3 = true; // descansar también cuenta como requisito para poder salir
+				LOGGER.info(msg + " Personaje: " + personaje.getNombre());
+
+			}
+				break;
+		
 
 			default:
 				System.out.println("Opción no válida");

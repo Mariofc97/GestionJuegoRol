@@ -60,7 +60,7 @@ public class Episodio4Rio {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Pescar \t3. Crear arma \t4. Bañarte \t5.Inventario y estado \t6.Buscar materales. \7.Desafiar Jefe del Clan.");
+					"1. Buscar bayas \t2. Pescar \t3. Crear arma \t4. Bañarte \t5.Inventario y estado \t6.Buscar materales. \7.Desafiar Jefe del Clan. \t8.Descansar");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -135,6 +135,15 @@ public class Episodio4Rio {
 				break;
 
 			}
+			case 8: {
+				// descansar
+				Utils.recuperarVida(personaje);
+				String msg = "Has dormido y recuperado toda la vida.";
+				System.out.println(msg);
+				LOGGER.info(msg + " Personaje: " + personaje.getNombre());
+
+			}
+				break;
 
 			default:
 				System.out.println("Opción no válida");
