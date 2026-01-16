@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import entities.Personaje;
 import entities.criatura.Lobo;
 import entities.equipo.armas.Trampa;
+import entities.equipo.objetos.CarneSeca;
 import entities.equipo.objetos.HojaParaLimpiar;
 //TODO: FALTA REPASAR CONTADOR DE EPISODIO3 PARA QUE FUNCIONE BIEN ENTRE
 import exceptions.ReglaJuegoException;
@@ -53,10 +54,11 @@ public class Episodio3ElBosqueOscuro {
 				LOGGER.log(java.util.logging.Level.WARNING, "No se pudo inicializar la lista de criaturas", e);
 			}
 		}
-boolean salida = false;
+		boolean salida = false;
 		boolean bosqueOscurokey1 = false;
 		boolean bosqueOscurokey2 = false;
 		boolean bosqueOscurokey3 = false;
+		boolean controladorAtaqueLobo = false;
 		if (contadorEpisodio3 == 0) {
 			System.out.println(
 					"Te adentras en el Bosque Oscuro, un lugar lleno de misterios y peligros. A medida que avanzas, sientes que los árboles susurran a tu alrededor.");
@@ -65,7 +67,7 @@ boolean salida = false;
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Usar trampa \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al rio. \t8.Descansar");
+					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Usar trampa \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al rio. \t8.Descansar. \t9.Invocar lobo.");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -115,36 +117,40 @@ boolean salida = false;
 				break;
 
 			case 4: {
-				
-				    int contador = 0;
 
-				    for (Object obj : personaje.getEquipo()) {
-				        if (obj instanceof Trampa) {
-				            contador++;
-				        }
-				    if (contador == 0) {
-				        System.out.println("No tienes trampas en tu inventario.");
-				    }
-				    if (contador > 0) {
-				    	System.out.println("Bien has atrapado un conejo!!!! te hacercas despacio pero... siente como algo te esta acechando.... la trampa era para el conejo,,, pero,,, te ataca un lobo que tambien quiere el conejo.");
-				    	Lobo lobo = new Lobo();
-				    	Utils.combate(personaje, lobo);
-				    	System.out.println("Has sobrevivido al ataque del lobo y conseguido el conejo.");
-				    	
-				    	
-				        // Aquí podrías implementar un menú para seleccionar cuál usar
-				    }
+				int contadorTrampas = 0;
 
-				
-				    }
+				for (Object obj : personaje.getEquipo()) {
+					if (obj instanceof Trampa) {
+						contadorTrampas++;
+					}
+
+				}
+				if (contadorTrampas == 0) {
+					System.out.println("No tienes trampas en tu inventario.");
+				}
+				if (contadorTrampas > 0 && controladorAtaqueLobo == false) {
+					System.out.println(
+							"Bien has atrapado un conejo!!!! te hacercas despacio pero... siente como algo te esta acechando.... la trampa era para el conejo,,, pero,,, te ataca un lobo que tambien quiere el conejo.");
+					Lobo lobo = new Lobo();
+					Utils.combate(personaje, lobo);
+					System.out.println("Has sobrevivido al ataque del lobo y conseguido el conejo.");
+
+					controladorAtaqueLobo = true;
+					// Aquí podrías implementar un menú para seleccionar cuál usar
+					personaje.getEquipo().add(new CarneSeca());
+				}
+				if (controladorAtaqueLobo == true) {
+					System.out.println("Bien has atrapado un conejo!!!!.");
+					personaje.getEquipo().add(new CarneSeca());
+				}
 			}
 				// USAR TRAMPA
 				// TODO: AQUI CUANDO USAMOS TRAMPO ATRAPAMOS UN CONEJO O SIMILAR, PERO ATRAEMOS
 				// UN LOBO PELEA BOSH FACIL
 
-			
 				break;
-				
+
 			case 5: {
 				// inventario
 				try {
@@ -187,7 +193,11 @@ boolean salida = false;
 
 			}
 				break;
-		
+			case 9: {
+				// invocar lobo
+
+			}
+				break;
 
 			default:
 				System.out.println("Opción no válida");
