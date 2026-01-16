@@ -6,7 +6,7 @@
 
         <!-- Conexión JDBC -->
         <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
-        <property name="hibernate.connection.url">jdbc:oracle:thin:@//localhost:1522/XEPDB1</property>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@//localhost:1521/XEPDB1</property>
         <property name="hibernate.connection.username">getafe</property>
         <property name="hibernate.connection.password">password</property>
 
@@ -38,6 +38,11 @@
 		 <mapping class="entities.criatura.Gusano"/>
 		 <mapping class="entities.criatura.Mosquito"/>
 		 <mapping class="entities.criatura.Raton"/>
+		 <mapping class="entities.criatura.Jabali"/>		 
+		 <mapping class="entities.criatura.Lobo"/>
+		 <mapping class="entities.criatura.PezPrehistoricoGigante"/>
+		 <mapping class="entities.criatura.Siluro"/>
+		 
         
   
     </session-factory>

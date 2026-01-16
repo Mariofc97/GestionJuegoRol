@@ -61,12 +61,12 @@ public class PersonajeServiceImpl implements PersonajeService{
 	}
 
 	@Override
-	public Personaje buscarPorId(Long id) {
-		if(id == null) throw new RuntimeException("El ID es obligatorio");
+	public Personaje buscarPorId(Long id) throws ReglaJuegoException {
+		if(id == null) throw new ReglaJuegoException("El ID es obligatorio");
 		
 		Personaje p = personajeDao.findById(id);
 		
-		if(p == null) throw new RuntimeException("No existe personaje con ID= " + id);
+		if(p == null) throw new ReglaJuegoException("No existe personaje con ID= " + id);
 		
 		return p;
 	}

@@ -3,11 +3,12 @@ package service;
 import java.util.List;
 
 import entities.Personaje;
+import exceptions.ReglaJuegoException;
 
 public interface PersonajeService {
 
 	Personaje crearYGuardar(Long usuarioId, String nombre, String razaTipo);
-	Personaje buscarPorId(Long id);
+	Personaje buscarPorId(Long id) throws ReglaJuegoException;
 	List<Personaje> listarPorUsuario(Long usuarioId);
 	public Personaje actualizar(Personaje p);
 }

@@ -2,12 +2,25 @@ package pruebas;
 
 import java.util.List;
 
+import dto.CriaturaDto;
+import dto.EquipamientoDto;
 import dto.UsuarioDto;
 import entities.Personaje;
-import entities.criatura.Conejo;
-import lombok.var;
+import entities.criatura.Criatura;
+import entities.equipo.Equipamiento;
+import entities.equipo.objetos.Baya;
+import entities.equipo.objetos.Cuerda;
+import entities.equipo.objetos.HojaParaLimpiar;
+import entities.equipo.objetos.MojonSeco;
+import entities.equipo.objetos.Palo;
+import entities.equipo.objetos.Piedra;
+import exceptions.ReglaJuegoException;
+import service.CriaturaService;
+import service.EquipamientoService;
 import service.PersonajeService;
 import service.UsuarioService;
+import service.impl.CriaturaServiceImpl;
+import service.impl.EquipamientoServiceImpl;
 import service.impl.PersonajeServiceImpl;
 import service.impl.UsuarioServiceImpl;
 import utilidades.HibernateUtil;
@@ -15,215 +28,286 @@ import utilidades.Utils;
 
 public class PruebaCapas {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-//		HibernateUtil.crearConexion();
-//		
-//		UsuarioDao dao = new UsuarioDaoImpl();
-//		
-//		//CREATE
-//		Usuario u = new Usuario(null, "mario4","mario4@gmail.com","58745","JUGADOR");
-//		dao.save(u);
-//		System.out.println("Usuario creado: " + u);
-//		Usuario u2 = new Usuario(null, "mario5","mario5@gmail.com","12335","JUGADOR");
-//		dao.save(u2);
-//		System.out.println("Usuario creado: " + u2);
-//		//READ
-//		Usuario leido = dao.findById(u.getId());
-//		System.out.println("Usuario encontrado: " + leido);
-//		//UPDATE
-//		leido.setPassword("1234");
-//		Usuario actualizado = dao.update(leido);
-//		System.out.println("Usuario actualizado: " + actualizado);
-//		//DELETE
-//		dao.delete(u2);
-//		System.out.println("Borrado OK");
-//		//LIST
-//		List<Usuario> listaUsuarios = dao.findAll();
-//		System.out.println("LISTA (" + listaUsuarios.size());
-//		//ENCONTRAR POR NOMBRE DE USUARIO
-//		Usuario encontrado = dao.findByUsername("mario1");
-//		System.out.println("ENCONTRADO CON USERNAME: " + encontrado);
-//		
-//		HibernateUtil.cerrarSessionFactory();
-//		
-		HibernateUtil.crearConexion();
-		
-		var props = HibernateUtil.getSessionFactory().getSessionFactory().getProperties();
-		System.out.println("DEBUG cfg url = " + HibernateUtil.class.getClassLoader().getResource("hibernate.cfg.xml"));
-		System.out.println("DEBUG hbm2ddl.auto = " + props.get("hibernate.hbm2ddl.auto"));
-		
-		UsuarioService usuarioService = new UsuarioServiceImpl();
-		PersonajeService personajeService = new PersonajeServiceImpl();
-		
-		boolean salir = false;
-		UsuarioDto usuarioLogueado = null;
-		Personaje personajeCreado = null;
-			while(!salir) {
-	            System.out.println("\n--- MENU ---");
-	            System.out.println("1) Registrar");
-	            System.out.println("2) Login");
-	            System.out.println("3) Listar usuarios");
-	            System.out.println("4) Salir");
-	            System.out.println("5) Crear personaje");
-	            //System.out.println("6) Jugar Episodio 1");
-	            System.out.println("7) Cerrar sesión");
-	            System.out.println("8) Listar personajes por usuario");
-	            System.out.println("9) TEST: añadir Cuerda y guardar");
-	            System.out.println("10) TEST: AÑADIR CRIATURA A PERSONAJE CREADO");
-	            int op = Utils.pideDatoNumerico("Opcion: ");
-	            
-	            try {
-					switch (op) {
-					case 1:
-						String u = Utils.pideDatoCadena("Username: ");
-						String e = Utils.pideDatoCadena("Email: ");
-						String p = Utils.pideDatoCadena("Password: ");
-						String r = Utils.pideDatoCadena("Rol: ");
-						
-						UsuarioDto registrado = usuarioService.registrar(u, e, p, r);
-						System.out.println("Usuario registrado OK -> " + registrado);
-						break;
-					case 2:
-					    String ul = Utils.pideDatoCadena("Username: ");
-					    String pl = Utils.pideDatoCadena("Password: ");
+    public static void main(String[] args) {
 
-					    usuarioLogueado = usuarioService.login(ul, pl);
-					    System.out.println("ID usuario logueado: " + usuarioLogueado.getId());
-					    System.out.println("Usuario logueado OK -> " + usuarioLogueado);
+        HibernateUtil.crearConexion();
 
-					    List<Personaje> personajes = personajeService.listarPorUsuario(usuarioLogueado.getId());
+        UsuarioService usuarioService = new UsuarioServiceImpl();
+        PersonajeService personajeService = new PersonajeServiceImpl();
+        EquipamientoService equipamientoService = new EquipamientoServiceImpl();
+        CriaturaService criaturaService = new CriaturaServiceImpl();
 
-					    if (personajes.isEmpty()) {
-					        personajeCreado = null;
-					        System.out.println("No tienes personajes todavía. Crea uno con opción 5.");
-					        break;
-					    } else {
-					        System.out.println("Elige personaje:");
-					        for (int i = 0; i < personajes.size(); i++) {
-					            System.out.println((i + 1) + ") " + personajes.get(i).getNombre()
-					                    + " [" + personajes.get(i).getRazaTipo() + "]"
-					                    + " (id=" + personajes.get(i).getId() + ")");
-					        }
+        boolean salir = false;
+        UsuarioDto usuarioLogueado = null;
+        Personaje personajeCreado = null;
 
-					        int idx = Utils.pideDatoNumerico("Opción: ") - 1;
-					        if (idx < 0 || idx >= personajes.size()) {
-					            personajeCreado = null;
-					            System.out.println("Opción inválida.");
-					            break;
-					        }
-					        personajeCreado = personajes.get(idx);
-					    }
+        while (!salir) {
+            System.out.println("\n--- MENU ---");
+            System.out.println("1) Registrar");
+            System.out.println("2) Login");
+            System.out.println("3) Listar usuarios");
+            System.out.println("4) Salir");
+            System.out.println("5) Crear personaje");
+            System.out.println("7) Cerrar sesión");
+            System.out.println("8) Listar personajes por usuario");
+            System.out.println("9) TEST: AÑADIR EQUIPAMIENTO POR SERVICE Y LISTAR");
+            System.out.println("10) TEST: RECARGAR PERSONAJE Y MOSTRAR INVENTARIO / CRIATURAS (PERSISTENCIA)");
+            System.out.println("11) TEST: AÑADIR CRIATURA POR SERVICE Y LISTAR");
+            int op = Utils.pideDatoNumerico("Opcion: ");
 
-					    System.out.println("Personaje activo: " + personajeCreado);
-					 
-					    break;
-					case 3:
-						System.out.println("Usuarios: " + usuarioService.listar());
-						break;
-					case 4:
-						salir = true;
-						break;
-					case 5:
-						if (usuarioLogueado == null) {
-							System.out.println("Para crear un personaje debes de hacer login primero");
-							break;
-						}
-						String name = Utils.pideDatoCadena("Nombre de personaje: ");
-						String raza = Utils.pideDatoCadena("Raza (MONGOL, RAPA NUI, TROGLODITA): ");
-						personajeCreado = personajeService.crearYGuardar(usuarioLogueado.getId(), name, raza);
-					
-						break;
-					case 6:
-					    if (usuarioLogueado == null) {
-					        System.out.println("Debes hacer login primero.");
-					        break;
-					    }
-					    // aquí empiezas el episodio (más adelante lo moveremos a service)
-					    //Epsodio1.episodio1(personajeCreado)
-						break;
-					case 7:
-						usuarioLogueado = null;
-						System.out.println("Sesion de usuario " + usuarioLogueado.getUsername() + " cerrada");
-						break;
-					case 8:
-					    if (usuarioLogueado == null) {
-					        System.out.println("Debes hacer login primero.");
-					        break;
-					    }
-					    
-					    List<Personaje> lista = personajeService.listarPorUsuario(usuarioLogueado.getId());
-					    System.out.println("DEBUG size = " + lista.size());
-					    for (Personaje pj : lista) {
-					        System.out.println("DEBUG pj = " + pj);
-					    }
+            try {
+                switch (op) {
 
-					    System.out.println("Personajes del usuario " + usuarioLogueado.getUsername() + ":");
-					    System.out.println("Listando por usuario id = " + usuarioLogueado.getId());
-					    System.out.println(personajeService.listarPorUsuario(usuarioLogueado.getId()));
-					    break;
-					case 9:
-					    if (usuarioLogueado == null) {
-					        System.out.println("Debes hacer login primero.");
-					        break;
-					    }
-					    if (personajeCreado == null) {
-					        System.out.println("Primero crea un personaje (opción 5).");
-					        break;
-					    }
+                    case 1: {
+                        String u = Utils.pideDatoCadena("Username: ");
+                        String e = Utils.pideDatoCadena("Email: ");
+                        String p = Utils.pideDatoCadena("Password: ");
+                        String r = Utils.pideDatoCadena("Rol: ");
 
-					    // Creamos la cuerda
-					    entities.equipo.objetos.Cuerda cuerda = new entities.equipo.objetos.Cuerda();
-					    cuerda.setNombre("Cuerda"); // si tu constructor ya lo pone, esto no haría falta
+                        UsuarioDto registrado = usuarioService.registrar(u, e, p, r);
+                        System.out.println("Usuario registrado OK -> " + registrado);
+                        break;
+                    }
 
-					    // IMPORTANTE: enlazar ambos lados (FK)
-					    cuerda.setPersonaje(personajeCreado);
-					    personajeCreado.getEquipo().add(cuerda);
+                    case 2: {
+                        String ul = Utils.pideDatoCadena("Username: ");
+                        String pl = Utils.pideDatoCadena("Password: ");
 
-					    // Guardamos/actualizamos el personaje -> por cascade debe insertar EQUIPAMIENTO
-					    personajeCreado = personajeService.actualizar(personajeCreado);
+                        usuarioLogueado = usuarioService.login(ul, pl);
+                        System.out.println("ID usuario logueado: " + usuarioLogueado.getId());
+                        System.out.println("Usuario logueado OK -> " + usuarioLogueado);
 
-					    System.out.println("OK: añadida Cuerda y guardado personaje. Personaje = " + personajeCreado.getId());
-					    break;
-					case 10:
-						if( usuarioLogueado == null) {
-							System.out.println("Debes hacer login primero.");
-							break;
-						}
-						
-						if(personajeCreado == null) {
-							System.out.println("Primero debes crea un personaje (opción 5).");
-							break;
-						}
-						
-						Conejo conejo1 = new Conejo();
-						
-						//añadir un Conejo al personajeCreado, setear personaje en la criatura, guardarlo, y luego recargar.
-						
-//						y siempre que añadas criatura:
-//
-//							criatura.setPersonaje(personaje);
-//							personaje.getCriaturas().add(criatura);
-						
-						//ENLAZAR F.K. con personaje
-						
-						conejo1.setPersonaje(personajeCreado);
-						personajeCreado.getCriaturas().add(conejo1);
-						
-						personajeCreado = personajeService.actualizar(personajeCreado);
-						
-						System.out.println("OK: criatura añadida y guardado. Criaturas actuales del personaje: " + personajeCreado.getCriaturas().size());
-						break;
-					default:
-						System.out.println("Opcion invalida");
-						break;
-					}
-				} catch (RuntimeException e) {
-					// TODO: handle exception
-					System.out.println("Error general " + e.getMessage());
-				}
-			}
-		HibernateUtil.cerrarSessionFactory();
-	}
+                        List<Personaje> personajes = personajeService.listarPorUsuario(usuarioLogueado.getId());
 
+                        if (personajes.isEmpty()) {
+                            personajeCreado = null;
+                            System.out.println("No tienes personajes todavía. Crea uno con opción 5.");
+                            break;
+                        }
+
+                        System.out.println("Elige personaje:");
+                        for (int i = 0; i < personajes.size(); i++) {
+                            System.out.println((i + 1) + ") " + personajes.get(i).getNombre()
+                                    + " [" + personajes.get(i).getRazaTipo() + "]"
+                                    + " (id=" + personajes.get(i).getId() + ")");
+                        }
+
+                        int idx = Utils.pideDatoNumerico("Opción: ") - 1;
+                        if (idx < 0 || idx >= personajes.size()) {
+                            personajeCreado = null;
+                            System.out.println("Opción inválida.");
+                            break;
+                        }
+
+                        personajeCreado = personajes.get(idx);
+                        System.out.println("Personaje activo: " + personajeCreado);
+                        break;
+                    }
+
+                    case 3: {
+                        System.out.println("Usuarios: " + usuarioService.listar());
+                        break;
+                    }
+
+                    case 4: {
+                        salir = true;
+                        break;
+                    }
+
+                    case 5: {
+                        if (usuarioLogueado == null) {
+                            System.out.println("Para crear un personaje debes de hacer login primero");
+                            break;
+                        }
+
+                        String name = Utils.pideDatoCadena("Nombre de personaje: ");
+                        String raza = Utils.pideDatoCadena("Elige raza (MONGOL, RAPA NUI, TROGLODITA): ");
+
+                        personajeCreado = personajeService.crearYGuardar(usuarioLogueado.getId(), name, raza);
+                        System.out.println("Personaje creado OK -> " + personajeCreado);
+                        break;
+                    }
+
+                    case 7: {
+                        if (usuarioLogueado == null) {
+                            System.out.println("No hay sesión iniciada.");
+                            break;
+                        }
+                        System.out.println("Sesión cerrada del usuario: " + usuarioLogueado.getUsername());
+                        usuarioLogueado = null;
+                        personajeCreado = null;
+                        break;
+                    }
+
+                    case 8: {
+                        if (usuarioLogueado == null) {
+                            System.out.println("Debes hacer login primero.");
+                            break;
+                        }
+
+                        List<Personaje> lista = personajeService.listarPorUsuario(usuarioLogueado.getId());
+                        System.out.println("Personajes del usuario " + usuarioLogueado.getUsername() + ":");
+                        for (Personaje pj : lista) {
+                            System.out.println(" - " + pj);
+                        }
+                        break;
+                    }
+
+                    // ✅ NUEVO CASE 9 (por service)
+                    case 9: {
+                        if (usuarioLogueado == null) {
+                            System.out.println("Debes hacer login primero.");
+                            break;
+                        }
+                        if (personajeCreado == null || personajeCreado.getId() == null) {
+                            System.out.println("Debes seleccionar/crear un personaje primero (login y elegir personaje, o crear con opción 5).");
+                            break;
+                        }
+
+                        try {
+                            String tipo = Utils.pideDatoCadena(
+                                    "¿Qué quieres añadir? (CUERDA, PALO, PIEDRA, MOJON, HOJA, BAYA): ");
+                            String t = tipo.trim().toUpperCase();
+
+                            Equipamiento nuevo = null;
+
+                            if ("CUERDA".equals(t)) {
+                                nuevo = new Cuerda();
+                            } else if ("PALO".equals(t)) {
+                                nuevo = new Palo();
+                            } else if ("PIEDRA".equals(t)) {
+                                nuevo = new Piedra();
+                            } else if ("MOJON".equals(t) || "MOJON SECO".equals(t)) {
+                                nuevo = new MojonSeco();
+                            } else if ("HOJA".equals(t) || "HOJA PARA LIMPIAR".equals(t)) {
+                                nuevo = new HojaParaLimpiar();
+                            } else if ("BAYA".equals(t)) {
+                                nuevo = new Baya();
+                            } else {
+                                System.out.println("Tipo inválido.");
+                                break;
+                            }
+
+                            EquipamientoDto añadido = equipamientoService.añadirAlInventario(personajeCreado.getId(), nuevo);
+                            System.out.println("OK: añadido -> " + añadido);
+
+                            System.out.println("\nInventario (DTO) del personaje " + personajeCreado.getNombre() + ":");
+                            List<EquipamientoDto> inv = equipamientoService.listarPorPersonaje(personajeCreado.getId());
+                            for (EquipamientoDto ed : inv) {
+                                System.out.println(" - " + ed);
+                            }
+
+                        } catch (ReglaJuegoException ex) {
+                            System.out.println("Regla del juego: " + ex.getMessage());
+                        } catch (RuntimeException ex) {
+                            System.out.println("Error técnico: " + ex.getMessage());
+                        }
+
+                        break;
+                    }
+
+                    case 10: {
+                        if (usuarioLogueado == null) {
+                            System.out.println("Debes hacer login primero.");
+                            break;
+                        }
+
+                        Long idPersonaje = null;
+
+                        if (personajeCreado != null && personajeCreado.getId() != null) {
+                            System.out.println("Personaje activo detectado: " + personajeCreado.getNombre()
+                                    + " (id=" + personajeCreado.getId() + ")");
+                            String resp = Utils.pideDatoCadena("¿Quieres recargar ese personaje? (S/N): ")
+                                    .trim().toUpperCase();
+
+                            if ("S".equals(resp)) {
+                                idPersonaje = personajeCreado.getId();
+                            }
+                        }
+
+                        if (idPersonaje == null) {
+                            idPersonaje = Long.valueOf(Utils.pideDatoNumerico("Introduce el ID del personaje a recargar: "));
+                        }
+
+                        try {
+                            Personaje recargado = personajeService.buscarPorId(idPersonaje);
+
+                            if (recargado.getUsuario() == null || recargado.getUsuario().getId() == null
+                                    || !recargado.getUsuario().getId().equals(usuarioLogueado.getId())) {
+                                System.out.println("Ese personaje NO pertenece al usuario logueado.");
+                                break;
+                            }
+
+                            personajeCreado = recargado;
+
+                            System.out.println("\n--- PERSONAJE CARGADO ---");
+                            System.out.println(personajeCreado);
+
+                            System.out.println("\n--- EQUIPO (" + personajeCreado.getEquipo().size() + ") ---");
+                            for (Equipamiento eq : personajeCreado.getEquipo()) {
+                                System.out.println(" - [" + eq.getClass().getSimpleName() + "] "
+                                        + eq.getNombre() + " (id=" + eq.getId() + ")");
+                            }
+
+                            System.out.println("\n--- CRIATURAS (" + personajeCreado.getCriaturas().size() + ") ---");
+                            for (Criatura c : personajeCreado.getCriaturas()) {
+                                System.out.println(" - [" + c.getClass().getSimpleName() + "] "
+                                        + c.getNombre() + " alias=" + c.getAlias() + " (id=" + c.getId() + ")");
+                            }
+
+                            System.out.println("\nOK: personaje recargado y relaciones verificadas.");
+
+                        } catch (ReglaJuegoException ex) {
+                            System.out.println("Regla del juego: " + ex.getMessage());
+                        } catch (RuntimeException ex) {
+                            System.out.println("Error técnico: " + ex.getMessage());
+                        }
+
+                        break;
+                    }
+
+                    case 11: {
+                        if (usuarioLogueado == null) {
+                            System.out.println("Debes hacer login primero.");
+                            break;
+                        }
+                        if (personajeCreado == null) {
+                            System.out.println("Debes seleccionar/crear un personaje primero.");
+                            break;
+                        }
+
+                        try {
+                            String tipoC = Utils.pideDatoCadena("Tipo de criatura (GUSANO/CONEJO/MOSQUITO/RATON): ");
+                            String aliasC = Utils.pideDatoCadena("Alias (opcional): ");
+
+                            CriaturaDto creada = criaturaService.crearYAsignar(personajeCreado.getId(), tipoC, aliasC);
+                            System.out.println("OK: criatura creada -> " + creada);
+
+                            System.out.println("Criaturas actuales del personaje " + personajeCreado.getNombre() + ":");
+                            List<CriaturaDto> listaCriaturas = criaturaService.listarPorPersonaje(personajeCreado.getId());
+                            for (CriaturaDto cd : listaCriaturas) {
+                                System.out.println(" - " + cd);
+                            }
+
+                        } catch (ReglaJuegoException ex) {
+                            System.out.println("Regla del juego: " + ex.getMessage());
+                        } catch (RuntimeException ex) {
+                            System.out.println("Error técnico: " + ex.getMessage());
+                        }
+
+                        break;
+                    }
+
+                    default:
+                        System.out.println("Opcion invalida");
+                        break;
+                }
+
+            } catch (RuntimeException e) {
+                System.out.println("Error general " + e.getMessage());
+            }
+        }
+
+        HibernateUtil.cerrarSessionFactory();
+    }
 }
