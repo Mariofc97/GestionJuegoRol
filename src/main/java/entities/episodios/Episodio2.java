@@ -82,7 +82,12 @@ public class Episodio2 {
 
 			case 1: {
 				// buscar bayas
-				Utils.buscarBaya(personaje);
+				try {
+					Utils.buscarBaya(personaje);
+				} catch (ReglaJuegoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				episodio2key1 = true;
 			}
