@@ -5,7 +5,6 @@ import java.util.List;
 
 import entities.Personaje;
 import entities.criatura.Criatura;
-import entities.episodios.Episodio2;
 import entities.episodios.Episodio3ElBosqueOscuro;
 import entities.equipo.Equipamiento;
 import utilidades.Utils;
