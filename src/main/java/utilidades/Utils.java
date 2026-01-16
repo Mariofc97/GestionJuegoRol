@@ -216,45 +216,31 @@ public class Utils {
 			}
 		}
 	}
-	
+
 	public static void invocarLoboJavali(Personaje person) {
-		System.out.println("Invocas a tu lobo compañero.");
 		Lobo lobo = new Lobo();
-		person.getCriaturas().add(lobo);
-		
-		System.out.println("Invocas a tu jabalí compañero.");
+
 		Jabali jabali = new Jabali();
-		person.getCriaturas().add(jabali);
-		
-int tirada = dadoDiez();
-		
+
+		int tirada = dadoDiez();
+
 		if (tirada == 1) {
-			System.out.println("Mientras invocas al lobo un mosquito te pica y te distraes, el lobo se enfada y te ataca.");
-			combate(person, lobo); 
-			}
-		else if (tirada == 9) {
-			System.out.println("Mientras invocas al jabalí un ratón te asusta y te distraes, el jabalí se enfada y te ataca.");
-			combate(person, jabali); 
-			}
-		else if (tirada >1 && tirada <5) {
+			System.out.println(
+					"Mientras invocas al lobo un mosquito te pica y te distraes, el lobo se enfada y te ataca.");
+			combate(person, lobo);
+		} else if (tirada == 9) {
+			System.out.println(
+					"Mientras invocas al jabalí un ratón te asusta y te distraes, el jabalí se enfada y te ataca.");
+			combate(person, jabali);
+		} else if (tirada > 1 && tirada < 5) {
 			System.out.println("Has invocado correctamente a un lobo.");
 			person.getCriaturas().add(lobo);
-		}
-		else if (tirada >=5 && tirada <9) {
+		} else if (tirada >= 5 && tirada < 9) {
 			System.out.println("Has invocado correctamente a un jabalí.");
 			person.getCriaturas().add(jabali);
 		}
-		
-		
-		
-		
-		
+
 	}
-	
-	
-	
-	
-	
 
 	private static void mostrarEquipoCompleto(Personaje person) {
 		List<Equipamiento> equipo = person.getEquipo();
