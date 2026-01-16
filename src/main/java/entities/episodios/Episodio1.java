@@ -127,7 +127,7 @@ public class Episodio1 {
 				case 1: {
 					// Caso 1: el personaje "llora" y obtiene una HojaParaLimpiar
 					try {
-						int cantidad = personaje.getEquipo().size();
+						int cantidad = Utils.contarHojas(personaje); // contamos las hojas para limitar a 5 lloron
 						if (cantidad >= 5) {
 							System.out.println("Te dan un torta... LLORON DEJA DE LLORAR!!!!!");
 							break;

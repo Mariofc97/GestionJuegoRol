@@ -86,6 +86,18 @@ public class Utils {
 
 		return compi;
 	}
+	public static int contarHojas(Personaje personaje) {
+	    int contador = 0;
+
+	    for (Object obj : personaje.getEquipo()) {
+	        if (obj instanceof HojaParaLimpiar) {
+	            contador++;
+	        }
+	    }
+
+	    return contador;
+	}
+
 
 	// este random solo esta hecho con 4 criaturas, habrá que meter mas si se
 	// generan mas
@@ -483,7 +495,7 @@ public class Utils {
 		}
 	}
 
-	public static void buscarBaya(Personaje personaje) {
+	public static void buscarBaya(Personaje personaje) throws ReglaJuegoException {
 
 		int tirada = Utils.dadoDiez();
 		if (tirada <= 3) {
