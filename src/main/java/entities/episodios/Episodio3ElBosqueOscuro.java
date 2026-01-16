@@ -58,7 +58,8 @@ public class Episodio3ElBosqueOscuro {
 		boolean bosqueOscurokey1 = false;
 		boolean bosqueOscurokey2 = false;
 		boolean bosqueOscurokey3 = false;
-		boolean controladorAtaqueLobo = false;
+		boolean controladorAtaqueLobo = false; // false no lo derrotado aun, true derrotado
+		boolean controladorJabali = false; // false no lo derrotado aun, true derrotado
 		if (contadorEpisodio3 == 0) {
 			System.out.println(
 					"Te adentras en el Bosque Oscuro, un lugar lleno de misterios y peligros. A medida que avanzas, sientes que los árboles susurran a tu alrededor.");
@@ -79,6 +80,7 @@ public class Episodio3ElBosqueOscuro {
 				// BOSH FACIL
 				try {
 					Utils.buscarBaya(personaje);
+
 				} catch (ReglaJuegoException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -94,7 +96,6 @@ public class Episodio3ElBosqueOscuro {
 					System.out.println("Intentando cazar...");
 					Utils.cazar(personaje);
 					if (personaje.getExperiencia() > puntosdeExperienciaAntesCazar) {
-						bosqueOscurokey1 = true;
 						System.out.println("Caza realizada con éxito.");
 						LOGGER.info("El personaje " + personaje.getNombre() + " ha cazado con éxito.");
 					}
@@ -133,12 +134,17 @@ public class Episodio3ElBosqueOscuro {
 					System.out.println(
 							"Bien has atrapado un conejo!!!! te hacercas despacio pero... siente como algo te esta acechando.... la trampa era para el conejo,,, pero,,, te ataca un lobo que tambien quiere el conejo.");
 					Lobo lobo = new Lobo();
-					Utils.combate(personaje, lobo);
-					System.out.println("Has sobrevivido al ataque del lobo y conseguido el conejo.");
+					int puntosdeExperienciaAntesLobo = personaje.getExperiencia();
 
-					controladorAtaqueLobo = true;
-					// Aquí podrías implementar un menú para seleccionar cuál usar
-					personaje.getEquipo().add(new CarneSeca());
+					Utils.combate(personaje, lobo);
+					if (personaje.getExperiencia() > puntosdeExperienciaAntesLobo) {
+						System.out.println("Has sobrevivido al ataque del lobo y conseguido el conejo.");
+
+						controladorAtaqueLobo = true;
+						// Aquí podrías implementar un menú para seleccionar cuál usar
+						personaje.getEquipo().add(new CarneSeca());
+						bosqueOscurokey1 = true; // derrotar al lobo es necesario para salir del episodio
+					}
 				}
 				if (controladorAtaqueLobo == true) {
 					System.out.println("Bien has atrapado un conejo!!!!.");
@@ -166,6 +172,7 @@ public class Episodio3ElBosqueOscuro {
 				// buscar materiales
 				// Caso 6: buscar objeto
 				try {
+					bosqueOscurokey2 = true;
 					Utils.buscarObjeto(personaje);
 					LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
 				} catch (Exception e) {
@@ -195,6 +202,12 @@ public class Episodio3ElBosqueOscuro {
 				break;
 			case 9: {
 				// invocar lobo
+				if (controladorAtaqueLobo) {
+					System.out.println("ya puedes invocar a tu lobo compañero en cualquier combate.");
+
+				} else {
+					System.out.println("Aun no has derrotado a un lobo, no puedes invocarlo.");
+				}
 
 			}
 				break;
