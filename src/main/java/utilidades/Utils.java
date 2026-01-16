@@ -233,6 +233,17 @@ public class Utils {
 		}
 	}
 
+	private static void recuperarVida (Personaje personaje) {
+		
+		personaje.setPuntosVida(personaje.getPuntosVidaMax());
+		
+			
+	}
+	
+	
+	
+	
+	
 	private static void mostrarCompaneros(Personaje person) {
 		List<Criatura> criaturasCompis = person.getCriaturas();
 
