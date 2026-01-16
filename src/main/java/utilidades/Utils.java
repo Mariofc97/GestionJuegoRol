@@ -233,7 +233,7 @@ public class Utils {
 		}
 	}
 
-	private static void recuperarVida (Personaje personaje) {
+	public static void recuperarVida (Personaje personaje) {
 		
 		personaje.setPuntosVida(personaje.getPuntosVidaMax());
 		
