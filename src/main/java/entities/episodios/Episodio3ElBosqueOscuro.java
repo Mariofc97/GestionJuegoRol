@@ -4,6 +4,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Personaje;
+import entities.criatura.Lobo;
+import entities.equipo.armas.Trampa;
+import entities.equipo.objetos.HojaParaLimpiar;
 //TODO: FALTA REPASAR CONTADOR DE EPISODIO3 PARA QUE FUNCIONE BIEN ENTRE
 import exceptions.ReglaJuegoException;
 import utilidades.Utils;
@@ -113,12 +116,35 @@ boolean salida = false;
 
 			case 4: {
 				
-				System.out.println("Bien has atrapado un conejo!!!! te hacercas despacio pero... siente como algo te esta acechando.... la trampa era para el conejo,,, pero,,, ");// USAR TRAMPA
+				    int contador = 0;
+
+				    for (Object obj : personaje.getEquipo()) {
+				        if (obj instanceof Trampa) {
+				            contador++;
+				        }
+				    if (contador == 0) {
+				        System.out.println("No tienes trampas en tu inventario.");
+				    }
+				    if (contador > 0) {
+				    	System.out.println("Bien has atrapado un conejo!!!! te hacercas despacio pero... siente como algo te esta acechando.... la trampa era para el conejo,,, pero,,, te ataca un lobo que tambien quiere el conejo.");
+				    	Lobo lobo = new Lobo();
+				    	Utils.combate(personaje, lobo);
+				    	System.out.println("Has sobrevivido al ataque del lobo y conseguido el conejo.");
+				    	
+				    	
+				        // Aquí podrías implementar un menú para seleccionar cuál usar
+				    }
+
+				
+				    }
+			}
+				// USAR TRAMPA
 				// TODO: AQUI CUANDO USAMOS TRAMPO ATRAPAMOS UN CONEJO O SIMILAR, PERO ATRAEMOS
 				// UN LOBO PELEA BOSH FACIL
 
-			}
+			
 				break;
+				
 			case 5: {
 				// inventario
 				try {

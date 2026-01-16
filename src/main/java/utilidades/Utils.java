@@ -86,18 +86,18 @@ public class Utils {
 
 		return compi;
 	}
+
 	public static int contarHojas(Personaje personaje) {
-	    int contador = 0;
+		int contador = 0;
 
-	    for (Object obj : personaje.getEquipo()) {
-	        if (obj instanceof HojaParaLimpiar) {
-	            contador++;
-	        }
-	    }
+		for (Object obj : personaje.getEquipo()) {
+			if (obj instanceof HojaParaLimpiar) {
+				contador++;
+			}
+		}
 
-	    return contador;
+		return contador;
 	}
-
 
 	// este random solo esta hecho con 4 criaturas, habrá que meter mas si se
 	// generan mas
@@ -175,11 +175,12 @@ public class Utils {
 		System.out.println("Comienza el combate entre: " + person.getNombre() + " y " + enemigo.getNombre());
 
 		if (person.tieneArmaEquipada() == false) {
-			System.out
-					.println("El personaje " + person.getNombre() + " no tiene ningun arma equipada, asique el enemigo "
-							+ enemigo.getNombre() + " te pisa la cara y te deja a un punto de vida.");
+			System.out.println("El personaje " + person.getNombre()
+					+ " no tiene ningun arma equipada, no se puede combatir sin arma, " + enemigo.getNombre()
+					+ " te pisa la cara y te deja a un punto de vida.");
 			person.setPuntosVida(1);
-			System.out.println("Vuelves a la cueva con " + person.getPuntosVida() + " puntos de vida.");
+			System.out.println("Escapas gracias al mal olor que desprendes la criatura no a querido comerte. "
+					+ person.getPuntosVida() + " puntos de vida.");
 
 		}
 		if (person.getCriaturas().size() == 0) {
@@ -233,17 +234,12 @@ public class Utils {
 		}
 	}
 
-	public static void recuperarVida (Personaje personaje) {
-		
+	public static void recuperarVida(Personaje personaje) {
+
 		personaje.setPuntosVida(personaje.getPuntosVidaMax());
-		
-			
+
 	}
-	
-	
-	
-	
-	
+
 	private static void mostrarCompaneros(Personaje person) {
 		List<Criatura> criaturasCompis = person.getCriaturas();
 
@@ -259,7 +255,6 @@ public class Utils {
 		}
 	}
 
-	
 	private static String obtenerTipoEquipamiento(Equipamiento e) {
 		if (e instanceof Armas) {
 			return "Arma";
@@ -601,228 +596,252 @@ public class Utils {
 
 	public static Armas construirArma(Personaje personaje) throws ReglaJuegoException {
 
-	    if (personaje == null || personaje.getEquipo() == null) {
-	        throw new ReglaJuegoException("Personaje o inventario no disponible.");
-	    }
+		if (personaje == null || personaje.getEquipo() == null) {
+			throw new ReglaJuegoException("Personaje o inventario no disponible.");
+		}
 
-	    String t = Utils.pideDatoCadena(
-	            "Selecciona el arma que quieres fabricar: (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA, CAÑA PESCA, TRAMPA)");
-	    String tipo = t.trim().toUpperCase();
+		String t = Utils.pideDatoCadena(
+				"Selecciona el arma que quieres fabricar: (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA, CAÑA PESCA, TRAMPA)");
+		String tipo = t.trim().toUpperCase();
 
-	    Armas nuevaArma = null;
+		Armas nuevaArma = null;
 
-	    switch (tipo) {
+		switch (tipo) {
 
-	        case "ARCO": {
-	            boolean tienePalo = false;
-	            boolean tieneCuerda = false;
+		case "ARCO": {
+			boolean tienePalo = false;
+			boolean tieneCuerda = false;
 
-	            // 1) Comprobar materiales
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (e instanceof Palo) tienePalo = true;
-	                if (e instanceof Cuerda) tieneCuerda = true;
-	            }
+			// 1) Comprobar materiales
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (e instanceof Palo)
+					tienePalo = true;
+				if (e instanceof Cuerda)
+					tieneCuerda = true;
+			}
 
-	            if (!tienePalo || !tieneCuerda) {
-	                throw new ReglaJuegoException("Necesitas un Palo y una Cuerda para fabricar el ARCO.");
-	            }
+			if (!tienePalo || !tieneCuerda) {
+				throw new ReglaJuegoException("Necesitas un Palo y una Cuerda para fabricar el ARCO.");
+			}
 
-	            // 2) Consumir materiales (eliminar 1 de cada)
-	            Equipamiento paloAEliminar = null;
-	            Equipamiento cuerdaAEliminar = null;
+			// 2) Consumir materiales (eliminar 1 de cada)
+			Equipamiento paloAEliminar = null;
+			Equipamiento cuerdaAEliminar = null;
 
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
-	                if (cuerdaAEliminar == null && e instanceof Cuerda) cuerdaAEliminar = e;
-	            }
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (paloAEliminar == null && e instanceof Palo)
+					paloAEliminar = e;
+				if (cuerdaAEliminar == null && e instanceof Cuerda)
+					cuerdaAEliminar = e;
+			}
 
-	            personaje.getEquipo().remove(paloAEliminar);
-	            personaje.getEquipo().remove(cuerdaAEliminar);
+			personaje.getEquipo().remove(paloAEliminar);
+			personaje.getEquipo().remove(cuerdaAEliminar);
 
-	            // 3) Crear arma
-	            nuevaArma = new Arco();
-	            break;
-	        }
+			// 3) Crear arma
+			nuevaArma = new Arco();
+			break;
+		}
 
-	        case "BUMERAN": {
-	            boolean tienePalo = false;
+		case "BUMERAN": {
+			boolean tienePalo = false;
 
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (e instanceof Palo) {
-	                    tienePalo = true;
-	                    break;
-	                }
-	            }
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (e instanceof Palo) {
+					tienePalo = true;
+					break;
+				}
+			}
 
-	            if (!tienePalo) {
-	                throw new ReglaJuegoException("Necesitas un Palo para fabricar el BUMERAN.");
-	            }
+			if (!tienePalo) {
+				throw new ReglaJuegoException("Necesitas un Palo para fabricar el BUMERAN.");
+			}
 
-	            Equipamiento paloAEliminar = null;
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (e instanceof Palo) {
-	                    paloAEliminar = e;
-	                    break;
-	                }
-	            }
-	            personaje.getEquipo().remove(paloAEliminar);
+			Equipamiento paloAEliminar = null;
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (e instanceof Palo) {
+					paloAEliminar = e;
+					break;
+				}
+			}
+			personaje.getEquipo().remove(paloAEliminar);
 
-	            nuevaArma = new Bumeran();
-	            break;
-	        }
+			nuevaArma = new Bumeran();
+			break;
+		}
 
-	        case "CAZAMARIPOSAS": {
-	            boolean tienePalo = false;
-	            boolean tieneMojon = false;
+		case "CAZAMARIPOSAS": {
+			boolean tienePalo = false;
+			boolean tieneMojon = false;
 
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (e instanceof Palo) tienePalo = true;
-	                if (e instanceof MojonSeco) tieneMojon = true;
-	            }
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (e instanceof Palo)
+					tienePalo = true;
+				if (e instanceof MojonSeco)
+					tieneMojon = true;
+			}
 
-	            if (!tienePalo || !tieneMojon) {
-	                throw new ReglaJuegoException("Necesitas un Palo y un Mojón Seco para fabricar el CAZAMARIPOSAS.");
-	            }
+			if (!tienePalo || !tieneMojon) {
+				throw new ReglaJuegoException("Necesitas un Palo y un Mojón Seco para fabricar el CAZAMARIPOSAS.");
+			}
 
-	            Equipamiento paloAEliminar = null;
-	            Equipamiento mojonAEliminar = null;
+			Equipamiento paloAEliminar = null;
+			Equipamiento mojonAEliminar = null;
 
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
-	                if (mojonAEliminar == null && e instanceof MojonSeco) mojonAEliminar = e;
-	            }
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (paloAEliminar == null && e instanceof Palo)
+					paloAEliminar = e;
+				if (mojonAEliminar == null && e instanceof MojonSeco)
+					mojonAEliminar = e;
+			}
 
-	            personaje.getEquipo().remove(paloAEliminar);
-	            personaje.getEquipo().remove(mojonAEliminar);
+			personaje.getEquipo().remove(paloAEliminar);
+			personaje.getEquipo().remove(mojonAEliminar);
 
-	            nuevaArma = new Cazamariposas();
-	            break;
-	        }
+			nuevaArma = new Cazamariposas();
+			break;
+		}
 
-	        case "LANZA": {
-	            boolean tienePalo = false;
-	            boolean tienePiedra = false;
+		case "LANZA": {
+			boolean tienePalo = false;
+			boolean tienePiedra = false;
 
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (e instanceof Palo) tienePalo = true;
-	                if (e instanceof Piedra) tienePiedra = true;
-	            }
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (e instanceof Palo)
+					tienePalo = true;
+				if (e instanceof Piedra)
+					tienePiedra = true;
+			}
 
-	            if (!tienePalo || !tienePiedra) {
-	                throw new ReglaJuegoException("Necesitas un Palo y una Piedra para fabricar la LANZA.");
-	            }
+			if (!tienePalo || !tienePiedra) {
+				throw new ReglaJuegoException("Necesitas un Palo y una Piedra para fabricar la LANZA.");
+			}
 
-	            Equipamiento paloAEliminar = null;
-	            Equipamiento piedraAEliminar = null;
+			Equipamiento paloAEliminar = null;
+			Equipamiento piedraAEliminar = null;
 
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
-	                if (piedraAEliminar == null && e instanceof Piedra) piedraAEliminar = e;
-	            }
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (paloAEliminar == null && e instanceof Palo)
+					paloAEliminar = e;
+				if (piedraAEliminar == null && e instanceof Piedra)
+					piedraAEliminar = e;
+			}
 
-	            personaje.getEquipo().remove(paloAEliminar);
-	            personaje.getEquipo().remove(piedraAEliminar);
+			personaje.getEquipo().remove(paloAEliminar);
+			personaje.getEquipo().remove(piedraAEliminar);
 
-	            nuevaArma = new Lanza();
-	            break;
-	        }
+			nuevaArma = new Lanza();
+			break;
+		}
 
-	        case "HONDA": {
-	            boolean tieneCuerda = false;
+		case "HONDA": {
+			boolean tieneCuerda = false;
 
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (e instanceof Cuerda) {
-	                    tieneCuerda = true;
-	                    break;
-	                }
-	            }
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (e instanceof Cuerda) {
+					tieneCuerda = true;
+					break;
+				}
+			}
 
-	            if (!tieneCuerda) {
-	                throw new ReglaJuegoException("Necesitas una Cuerda para fabricar la HONDA.");
-	            }
+			if (!tieneCuerda) {
+				throw new ReglaJuegoException("Necesitas una Cuerda para fabricar la HONDA.");
+			}
 
-	            Equipamiento cuerdaAEliminar = null;
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (e instanceof Cuerda) {
-	                    cuerdaAEliminar = e;
-	                    break;
-	                }
-	            }
-	            personaje.getEquipo().remove(cuerdaAEliminar);
+			Equipamiento cuerdaAEliminar = null;
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (e instanceof Cuerda) {
+					cuerdaAEliminar = e;
+					break;
+				}
+			}
+			personaje.getEquipo().remove(cuerdaAEliminar);
 
-	            nuevaArma = new Honda(); // antes tenías Lanza por error
-	            break;
-	        }
-	        case "CAÑA PESCA": {
-	        	boolean tieneCuerda = false;
-	            boolean tienePalo = false;
-	            boolean tieneBaya = false;
-	        	
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (e instanceof Cuerda) tieneCuerda = true;
-	                if (e instanceof Palo) tienePalo = true;
-	                if (e instanceof Baya) tieneBaya = true;
-	            }
-	        	
-	        	if (!tieneCuerda || !tienePalo || !tieneBaya) {
-	        		throw new ReglaJuegoException("Necesitas una Cuerda, Baya y Palo para fabricar la CAÑA PESCA.");
-	        	}
-	        	
-	        	Equipamiento cuerdaAEliminar = null;
-	        	Equipamiento paloAEliminar = null;
-	        	Equipamiento bayaAEliminar = null;
-	            for (Equipamiento e : personaje.getEquipo()) {
-	                if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
-	                if (cuerdaAEliminar == null && e instanceof Cuerda) cuerdaAEliminar = e;
-	                if (bayaAEliminar == null && e instanceof Baya) bayaAEliminar = e;
-	            }
-	        	personaje.getEquipo().remove(cuerdaAEliminar);
-	        	personaje.getEquipo().remove(paloAEliminar);
-	        	personaje.getEquipo().remove(bayaAEliminar);
-	        	
-	        	nuevaArma = new CanaPescar(); // antes tenías Lanza por error
-	        	break;
-	        }
-	        case "TRAMPA": {
-	        	boolean tieneCuerda = false;
-	        	boolean tienePalo = false;
-	        	boolean tienePiedra = false;
-	        	
-	        	for (Equipamiento e : personaje.getEquipo()) {
-	        		if (e instanceof Cuerda) tieneCuerda = true;
-	        		if (e instanceof Palo) tienePalo = true;
-	        		if (e instanceof Piedra) tienePiedra = true;
-	        	}
-	        	
-	        	if (!tieneCuerda || !tienePalo || !tienePiedra) {
-	        		throw new ReglaJuegoException("Necesitas una Cuerda, Baya y Piedra para fabricar la TRAMPA.");
-	        	}
-	        	
-	        	Equipamiento cuerdaAEliminar = null;
-	        	Equipamiento paloAEliminar = null;
-	        	Equipamiento piedraAEliminar = null;
-	        	for (Equipamiento e : personaje.getEquipo()) {
-	        		if (paloAEliminar == null && e instanceof Palo) paloAEliminar = e;
-	        		if (cuerdaAEliminar == null && e instanceof Cuerda) cuerdaAEliminar = e;
-	        		if (piedraAEliminar == null && e instanceof Piedra) piedraAEliminar = e;
-	        	}
-	        	personaje.getEquipo().remove(cuerdaAEliminar);
-	        	personaje.getEquipo().remove(paloAEliminar);
-	        	personaje.getEquipo().remove(piedraAEliminar);
-	        	
-	        	nuevaArma = new Trampa(); // antes tenías Lanza por error
-	        	break;
-	        }
+			nuevaArma = new Honda(); // antes tenías Lanza por error
+			break;
+		}
+		case "CAÑA PESCA": {
+			boolean tieneCuerda = false;
+			boolean tienePalo = false;
+			boolean tieneBaya = false;
 
-	        default:
-	            throw new ReglaJuegoException("Opción inválida: " + tipo);
-	    }
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (e instanceof Cuerda)
+					tieneCuerda = true;
+				if (e instanceof Palo)
+					tienePalo = true;
+				if (e instanceof Baya)
+					tieneBaya = true;
+			}
 
-	    // Añadir el arma al inventario
-	    personaje.getEquipo().add(nuevaArma);
-	    System.out.println("Has fabricado un " + nuevaArma.getNombre() + " y se ha añadido a tu inventario.");
+			if (!tieneCuerda || !tienePalo || !tieneBaya) {
+				throw new ReglaJuegoException("Necesitas una Cuerda, Baya y Palo para fabricar la CAÑA PESCA.");
+			}
 
-	    return nuevaArma;
+			Equipamiento cuerdaAEliminar = null;
+			Equipamiento paloAEliminar = null;
+			Equipamiento bayaAEliminar = null;
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (paloAEliminar == null && e instanceof Palo)
+					paloAEliminar = e;
+				if (cuerdaAEliminar == null && e instanceof Cuerda)
+					cuerdaAEliminar = e;
+				if (bayaAEliminar == null && e instanceof Baya)
+					bayaAEliminar = e;
+			}
+			personaje.getEquipo().remove(cuerdaAEliminar);
+			personaje.getEquipo().remove(paloAEliminar);
+			personaje.getEquipo().remove(bayaAEliminar);
+
+			nuevaArma = new CanaPescar(); // antes tenías Lanza por error
+			break;
+		}
+		case "TRAMPA": {
+			boolean tieneCuerda = false;
+			boolean tienePalo = false;
+			boolean tienePiedra = false;
+
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (e instanceof Cuerda)
+					tieneCuerda = true;
+				if (e instanceof Palo)
+					tienePalo = true;
+				if (e instanceof Piedra)
+					tienePiedra = true;
+			}
+
+			if (!tieneCuerda || !tienePalo || !tienePiedra) {
+				throw new ReglaJuegoException("Necesitas una Cuerda, Baya y Piedra para fabricar la TRAMPA.");
+			}
+
+			Equipamiento cuerdaAEliminar = null;
+			Equipamiento paloAEliminar = null;
+			Equipamiento piedraAEliminar = null;
+			for (Equipamiento e : personaje.getEquipo()) {
+				if (paloAEliminar == null && e instanceof Palo)
+					paloAEliminar = e;
+				if (cuerdaAEliminar == null && e instanceof Cuerda)
+					cuerdaAEliminar = e;
+				if (piedraAEliminar == null && e instanceof Piedra)
+					piedraAEliminar = e;
+			}
+			personaje.getEquipo().remove(cuerdaAEliminar);
+			personaje.getEquipo().remove(paloAEliminar);
+			personaje.getEquipo().remove(piedraAEliminar);
+
+			nuevaArma = new Trampa(); // antes tenías Lanza por error
+			break;
+		}
+
+		default:
+			throw new ReglaJuegoException("Opción inválida: " + tipo);
+		}
+
+		// Añadir el arma al inventario
+		personaje.getEquipo().add(nuevaArma);
+		System.out.println("Has fabricado un " + nuevaArma.getNombre() + " y se ha añadido a tu inventario.");
+
+		return nuevaArma;
 	}
 
 }
