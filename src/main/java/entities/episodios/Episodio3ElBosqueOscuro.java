@@ -4,8 +4,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Personaje;
+import entities.criatura.Jabali;
 import entities.criatura.Lobo;
 import entities.equipo.armas.Trampa;
+import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.CarneSeca;
 import entities.equipo.objetos.HojaParaLimpiar;
 //TODO: FALTA REPASAR CONTADOR DE EPISODIO3 PARA QUE FUNCIONE BIEN ENTRE
@@ -68,7 +70,7 @@ public class Episodio3ElBosqueOscuro {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Usar trampa \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al rio. \t8.Descansar. \t9.Invocar lobo.");
+					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Usar trampa \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al rio. \t8.Descansar. \t9.Invocar lobo y jabali.");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -80,6 +82,26 @@ public class Episodio3ElBosqueOscuro {
 				// BOSH FACIL
 				try {
 					Utils.buscarBaya(personaje);
+					if (controladorJabali == false) {
+						System.out.println(
+								"Ummm que ricas las bayas, escuchas un ruido... más alto... de repente un jabali salvaje aparece buscando comida y te ataca.");
+						Jabali jabali = new Jabali();
+						int puntosdeExperienciaAntesJabali = personaje.getExperiencia();
+
+						Utils.combate(personaje, jabali);
+						if (personaje.getExperiencia() > puntosdeExperienciaAntesJabali) {
+							System.out.println("Has sobrevivido al ataque del jabali y conseguido bayas.");
+
+							controladorJabali = true;
+							// Aquí podrías implementar un menú para seleccionar cuál usar
+							personaje.getEquipo().add(new Baya());
+							bosqueOscurokey1 = true; // derrotar al lobo es necesario para salir del episodio
+						}
+					}
+					if (controladorJabali == true) {
+						System.out.println("Bien has encontrado bayas!!!!.");
+						personaje.getEquipo().add(new Baya());
+					}
 
 				} catch (ReglaJuegoException e) {
 					// TODO Auto-generated catch block
@@ -172,7 +194,6 @@ public class Episodio3ElBosqueOscuro {
 				// buscar materiales
 				// Caso 6: buscar objeto
 				try {
-					bosqueOscurokey2 = true;
 					Utils.buscarObjeto(personaje);
 					LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
 				} catch (Exception e) {
@@ -195,18 +216,20 @@ public class Episodio3ElBosqueOscuro {
 				Utils.recuperarVida(personaje);
 				String msg = "Has descansado y recuperado toda la vida.";
 				System.out.println(msg);
-				bosqueOscurokey3 = true; // descansar también cuenta como requisito para poder salir
 				LOGGER.info(msg + " Personaje: " + personaje.getNombre());
+				bosqueOscurokey2 = true;
 
 			}
 				break;
 			case 9: {
-				// invocar lobo
-				if (controladorAtaqueLobo) {
-					System.out.println("ya puedes invocar a tu lobo compañero en cualquier combate.");
+				// invocar lobo y jabali
+				if (controladorAtaqueLobo && controladorJabali) {
+					System.out.println("ya puedes invocar a tu lobo o jabali compañero.");
+					bosqueOscurokey3 = true;
+					Utils.invocarLoboJavali(personaje);
 
 				} else {
-					System.out.println("Aun no has derrotado a un lobo, no puedes invocarlo.");
+					System.out.println("Aun no has derrotado a un lobo y un jabali, no puedes invocarlos.");
 				}
 
 			}
