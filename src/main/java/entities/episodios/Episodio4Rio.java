@@ -4,6 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Personaje;
+import entities.equipo.armas.CanaPescar;
+import entities.equipo.armas.Trampa;
 import exceptions.ReglaJuegoException;
 import utilidades.Utils;
 
@@ -60,7 +62,7 @@ public class Episodio4Rio {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Pescar \t3. Crear arma \t4. Bañarte \t5.Inventario y estado \t6.Buscar materales. \7.Desafiar Jefe del Clan. \t8.Descansar");
+					"1. Buscar bayas \t2. Pescar \t3. Crear arma \t4. Bañarte \t5.Inventario y estado \t6.Buscar materales. \7.Desafiar Jefe del Clan. \t8.Descansar. \t9.Invocar PezPrehistoricoGigante");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -70,7 +72,12 @@ public class Episodio4Rio {
 				// buscar bayas
 				// TODO: HAY Q AÑADIR QUE AL BUSCAR BAYAS NOS ENCONTRAMOS CON UN JABALI Y PELA
 				// BOSH FACIL
-				Utils.buscarBaya(personaje);
+				try {
+					Utils.buscarBaya(personaje);
+				} catch (ReglaJuegoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 				break;
@@ -78,7 +85,14 @@ public class Episodio4Rio {
 			case 2: {
 				// pescar
 				Riokey1 = true;
-
+				int contadorCanaPesca = 0;
+				for (Object obj : personaje.getEquipo()) {
+					if (obj instanceof CanaPescar) {
+						contadorCanaPesca++;
+					}
+				}
+				
+				
 			}
 				break;
 

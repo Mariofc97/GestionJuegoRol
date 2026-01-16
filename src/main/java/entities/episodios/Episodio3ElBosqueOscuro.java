@@ -154,7 +154,7 @@ public class Episodio3ElBosqueOscuro {
 				}
 				if (contadorTrampas > 0 && controladorAtaqueLobo == false) {
 					System.out.println(
-							"Bien has atrapado un conejo!!!! te hacercas despacio pero... siente como algo te esta acechando.... la trampa era para el conejo,,, pero,,, te ataca un lobo que tambien quiere el conejo.");
+							"Bien has atrapado un conejo!!!! te acercas despacio pero... siente como algo te esta acechando.... la trampa era para el conejo,,, pero,,, te ataca un lobo que tambien quiere el conejo.");
 					Lobo lobo = new Lobo();
 					int puntosdeExperienciaAntesLobo = personaje.getExperiencia();
 
