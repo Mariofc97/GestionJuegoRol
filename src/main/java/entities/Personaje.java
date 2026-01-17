@@ -224,15 +224,6 @@ public class Personaje implements Atacable, Defendible {
 		this.razaTipo = razaTipo;
 	}
 
-	public int usarPocion(Pocion pocion) {
-
-		int puntosVidaPocion = pocion.getPuntosDeVida();
-
-		this.puntosVida = puntosVida + puntosVidaPocion;
-		System.out.println("El personaje " + nombre + " se ha curado " + puntosVidaPocion + " puntos de vida gracias");
-
-		return this.puntosVida;
-	}
 
 	public int getNivel() {
 		return nivel;
@@ -242,6 +233,25 @@ public class Personaje implements Atacable, Defendible {
 		this.nivel = nivel;
 	}
 	
+	
+	
+	public int getEpisodioActual() {
+		return episodioActual;
+	}
+
+	public void setEpisodioActual(int episodioActual) {
+		this.episodioActual = episodioActual;
+	}
+
+	public int usarPocion(Pocion pocion) {
+		
+		int puntosVidaPocion = pocion.getPuntosDeVida();
+		
+		this.puntosVida = puntosVida + puntosVidaPocion;
+		System.out.println("El personaje " + nombre + " se ha curado " + puntosVidaPocion + " puntos de vida gracias");
+		
+		return this.puntosVida;
+	}
 	// CON ESTOS DOS METODOS NOS ASEGURAMOS QUE EN CUALQUIER PARTE DEL JUEGO SE AÑADE INVENTARIO Y CRIATURAS SIN OLVIDARSE DE LA F.K.
 //	antes haciamos tanto en los episodios como en Utils en metodos como, buscarBaya, buscarObjeto, cazar, invocacionCompañeroCriatura, invocarLoboJavali, contruirArma...
 	//	personaje.getEquipo().add(new Baya()); 

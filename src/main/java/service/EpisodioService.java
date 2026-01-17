@@ -1,5 +1,8 @@
 package service;
 
-public class EpisodioService {
+import entities.Personaje;
 
+public interface EpisodioService {
+
+	Personaje jugarEpisodioActual (Long personajeId);
 }

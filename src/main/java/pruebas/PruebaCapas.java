@@ -16,10 +16,12 @@ import entities.equipo.objetos.Palo;
 import entities.equipo.objetos.Piedra;
 import exceptions.ReglaJuegoException;
 import service.CriaturaService;
+import service.EpisodioService;
 import service.EquipamientoService;
 import service.PersonajeService;
 import service.UsuarioService;
 import service.impl.CriaturaServiceImpl;
+import service.impl.EpisodioServiceImpl;
 import service.impl.EquipamientoServiceImpl;
 import service.impl.PersonajeServiceImpl;
 import service.impl.UsuarioServiceImpl;
@@ -29,6 +31,25 @@ import utilidades.Utils;
 public class PruebaCapas {
 
     public static void main(String[] args) {
+    	
+//    	En Oracle-xe
+//    	DROP TABLE TB_EQUIPAMIENTO CASCADE CONSTRAINTS;
+//    	DROP TABLE TB_CRIATURA     CASCADE CONSTRAINTS;
+//    	DROP TABLE TB_PERSONAJE    CASCADE CONSTRAINTS;
+//    	DROP TABLE TB_USUARIO      CASCADE CONSTRAINTS;
+    	
+    	//PRUEBA DE LA APP:
+//    	1. Login y elige personaje
+//
+//    	2. 12) JUGAR EPISODIO ACTUAL → completa el episodio 1
+//
+//    	3. Sal del programa
+//
+//    	4. Vuelve a entrar, login, selecciona el mismo personaje
+//
+//    	5. 12) JUGAR EPISODIO ACTUAL → debe entrar directamente en episodio 2
+//
+//    	6. 10) RECARGAR PERSONAJE para comprobar inventario/criaturas guardadas
 
         HibernateUtil.crearConexion();
 
@@ -36,6 +57,7 @@ public class PruebaCapas {
         PersonajeService personajeService = new PersonajeServiceImpl();
         EquipamientoService equipamientoService = new EquipamientoServiceImpl();
         CriaturaService criaturaService = new CriaturaServiceImpl();
+        EpisodioService episodioService = new EpisodioServiceImpl();
 
         boolean salir = false;
         UsuarioDto usuarioLogueado = null;
@@ -53,6 +75,7 @@ public class PruebaCapas {
             System.out.println("9) TEST: AÑADIR EQUIPAMIENTO POR SERVICE Y LISTAR");
             System.out.println("10) TEST: RECARGAR PERSONAJE Y MOSTRAR INVENTARIO / CRIATURAS (PERSISTENCIA)");
             System.out.println("11) TEST: AÑADIR CRIATURA POR SERVICE Y LISTAR");
+            System.out.println("12) JUGAR EPISODIO ACTUAL");
             int op = Utils.pideDatoNumerico("Opcion: ");
 
             try {
@@ -296,6 +319,26 @@ public class PruebaCapas {
                         }
 
                         break;
+                    }
+                    
+                    case 12: {
+                    	if (usuarioLogueado == null) {
+                    		System.out.println("Debes de hacer login primero.");
+                    		break;
+                    	}
+                    	
+                    	if(personajeCreado == null || personajeCreado.getId() == null) {
+                    		System.out.println("Debes seleccionar/crear un personaje antes de jugar.");
+                    		break;
+                    	}
+                    	
+                    	try {
+                    		personajeCreado = episodioService.jugarEpisodioActual(personajeCreado.getId());
+                    		System.out.println("Episodio terminado. Proceso guardado. Episodio actual: " + personajeCreado.getEpisodioActual());
+                    	} catch (RuntimeException ex) {
+                    		System.out.println("Error general: " + ex.getMessage());
+                    	}
+                    	break;
                     }
 
                     default:
