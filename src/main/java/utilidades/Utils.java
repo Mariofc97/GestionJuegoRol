@@ -52,7 +52,7 @@ public class Utils {
 	 */
 	public static void ganarEquipo(Equipamiento ganaEquipo, Personaje person) {
 
-		person.getEquipo().add(ganaEquipo);
+		person.addEquipamiento(ganaEquipo);
 		System.out.println("Has ganado equipo: " + ganaEquipo.toString());
 
 	}
@@ -69,8 +69,7 @@ public class Utils {
 		boolean resultado = dadoDiez() > 1; // 90% de exito
 
 		if (resultado) {
-
-			person.getCriaturas().add(compi);
+			person.addCriatura(compi);
 			System.out.println("Ahora tienes un compañero de viaje, ¿quieres ponerle un alias?:");
 			String alias = pideDatoCadena("Introduce el alias deseado: ");
 			if (alias.isEmpty()) {
@@ -234,10 +233,10 @@ public class Utils {
 			combate(person, jabali);
 		} else if (tirada > 1 && tirada < 5) {
 			System.out.println("Has invocado correctamente a un lobo.");
-			person.getCriaturas().add(lobo);
+			person.addCriatura(lobo);
 		} else if (tirada >= 5 && tirada < 9) {
 			System.out.println("Has invocado correctamente a un jabalí.");
-			person.getCriaturas().add(jabali);
+			person.addCriatura(jabali);
 		}
 
 	}
@@ -538,11 +537,11 @@ public class Utils {
 			personaje.setPuntosVida(personaje.getPuntosVida() - 5);
 		} else if (tirada > 3 && tirada <= 7) {
 			System.out.println("Has encontrado algunas bayas");
-			personaje.getEquipo().add(new Baya());
+			personaje.addEquipamiento(new Baya());;
 		} else if (tirada > 7) {
 			System.out.println("Has encontrado muchas bayas");
-			personaje.getEquipo().add(new Baya());
-			personaje.getEquipo().add(new Baya());
+			personaje.addEquipamiento(new Baya());
+			personaje.addEquipamiento(new Baya());
 
 		}
 
@@ -562,7 +561,7 @@ public class Utils {
 			CarneSeca carneSeca = new CarneSeca();
 			// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA
 			// CRIATURA
-			person.getEquipo().add(carneSeca);
+			person.addEquipamiento(carneSeca);;
 			person.ganarExperiencia();
 			System.out.println("Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
 					+ " en el inventario.");
@@ -593,26 +592,26 @@ public class Utils {
 		} else if (tirada > 2) {
 			int tirada2 = Utils.dadoDiez(); // con esta tirada escogemos el objeto
 			if (tirada2 == 1 || tirada2 == 2) {
-				System.out.println("despues de buscar un rato encuentras un objeto util");
-				personaje.getEquipo().add(new MojonSeco());
-				System.out.println("has encontrado un Mojon seco");
+				System.out.println("Despues de buscar un rato encuentras un objeto muy util");
+				personaje.addEquipamiento(new MojonSeco());
+				System.out.println("Has encontrado un Mojon seco!");
 			} else if (tirada2 == 3 || tirada2 == 4) {
-				System.out.println("despues de buscar un rato encuentras un objeto util");
-				personaje.getEquipo().add(new Cuerda());
-				System.out.println("has encontrado una Cuerda");
+				System.out.println("Despues de buscar un rato encuentras un objeto muy util");
+				personaje.addEquipamiento(new Cuerda());
+				System.out.println("Has encontrado una Cuerda!");
 			} else if (tirada2 == 5 || tirada2 == 6) {
-				System.out.println("despues de buscar un rato encuentras un objeto util");
-				personaje.getEquipo().add(new Piedra());
-				System.out.println("has encontrado una Piedra");
+				System.out.println("Despues de buscar un rato encuentras un objeto muy util");
+				personaje.addEquipamiento(new Piedra());
+				System.out.println("Has encontrado una Piedra!");
 			} else if (tirada2 == 7 || tirada2 == 8) {
-				System.out.println("despues de buscar un rato encuentras un objeto util");
-				personaje.getEquipo().add(new Palo());
-				System.out.println("has encontrado un Palo");
+				System.out.println("Despues de buscar un rato encuentras un objeto muy util");
+				personaje.addEquipamiento(new Palo());
+				System.out.println("Has encontrado un Palo!");
 			} else {
 				// tienes que ganar otro objeto de momento vacio
-				System.out.println("despues de buscar un rato encuentras un objeto util");
-				personaje.getEquipo().add(new HojaParaLimpiar());
-				System.out.println("has encontrado una hoja de ortiga");
+				System.out.println("Despues de buscar un rato encuentras un objeto muy util");
+				personaje.addEquipamiento(new HojaParaLimpiar());
+				System.out.println("Has encontrado una hoja de ortiga!");
 			}
 
 		}
@@ -865,7 +864,7 @@ public class Utils {
 		}
 
 		// Añadir el arma al inventario
-		personaje.getEquipo().add(nuevaArma);
+		personaje.addEquipamiento(nuevaArma);
 		System.out.println("Has fabricado un " + nuevaArma.getNombre() + " y se ha añadido a tu inventario.");
 
 		return nuevaArma;

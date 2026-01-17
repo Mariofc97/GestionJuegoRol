@@ -53,7 +53,7 @@ public class CriaturaDaoImpl extends GenericDaoHibernate<Criatura, Long> impleme
             criatura.setPersonaje(p);
             // opcional: mantener coherencia en memoria
             if (p.getCriaturas() != null) {
-                p.getCriaturas().add(criatura);
+                p.addCriatura(criatura);
             }
 
             session().persist(criatura);

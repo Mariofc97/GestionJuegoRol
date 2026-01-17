@@ -241,6 +241,24 @@ public class Personaje implements Atacable, Defendible {
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
 	}
+	
+	// CON ESTOS DOS METODOS NOS ASEGURAMOS QUE EN CUALQUIER PARTE DEL JUEGO SE AÑADE INVENTARIO Y CRIATURAS SIN OLVIDARSE DE LA F.K.
+//	antes haciamos tanto en los episodios como en Utils en metodos como, buscarBaya, buscarObjeto, cazar, invocacionCompañeroCriatura, invocarLoboJavali, contruirArma...
+	//	personaje.getEquipo().add(new Baya()); 
+//	y lo que debemos de hacer para asegurarnos de que respetamos la F.K. en terminos de persistencia es:
+	//	personaje.addEquipamiento(new Baya());
+	
+	public void addEquipamiento(Equipamiento e) {
+		if(e == null) return;
+		e.setPersonaje(this);
+		this.equipo.add(e);
+	}
+	
+	public void addCriatura(Criatura c) {
+		if (c == null) return;
+		c.setPersonaje(this);
+		this.criaturas.add(c);
+	}
 
 	@Override
 	public void recibirDanio(int danio) {

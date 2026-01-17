@@ -133,7 +133,7 @@ public class Episodio1 {
 							break;
 						}
 						HojaParaLimpiar hojadeortiga = new HojaParaLimpiar();
-						personaje.getEquipo().add(hojadeortiga);
+						personaje.addEquipamiento(hojadeortiga);
 						key1 = true; // marcamos que consiguió el objeto
 						String msg = "Has obtenido una Hoja de Ortiga.";
 						System.out.println(msg);

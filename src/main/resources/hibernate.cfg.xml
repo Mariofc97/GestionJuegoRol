@@ -33,6 +33,14 @@
          <mapping class ="entities.Personaje" />
          <mapping class="entities.equipo.Equipamiento"/>
 		 <mapping class="entities.equipo.objetos.Cuerda"/>
+		 <mapping class="entities.equipo.objetos.Baya"/>
+		 <mapping class="entities.equipo.objetos.CarneSeca"/>
+		 <mapping class="entities.equipo.objetos.Comida"/>
+		 <mapping class="entities.equipo.objetos.HojaParaLimpiar"/>
+		 <mapping class="entities.equipo.objetos.MojonSeco"/>
+		 <mapping class="entities.equipo.objetos.Palo"/>
+		 <mapping class="entities.equipo.objetos.Piedra"/>
+		 <mapping class="entities.equipo.objetos.Pocion"/>
 		 <mapping class="entities.criatura.Criatura"/>
 		 <mapping class="entities.criatura.Conejo"/>
 		 <mapping class="entities.criatura.Gusano"/>

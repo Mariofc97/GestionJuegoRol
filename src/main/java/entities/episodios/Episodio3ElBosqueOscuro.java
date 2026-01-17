@@ -94,13 +94,13 @@ public class Episodio3ElBosqueOscuro {
 
 							controladorJabali = true;
 							// Aquí podrías implementar un menú para seleccionar cuál usar
-							personaje.getEquipo().add(new Baya());
+							personaje.addEquipamiento(new Baya());
 							bosqueOscurokey1 = true; // derrotar al lobo es necesario para salir del episodio
 						}
 					}
 					if (controladorJabali == true) {
 						System.out.println("Bien has encontrado bayas!!!!.");
-						personaje.getEquipo().add(new Baya());
+						personaje.addEquipamiento(new Baya());
 					}
 
 				} catch (ReglaJuegoException e) {
@@ -164,13 +164,13 @@ public class Episodio3ElBosqueOscuro {
 
 						controladorAtaqueLobo = true;
 						// Aquí podrías implementar un menú para seleccionar cuál usar
-						personaje.getEquipo().add(new CarneSeca());
+						personaje.addEquipamiento(new CarneSeca());
 						bosqueOscurokey1 = true; // derrotar al lobo es necesario para salir del episodio
 					}
 				}
 				if (controladorAtaqueLobo == true) {
 					System.out.println("Bien has atrapado un conejo!!!!.");
-					personaje.getEquipo().add(new CarneSeca());
+					personaje.addEquipamiento(new CarneSeca());
 				}
 			}
 				// USAR TRAMPA
