@@ -99,9 +99,17 @@ public class Episodio1 {
 		int errorCount = 0;
 		final int MAX_ERRORS = 3;
 
+		LOGGER.info(() -> ("COMIENZA EL JUEGO UGHA BUGHA!"));
+		System.out.println();
+		System.out.println("EPISODIO 1: La Cueva");
+		System.out.println("Despiertas en una cueva. No recuerdas tu nombre… pero tu olor sí");
+		System.out.println("Un eco te susurra: 'Para sobrevivir necesitas: llorar, pensar y NO morir.");
+		System.out.println();
+		
 		do {
 			try {
 				LOGGER.info(() -> "Mostrando menú para personaje: " + personaje.getNombre());
+				
 				System.out.println(
 						"1. Llorar de forma desconsolado \t2. Pensar en un compañero de vieje \t3. Salir de la cueva \t4. Dormir y recuperar vida \t5. Ver inventario/estado \t6. Buscar objeto");
 				System.out.println("dila opcion del menu");

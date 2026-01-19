@@ -63,10 +63,16 @@ public class Episodio3ElBosqueOscuro {
 		boolean controladorAtaqueLobo = false; // false no lo derrotado aun, true derrotado
 		boolean controladorJabali = false; // false no lo derrotado aun, true derrotado
 		if (contadorEpisodio3 == 0) {
-			System.out.println(
-					"Te adentras en el Bosque Oscuro, un lugar lleno de misterios y peligros. A medida que avanzas, sientes que los árboles susurran a tu alrededor.");
 			contadorEpisodio3++;
 		}
+		
+		System.out.println();
+		System.out.println("\"EPISODIO 3: El Bosque Oscuro\"");
+		System.out.println("Te adentras en el Bosque Oscuro, un lugar lleno de misterios y peligros.");
+		System.out.println("A medida que avanzas, sientes que los árboles susurran a tu alrededor.");
+		System.out.println("Algo acecha...");
+		System.out.println();
+		
 		do {
 
 			System.out.println(

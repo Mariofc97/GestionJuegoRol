@@ -137,8 +137,18 @@ public class Utils {
 	}
 
 	public static int dadoNumeroDefine(int numero) {
-		int tirada = (int) (Math.random() * numero + 1);
-		return tirada;
+	    int tirada = (int) (Math.random() * numero + 1);
+
+	    StackTraceElement[] st = Thread.currentThread().getStackTrace();
+	    String callerMethod = "desconocido";
+
+	    // 0=getStackTrace, 1=dadoNumeroDefine, 2=dadoDiez (si viene de ahí), 3=llamador real
+	    if (st.length > 3) {
+	        callerMethod = st[3].getMethodName(); // SOLO el nombre del método
+	    }
+
+	    System.out.println("[TIRADA DE DADO] d" + numero + " -> " + tirada + " (en " + callerMethod + ")");
+	    return tirada;
 	}
 
 	// metodo nuevo.

@@ -71,6 +71,12 @@ public class Episodio2 {
 		}
 		boolean salida = false;
 
+		System.out.println();
+		System.out.println("EPISODIO 2: En el exterior...");
+		System.out.println("Sales al bosque y todo parece comida…");
+		System.out.println("Avanzas hacia un bosque con apetitosas y llamativas bayas. Tú decides si te las comes…");
+		System.out.println();
+		
 		do {
 
 			System.out.println(

@@ -64,19 +64,8 @@ public class PruebaCapas {
         Personaje personajeCreado = null;
 
         while (!salir) {
-            System.out.println("\n--- MENU ---");
-            System.out.println("1) Registrar");
-            System.out.println("2) Login");
-            System.out.println("3) Listar usuarios");
-            System.out.println("4) Salir");
-            System.out.println("5) Crear personaje");
-            System.out.println("7) Cerrar sesión");
-            System.out.println("8) Listar personajes por usuario");
-            System.out.println("9) TEST: AÑADIR EQUIPAMIENTO POR SERVICE Y LISTAR");
-            System.out.println("10) TEST: RECARGAR PERSONAJE Y MOSTRAR INVENTARIO / CRIATURAS (PERSISTENCIA)");
-            System.out.println("11) TEST: AÑADIR CRIATURA POR SERVICE Y LISTAR");
-            System.out.println("12) JUGAR EPISODIO ACTUAL");
-            int op = Utils.pideDatoNumerico("Opcion: ");
+        	mostrarMenu(usuarioLogueado);
+        	int op = Utils.pideDatoNumerico("Opcion: ");
 
             try {
                 switch (op) {
@@ -128,30 +117,45 @@ public class PruebaCapas {
                     }
 
                     case 3: {
-                        System.out.println("Usuarios: " + usuarioService.listar());
-                        break;
+                    	salir = true;
+                    	break;
                     }
-
                     case 4: {
-                        salir = true;
-                        break;
+                    	if (usuarioLogueado == null) {
+                    		System.out.println("Para crear un personaje debes de hacer login primero");
+                    		break;
+                    	}
+                    	
+                    	String name = Utils.pideDatoCadena("Nombre de personaje: ");
+                    	String raza = Utils.pideDatoCadena("Elige raza (MONGOL, RAPA NUI, TROGLODITA): ");
+                    	
+                    	personajeCreado = personajeService.crearYGuardar(usuarioLogueado.getId(), name, raza);
+                    	System.out.println("Personaje creado OK -> " + personajeCreado);
+                    	break;
                     }
 
                     case 5: {
-                        if (usuarioLogueado == null) {
-                            System.out.println("Para crear un personaje debes de hacer login primero");
-                            break;
-                        }
-
-                        String name = Utils.pideDatoCadena("Nombre de personaje: ");
-                        String raza = Utils.pideDatoCadena("Elige raza (MONGOL, RAPA NUI, TROGLODITA): ");
-
-                        personajeCreado = personajeService.crearYGuardar(usuarioLogueado.getId(), name, raza);
-                        System.out.println("Personaje creado OK -> " + personajeCreado);
-                        break;
+                    	if (usuarioLogueado == null) {
+                    		System.out.println("Debes de hacer login primero.");
+                    		break;
+                    	}
+                    	
+                    	if(personajeCreado == null || personajeCreado.getId() == null) {
+                    		System.out.println("Debes seleccionar/crear un personaje antes de jugar.");
+                    		break;
+                    	}
+                    	
+                    	try {
+                    		personajeCreado = episodioService.jugarEpisodioActual(personajeCreado.getId());
+                    		System.out.println("Episodio terminado. Proceso guardado. Episodio actual: " + personajeCreado.getEpisodioActual());
+                    	} catch (RuntimeException ex) {
+                    		System.out.println("Error general: " + ex.getMessage());
+                    	}
+                    	break;
                     }
 
-                    case 7: {
+
+                    case 6: {
                         if (usuarioLogueado == null) {
                             System.out.println("No hay sesión iniciada.");
                             break;
@@ -162,6 +166,10 @@ public class PruebaCapas {
                         break;
                     }
 
+                    case 7: {
+                    	System.out.println("Usuarios: " + usuarioService.listar());
+                    	break;
+                    }
                     case 8: {
                         if (usuarioLogueado == null) {
                             System.out.println("Debes hacer login primero.");
@@ -176,7 +184,6 @@ public class PruebaCapas {
                         break;
                     }
 
-                    // ✅ NUEVO CASE 9 (por service)
                     case 9: {
                         if (usuarioLogueado == null) {
                             System.out.println("Debes hacer login primero.");
@@ -321,25 +328,6 @@ public class PruebaCapas {
                         break;
                     }
                     
-                    case 12: {
-                    	if (usuarioLogueado == null) {
-                    		System.out.println("Debes de hacer login primero.");
-                    		break;
-                    	}
-                    	
-                    	if(personajeCreado == null || personajeCreado.getId() == null) {
-                    		System.out.println("Debes seleccionar/crear un personaje antes de jugar.");
-                    		break;
-                    	}
-                    	
-                    	try {
-                    		personajeCreado = episodioService.jugarEpisodioActual(personajeCreado.getId());
-                    		System.out.println("Episodio terminado. Proceso guardado. Episodio actual: " + personajeCreado.getEpisodioActual());
-                    	} catch (RuntimeException ex) {
-                    		System.out.println("Error general: " + ex.getMessage());
-                    	}
-                    	break;
-                    }
 
                     default:
                         System.out.println("Opcion invalida");
@@ -353,4 +341,35 @@ public class PruebaCapas {
 
         HibernateUtil.cerrarSessionFactory();
     }
+    
+    private static boolean esAdmin(UsuarioDto u) {
+    	return u != null && "ADMINISTRADOR".equalsIgnoreCase(u.getRol());
+    }
+    
+    private static void mostrarMenu(UsuarioDto usuarioLogueado) {
+        System.out.println("\n--- MENU ---");
+
+        // Siempre visibles (sin sesión)
+        System.out.println("1) Registrar");
+        System.out.println("2) Login");
+        System.out.println("3) Salir");
+
+        // Opciones solo si estás logueado (jugador y admin)
+        if (usuarioLogueado != null) {
+            System.out.println("4) Crear personaje");
+            System.out.println("5) JUGAR EPISODIO ACTUAL");
+            System.out.println("6) Cerrar sesión");
+        }
+
+        // Opciones extra solo ADMIN
+        if (esAdmin(usuarioLogueado)) {
+            System.out.println("7) Listar usuarios");
+            System.out.println("8) Listar personajes por usuario");
+            System.out.println("9) TEST: AÑADIR EQUIPAMIENTO POR SERVICE Y LISTAR");
+            System.out.println("10) TEST: RECARGAR PERSONAJE Y MOSTRAR INVENTARIO / CRIATURAS (PERSISTENCIA)");
+            System.out.println("11) TEST: AÑADIR CRIATURA POR SERVICE Y LISTAR");
+        }
+    }
+    
+    
 }
