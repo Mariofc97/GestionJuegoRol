@@ -183,47 +183,179 @@ public class Utils {
 	}
 
 	public static void combate(Personaje person, Criatura enemigo) {
-		System.out.println("Comienza el combate entre: " + person.getNombre() + " y " + enemigo.getNombre());
+        pausa(500);
+	    System.out.println("\n==============================");
+	    System.out.println("        EMPIEZA EL COMBATE!		");
+	    System.out.println("\n " + person.getNombre() + " VS " + enemigo.getNombre());
+	    System.out.println("==============================\n");
 
-		if (person.tieneArmaEquipada() == false) {
-			System.out.println("El personaje " + person.getNombre()
-					+ " no tiene ningun arma equipada, no se puede combatir sin arma, " + enemigo.getNombre()
-					+ " te pisa la cara y te deja a un punto de vida.");
-			person.setPuntosVida(1);
-			System.out.println("Escapas gracias al mal olor que desprendes la criatura no a querido comerte. "
-					+ person.getPuntosVida() + " puntos de vida.");
+	    if (!person.tieneArmaEquipada()) {
+	        System.out.println("El personaje " + person.getNombre()
+	                + " no tiene arma equipada. No puedes combatir sin arma.");
+	        System.out.println(enemigo.getNombre() + " te revienta y te deja a 1 punto de vida.");
+	        person.setPuntosVida(1);
+	        System.out.println("Escapas como puedes. PV: " + person.getPuntosVida());
+	        return;
+	    }
 
-		}
-		if (person.getCriaturas().size() == 0) {
-			System.err.println("No puedes combatir sin un compañero criatura, primero invoca uno.");
-			return;
-		}
+	    if (person.getCriaturas() == null || person.getCriaturas().isEmpty()) {
+	        System.out.println("No puedes combatir sin un compañero criatura. Primero invoca uno.");
+	        return;
+	    }
 
-		while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {
+	    int turno = 1;
 
-			// Turno personaje
-			int danioHecho = person.atacar(enemigo);
-			System.out
-					.println(person.getNombre() + " hace " + danioHecho + " de daño al enemigo " + enemigo.getNombre());
-			System.out.println("La vida del enemigo es de " + enemigo.getPuntosVida());
+	    while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {
 
-			if (!enemigo.estaVivo()) {
-				person.ganarExperiencia();
-				System.out.println("¡" + enemigo.getNombre() + " ha sido derrotado!");
-				break;
-			}
+	        System.out.println("\n--- TURNO " + turno + " ---");
+	        mostrarEstadoCombate(person, enemigo);
 
-			// Turno criatura
+	        System.out.println("\nQue haces?");
+	        System.out.println("1) Atacar");
+	        System.out.println("2) Consumir objeto (Baya / CarneSeca / Pocion)");
+	        System.out.println("3) Huir");
 
-			int danioRecibido = enemigo.atacar(person); // <- aquí nace danioRecibido
-			System.out.println(enemigo.getNombre() + " hace " + danioRecibido + " de daño. Vida de "
-					+ person.getNombre() + ": " + person.getPuntosVida());
+	        int opcion = pideDatoNumerico("Elige: ");
 
-			if (!person.estaVivo()) {
-				System.out.println("¡" + person.getNombre() + " ha caído en combate!");
-				break;
-			}
-		}
+	        if (opcion == 3) {
+	            System.out.println("Huyes del combate como buen cobarde que eres...");
+	            return;
+	        }
+
+	        if (opcion == 2) {
+	            boolean consumido = consumirCurativo(person);
+	            if (!consumido) {
+	                System.out.println("No consumes nada.");
+	            }
+	            pausa(300);
+	        } else {
+	            int danioHecho = person.atacar(enemigo);
+	            System.out.println(person.getNombre() + " hace " + danioHecho + " de daño a " + enemigo.getNombre());
+	            System.out.println("Vida del enemigo: " + enemigo.getPuntosVida());
+
+	            pausa(300);
+
+	            if (!enemigo.estaVivo()) {
+	                person.ganarExperiencia();
+	                System.out.println(enemigo.getNombre() + " ha sido derrotado.");
+	                break;
+	            }
+	        }
+
+	        System.out.println("\nTurno de " + enemigo.getNombre() + "...");
+	        pausa(300);
+
+	        int danioRecibido = enemigo.atacar(person);
+	        System.out.println(enemigo.getNombre() + " hace " + danioRecibido + " de daño. Vida de "
+	                + person.getNombre() + ": " + person.getPuntosVida());
+
+	        pausa(300);
+
+	        if (!person.estaVivo()) {
+	        	System.out.println("...Has perdido...");
+	            System.out.println(person.getNombre() + " ha caido en combate.");
+	            break;
+	        }
+
+	        turno++;
+	    }
+
+	    System.out.println("\n==============================");
+	    System.out.println("        FIN DEL COMBATE");
+	    System.out.println("==============================\n");
+	}
+	
+	private static boolean consumirCurativo(Personaje person) {
+	    List<Equipamiento> equipo = person.getEquipo();
+	    if (equipo == null || equipo.isEmpty()) {
+	        System.out.println("Inventario vacio.");
+	        return false;
+	    }
+
+	    // Filtramos consumibles curativos
+	    List<Equipamiento> curativos = new ArrayList<>();
+	    for (Equipamiento e : equipo) {
+	        if (e instanceof Baya || e instanceof CarneSeca || e instanceof Pocion) {
+	            curativos.add(e);
+	        }
+	    }
+
+	    if (curativos.isEmpty()) {
+	        System.out.println("No tienes consumibles curativos (Baya, CarneSeca o Pocion).");
+	        return false;
+	    }
+
+	    System.out.println("\n--- CONSUMIBLES CURATIVOS ---");
+	    for (int i = 0; i < curativos.size(); i++) {
+	        Equipamiento e = curativos.get(i);
+	        System.out.println((i + 1) + ") " + nombreCurativo(e) + " (cura: " + curacionCurativo(e) + ")");
+	    }
+	    System.out.println((curativos.size() + 1) + ") Cancelar");
+
+	    int opcion = pideDatoNumerico("Elige un consumible: ");
+
+	    if (opcion < 1 || opcion > curativos.size()) {
+	        return false;
+	    }
+
+	    Equipamiento elegido = curativos.get(opcion - 1);
+
+	    int antes = person.getPuntosVida();
+	    aplicarCuracion(person, elegido);
+
+	    // Consumir: eliminar del inventario
+	    equipo.remove(elegido);
+
+	    int despues = person.getPuntosVida();
+	    System.out.println("Has consumido " + nombreCurativo(elegido) + ". PV: " + antes + " -> " + despues
+	            + " / " + person.getPuntosVidaMax());
+
+	    return true;
+	}
+
+	private static String nombreCurativo(Equipamiento e) {
+	    if (e instanceof Baya) return "Baya";
+	    if (e instanceof CarneSeca) return "CarneSeca";
+	    if (e instanceof Pocion) return "Pocion";
+	    return e.getNombre();
+	}
+
+	private static int curacionCurativo(Equipamiento e) {
+	    if (e instanceof Pocion) {
+	        return ((Pocion) e).getPuntosDeVida();
+	    }
+	    if (e instanceof CarneSeca) {
+	        return 12; // ajustable
+	    }
+	    if (e instanceof Baya) {
+	        return 5; // ajustable
+	    }
+	    return 0;
+	}
+
+	private static void aplicarCuracion(Personaje person, Equipamiento e) {
+	    int cura = curacionCurativo(e);
+
+	    if (cura <= 0) return;
+
+	    int nuevaVida = person.getPuntosVida() + cura;
+	    if (nuevaVida > person.getPuntosVidaMax()) {
+	        nuevaVida = person.getPuntosVidaMax();
+	    }
+	    person.setPuntosVida(nuevaVida);
+	}
+
+	private static void pausa(long ms) {
+	    try {
+	        Thread.sleep(ms);
+	    } catch (InterruptedException ex) {
+	        Thread.currentThread().interrupt();
+	    }
+	}
+
+	private static void mostrarEstadoCombate(Personaje person, Criatura enemigo) {
+	    System.out.println(person.getNombre() + " PV: " + person.getPuntosVida() + "/" + person.getPuntosVidaMax());
+	    System.out.println(enemigo.getNombre() + " PV: " + enemigo.getPuntosVida());
 	}
 
 	public static void invocarLoboJavali(Personaje person) {
