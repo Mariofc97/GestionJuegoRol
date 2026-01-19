@@ -147,19 +147,24 @@ public class Episodio1 {
 					break;
 
 				case 2: {
-					// Caso 2: aprender a invocar una criatura compañero
-					try {
-						Utils.invocacionCompañeroCriatura(personaje);
-						key2 = true; // marcamos que aprendió la invocación
-						String msg = "Has invocado una criatura.";
-						System.out.println(msg);
-						LOGGER.info(msg + " Personaje: " + personaje.getNombre());
-					} catch (Exception e) {
-						LOGGER.log(Level.SEVERE, "Error en invocacionCompañeroCriatura", e);
-						System.out.println("Se produjo un error al aprender la invocación.");
-					}
+				    try {
+				        int antes = personaje.getCriaturas().size();
+				        Utils.invocacionCompañeroCriatura(personaje);
+				        int despues = personaje.getCriaturas().size();
+
+				        if (despues > antes) {
+				            key2 = true;
+				            System.out.println("Has invocado una criatura.");
+				        } else {
+				            System.out.println("No has conseguido invocar ninguna criatura. Inténtalo de nuevo.");
+				        }
+
+				    } catch (Exception e) {
+				        LOGGER.log(Level.SEVERE, "Error en invocacionCompañeroCriatura", e);
+				        System.out.println("Se produjo un error al invocar la criatura.");
+				    }
 				}
-					break;
+				break;
 
 				case 3: {
 					// Caso 3: acción que reduce la vida del personaje a 1 (desgracia)
