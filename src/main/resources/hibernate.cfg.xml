@@ -6,7 +6,7 @@
 
         <!-- Conexión JDBC -->
         <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
-        <property name="hibernate.connection.url">jdbc:oracle:thin:@//localhost:1521/XEPDB1</property>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@//localhost:1522/XEPDB1</property>
         <property name="hibernate.connection.username">getafe</property>
         <property name="hibernate.connection.password">password</property>
 
@@ -41,6 +41,14 @@
 		 <mapping class="entities.equipo.objetos.Palo"/>
 		 <mapping class="entities.equipo.objetos.Piedra"/>
 		 <mapping class="entities.equipo.objetos.Pocion"/>
+		 <mapping class="entities.equipo.armas.Armas"/>
+		 <mapping class="entities.equipo.armas.Arco"/>
+		 <mapping class="entities.equipo.armas.Bumeran"/>
+		 <mapping class="entities.equipo.armas.CanaPescar"/>
+		 <mapping class="entities.equipo.armas.Cazamariposas"/>
+		 <mapping class="entities.equipo.armas.Honda"/>
+		 <mapping class="entities.equipo.armas.Lanza"/>
+		 <mapping class="entities.equipo.armas.Trampa"/>
 		 <mapping class="entities.criatura.Criatura"/>
 		 <mapping class="entities.criatura.Conejo"/>
 		 <mapping class="entities.criatura.Gusano"/>

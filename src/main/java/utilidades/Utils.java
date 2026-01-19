@@ -78,14 +78,14 @@ public class Utils {
 				System.out.println("Has decidido llamar a tu criatura: " + alias);
 			}
 			compi.setAlias(alias);
+			return compi;
 		} else {
 			System.out.println("No estas pensado en lo que debes, al invocar la criatura se rie de ti y te ataca.");
 			person.setPuntosVida(person.getPuntosVida() - compi.getPuntosAtaque());
 			System.out.println("Te ha quitado " + compi.getPuntosAtaque() + " puntos de vida, te quedan "
 					+ person.getPuntosVida() + " puntos de vida.");
+			return null;
 		}
-
-		return compi;
 	}
 
 	public static int contarHojas(Personaje personaje) {
