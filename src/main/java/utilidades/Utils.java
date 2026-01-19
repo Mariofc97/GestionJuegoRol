@@ -240,6 +240,21 @@ public class Utils {
 	                System.out.println(enemigo.getNombre() + " ha sido derrotado.");
 	                break;
 	            }
+	            
+	         // Turno del compañero
+	            Criatura companero = obtenerCompaneroActivo(person);
+	            if (companero != null && enemigo.estaVivo()) {
+	                int danioComp = companero.atacar(enemigo);
+	                System.out.println(companero.getAlias() + " (" + companero.getNombre() + ") hace "
+	                        + danioComp + " de dano a " + enemigo.getNombre());
+	                System.out.println("Vida del enemigo: " + enemigo.getPuntosVida());
+
+	                if (!enemigo.estaVivo()) {
+	                    person.ganarExperiencia();
+	                    System.out.println(enemigo.getNombre() + " ha sido derrotado.");
+	                    break;
+	                }
+	            }
 	        }
 
 	        System.out.println("\nTurno de " + enemigo.getNombre() + "...");
@@ -263,6 +278,18 @@ public class Utils {
 	    System.out.println("\n==============================");
 	    System.out.println("        FIN DEL COMBATE");
 	    System.out.println("==============================\n");
+	}
+	
+	private static Criatura obtenerCompaneroActivo(Personaje person) {
+	    if (person.getCriaturas() == null || person.getCriaturas().isEmpty()) return null;
+
+	    // Si tu Criatura no tiene "estaVivo()", puedes quitar esta comprobación
+	    for (Criatura c : person.getCriaturas()) {
+	        if (c != null && c.estaVivo()) {
+	            return c;
+	        }
+	    }
+	    return null;
 	}
 	
 	private static boolean consumirCurativo(Personaje person) {
@@ -355,6 +382,16 @@ public class Utils {
 
 	private static void mostrarEstadoCombate(Personaje person, Criatura enemigo) {
 	    System.out.println(person.getNombre() + " PV: " + person.getPuntosVida() + "/" + person.getPuntosVidaMax());
+
+	    Criatura companero = obtenerCompaneroActivo(person);
+	    if (companero != null) {
+	        System.out.println(companero.getAlias() + " (" + companero.getNombre() + ") PV: "
+	                + companero.getPuntosVida() + "/" + companero.getPuntosVida());
+	        // Si tu Criatura tiene "puntosVidaMax", entonces usa: companero.getPuntosVida() + "/" + companero.getPuntosVidaMax()
+	    } else {
+	        System.out.println();
+	    }
+
 	    System.out.println(enemigo.getNombre() + " PV: " + enemigo.getPuntosVida());
 	}
 
