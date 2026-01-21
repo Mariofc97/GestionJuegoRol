@@ -13,23 +13,26 @@ HAY QUE AÑADIR UNA CELEBRACION CUANDO GANEMOS EL COMBATE
 EN EL COMBATE HAY QUE AÑADIR EL TIPO DE DAÑO DE ARMA DE NUESTRO PERSONAJE CADA VEZ QUE ATAQUE. EJ: SI ATACA CON ARCO... FLECHAZO
 	
 Anotaciones Dani:
-	añadir al episodio 1 el menu de inventario.
+cambiar menu crear armas eleccion por numeros es más comodo
+
 =======
 	Dani:
->>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
-	-en case 1 hay que cambiar que las llaves sea true cuando se consiga el objeto igual para todos los menus..
-	
-	
-	limite de daño
-	
-	
-	crear usuarios en la base de datos. de perfil usuario normal y administrador. Usuario entite
-	
-	crear control de usuarios en la aplicacion.
-	
-	crear menu de administrador para gestionar usuarios.
-	
-	Recolectar bayas (comida ligera / riesgo de “bayas del demonio”)
 
-	Cazar (da carne / riesgo combate)
+cambiar menus de episodios en vertical
+
+corregir la palabra MATERALES POR materiales
+
+	cambiar y añadir en cazar los combates con las criaturas	y que la expericia se suba aqui , podria devolver tb si win o lose.
 	
+	repaso epi3
+	
+	cabar epi4
+	
+	hacer epi final jefe cueva.
+
+
+	
+	
+	Manu:
+	
+	modo tester episodios!!!!
