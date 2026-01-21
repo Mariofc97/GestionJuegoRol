@@ -182,7 +182,9 @@ public class Utils {
 		}
 	}
 
-	public static void combate(Personaje person, Criatura enemigo) {
+	public static boolean combate(Personaje person, Criatura enemigo) {
+		
+		boolean ganador = false;
         pausa(500);
 	    System.out.println("\n==============================");
 	    System.out.println("        EMPIEZA EL COMBATE!		");
@@ -195,12 +197,12 @@ public class Utils {
 	        System.out.println(enemigo.getNombre() + " te revienta y te deja a 1 punto de vida.");
 	        person.setPuntosVida(1);
 	        System.out.println("Escapas como puedes. PV: " + person.getPuntosVida());
-	        return;
+	        return false;
 	    }
 
 	    if (person.getCriaturas() == null || person.getCriaturas().isEmpty()) {
 	        System.out.println("No puedes combatir sin un compañero criatura. Primero invoca uno.");
-	        return;
+	        return false;
 	    }
 
 	    int turno = 1;
@@ -219,7 +221,7 @@ public class Utils {
 
 	        if (opcion == 3) {
 	            System.out.println("Huyes del combate como buen cobarde que eres...");
-	            return;
+	            return false;
 	        }
 
 	        if (opcion == 2) {
@@ -238,6 +240,7 @@ public class Utils {
 	            if (!enemigo.estaVivo()) {
 	                person.ganarExperiencia();
 	                System.out.println(enemigo.getNombre() + " ha sido derrotado.");
+                    ganador = true;
 	                break;
 	            }
 	            
@@ -252,6 +255,7 @@ public class Utils {
 	                if (!enemigo.estaVivo()) {
 	                    person.ganarExperiencia();
 	                    System.out.println(enemigo.getNombre() + " ha sido derrotado.");
+	                    ganador = true;
 	                    break;
 	                }
 	            }
@@ -269,6 +273,7 @@ public class Utils {
 	        if (!person.estaVivo()) {
 	        	System.out.println("...Has perdido...");
 	            System.out.println(person.getNombre() + " ha caido en combate.");
+	            ganador = false;
 	            break;
 	        }
 
@@ -278,6 +283,7 @@ public class Utils {
 	    System.out.println("\n==============================");
 	    System.out.println("        FIN DEL COMBATE");
 	    System.out.println("==============================\n");
+		return ganador;
 	}
 	
 	private static Criatura obtenerCompaneroActivo(Personaje person) {
