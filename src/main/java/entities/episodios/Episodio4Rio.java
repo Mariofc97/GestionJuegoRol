@@ -4,8 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Personaje;
+import entities.criatura.PezPrehistoricoGigante;
 import entities.equipo.armas.CanaPescar;
-import entities.equipo.armas.Trampa;
 import exceptions.ReglaJuegoException;
 import utilidades.Utils;
 
@@ -49,6 +49,7 @@ public class Episodio4Rio {
 				LOGGER.log(java.util.logging.Level.WARNING, "No se pudo inicializar la lista de criaturas", e);
 			}
 		}
+		boolean pezPrehistoricoGigante = false;
 		boolean salida = false;
 		boolean Riokey1 = false;
 		boolean Riokey2 = false;
@@ -62,7 +63,7 @@ public class Episodio4Rio {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Pescar \t3. Crear arma \t4. Bañarte \t5.Inventario y estado \t6.Buscar materales. \7.Desafiar Jefe del Clan. \t8.Descansar. \t9.Invocar PezPrehistoricoGigante");
+					"1. Buscar bayas \n2. Pescar \n3. Crear arma \n4. Bañarte \n5.Inventario y estado \n6.Buscar materales. \n7.Desafiar Jefe del Clan. \n8.Descansar. \n9.Invocar PezPrehistoricoGigante");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -91,8 +92,7 @@ public class Episodio4Rio {
 						contadorCanaPesca++;
 					}
 				}
-				
-				
+
 			}
 				break;
 
@@ -100,7 +100,6 @@ public class Episodio4Rio {
 				try {
 					// TODO: FALTA AÑADIR TRAMPA PARA PELEA CON JABALI O LOBO
 					Utils.construirArma(personaje);
-					Riokey3 = true;
 
 				} catch (ReglaJuegoException e) {
 					System.out.println("No puedes fabricar: " + e.getMessage());
@@ -113,7 +112,12 @@ public class Episodio4Rio {
 				System.out.println(
 						"Te bañas en el río, sintiendo el agua fresca y revitalizante que recorre tu cuerpo, observando el paisaje a tu alrededor, notas que algo se mueve en el agua... que es esa mancha enorme??? se dirige hacia ti rapidamente... Te ataca PezPrehistoricoGigante!");
 				// añadir combate con pez prehistorico gigante
+				if (!pezPrehistoricoGigante) {
+					PezPrehistoricoGigante pezPrehistorico = new PezPrehistoricoGigante();
+					Utils.combate(personaje, pezPrehistorico);
+				}
 				Riokey2 = true;
+
 			}
 				break;
 			case 5: {
@@ -157,6 +161,26 @@ public class Episodio4Rio {
 				LOGGER.info(msg + " Personaje: " + personaje.getNombre());
 
 			}
+				break;
+			case 9: {
+			}
+				// invocar pez prehistorico gigante
+				if (pezPrehistoricoGigante) {
+					Riokey3 = true;
+					if (Utils.dadoDiez() < 3) {
+						System.out.println(
+								"Estas invocando a tu PezPrehistoricoGigante como compañero, mojado, tiritando y no puedes contener un estornudo, interumpe la invocación de tu PezPrehistoricoGigante y te ataca descontroladamente!");
+						Utils.combate(personaje, new PezPrehistoricoGigante());
+					} else {
+						System.out.println(
+								"Invocas a tu PezPrehistoricoGigante, que emerge del agua con un gran salto, sacudiendo su enorme cuerpo y creando una ola que te empapa por completo. Ahora está a tu lado, listo para ayudarte en tus aventuras.");
+						personaje.getCriaturas().add(new PezPrehistoricoGigante());
+					}
+
+				} else {
+					System.out.println("Aun no has derrotado a un PezPrehistoricoGigante, no puedes invocarlo.");
+				}
+
 				break;
 
 			default:

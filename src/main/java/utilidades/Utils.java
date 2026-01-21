@@ -137,18 +137,19 @@ public class Utils {
 	}
 
 	public static int dadoNumeroDefine(int numero) {
-	    int tirada = (int) (Math.random() * numero + 1);
+		int tirada = (int) (Math.random() * numero + 1);
 
-	    StackTraceElement[] st = Thread.currentThread().getStackTrace();
-	    String callerMethod = "desconocido";
+		StackTraceElement[] st = Thread.currentThread().getStackTrace();
+		String callerMethod = "desconocido";
 
-	    // 0=getStackTrace, 1=dadoNumeroDefine, 2=dadoDiez (si viene de ahí), 3=llamador real
-	    if (st.length > 3) {
-	        callerMethod = st[3].getMethodName(); // SOLO el nombre del método
-	    }
+		// 0=getStackTrace, 1=dadoNumeroDefine, 2=dadoDiez (si viene de ahí), 3=llamador
+		// real
+		if (st.length > 3) {
+			callerMethod = st[3].getMethodName(); // SOLO el nombre del método
+		}
 
-	    System.out.println("[TIRADA DE DADO] d" + numero + " -> " + tirada + " (en " + callerMethod + ")");
-	    return tirada;
+		System.out.println("[TIRADA DE DADO] d" + numero + " -> " + tirada + " (en " + callerMethod + ")");
+		return tirada;
 	}
 
 	// metodo nuevo.
@@ -183,222 +184,228 @@ public class Utils {
 	}
 
 	public static boolean combate(Personaje person, Criatura enemigo) {
-		
+
 		boolean ganador = false;
-        pausa(500);
-	    System.out.println("\n==============================");
-	    System.out.println("        EMPIEZA EL COMBATE!		");
-	    System.out.println("\n " + person.getNombre() + " VS " + enemigo.getNombre());
-	    System.out.println("==============================\n");
+		pausa(500);
+		System.out.println("\n==============================");
+		System.out.println("        EMPIEZA EL COMBATE!		");
+		System.out.println("\n " + person.getNombre() + " VS " + enemigo.getNombre());
+		System.out.println("==============================\n");
 
-	    if (!person.tieneArmaEquipada()) {
-	        System.out.println("El personaje " + person.getNombre()
-	                + " no tiene arma equipada. No puedes combatir sin arma.");
-	        System.out.println(enemigo.getNombre() + " te revienta y te deja a 1 punto de vida.");
-	        person.setPuntosVida(1);
-	        System.out.println("Escapas como puedes. PV: " + person.getPuntosVida());
-	        return false;
-	    }
+		if (!person.tieneArmaEquipada()) {
+			System.out.println(
+					"El personaje " + person.getNombre() + " no tiene arma equipada. No puedes combatir sin arma.");
+			System.out.println(enemigo.getNombre() + " te revienta y te deja a 1 punto de vida.");
+			person.setPuntosVida(1);
+			System.out.println("Escapas como puedes. PV: " + person.getPuntosVida());
+			return false;
+		}
 
-	    if (person.getCriaturas() == null || person.getCriaturas().isEmpty()) {
-	        System.out.println("No puedes combatir sin un compañero criatura. Primero invoca uno.");
-	        return false;
-	    }
+		if (person.getCriaturas() == null || person.getCriaturas().isEmpty()) {
+			System.out.println("No puedes combatir sin un compañero criatura. Primero invoca uno.");
+			return false;
+		}
 
-	    int turno = 1;
+		int turno = 1;
 
-	    while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {
+		while (person.estaVivo() && enemigo.estaVivo() && person.tieneArmaEquipada()) {
 
-	        System.out.println("\n--- TURNO " + turno + " ---");
-	        mostrarEstadoCombate(person, enemigo);
+			System.out.println("\n--- TURNO " + turno + " ---");
+			mostrarEstadoCombate(person, enemigo);
 
-	        System.out.println("\nQue haces?");
-	        System.out.println("1) Atacar");
-	        System.out.println("2) Consumir objeto (Baya / CarneSeca / Pocion)");
-	        System.out.println("3) Huir");
+			System.out.println("\nQue haces?");
+			System.out.println("1) Atacar");
+			System.out.println("2) Consumir objeto (Baya / CarneSeca / Pocion)");
+			System.out.println("3) Huir");
 
-	        int opcion = pideDatoNumerico("Elige: ");
+			int opcion = pideDatoNumerico("Elige: ");
 
-	        if (opcion == 3) {
-	            System.out.println("Huyes del combate como buen cobarde que eres...");
-	            return false;
-	        }
+			if (opcion == 3) {
+				System.out.println("Huyes del combate como buen cobarde que eres...");
+				return false;
+			}
 
-	        if (opcion == 2) {
-	            boolean consumido = consumirCurativo(person);
-	            if (!consumido) {
-	                System.out.println("No consumes nada.");
-	            }
-	            pausa(300);
-	        } else {
-	            int danioHecho = person.atacar(enemigo);
-	            System.out.println(person.getNombre() + " hace " + danioHecho + " de daño a " + enemigo.getNombre());
-	            System.out.println("Vida del enemigo: " + enemigo.getPuntosVida());
+			if (opcion == 2) {
+				boolean consumido = consumirCurativo(person);
+				if (!consumido) {
+					System.out.println("No consumes nada.");
+				}
+				pausa(300);
+			} else {
+				int danioHecho = person.atacar(enemigo);
+				System.out.println(person.getNombre() + " hace " + danioHecho + " de daño a " + enemigo.getNombre());
+				System.out.println("Vida del enemigo: " + enemigo.getPuntosVida());
 
-	            pausa(300);
+				pausa(300);
 
-	            if (!enemigo.estaVivo()) {
-	                person.ganarExperiencia();
-	                System.out.println(enemigo.getNombre() + " ha sido derrotado.");
-                    ganador = true;
-	                break;
-	            }
-	            
-	         // Turno del compañero
-	            Criatura companero = obtenerCompaneroActivo(person);
-	            if (companero != null && enemigo.estaVivo()) {
-	                int danioComp = companero.atacar(enemigo);
-	                System.out.println(companero.getAlias() + " (" + companero.getNombre() + ") hace "
-	                        + danioComp + " de dano a " + enemigo.getNombre());
-	                System.out.println("Vida del enemigo: " + enemigo.getPuntosVida());
+				if (!enemigo.estaVivo()) {
+					person.ganarExperiencia();
+					System.out.println(enemigo.getNombre() + " ha sido derrotado.");
+					ganador = true;
+					break;
+				}
 
-	                if (!enemigo.estaVivo()) {
-	                    person.ganarExperiencia();
-	                    System.out.println(enemigo.getNombre() + " ha sido derrotado.");
-	                    ganador = true;
-	                    break;
-	                }
-	            }
-	        }
+				// Turno del compañero
+				Criatura companero = obtenerCompaneroActivo(person);
+				if (companero != null && enemigo.estaVivo()) {
+					int danioComp = companero.atacar(enemigo);
+					System.out.println(companero.getAlias() + " (" + companero.getNombre() + ") hace " + danioComp
+							+ " de dano a " + enemigo.getNombre());
+					System.out.println("Vida del enemigo: " + enemigo.getPuntosVida());
 
-	        System.out.println("\nTurno de " + enemigo.getNombre() + "...");
-	        pausa(300);
+					if (!enemigo.estaVivo()) {
+						person.ganarExperiencia();
+						System.out.println(enemigo.getNombre() + " ha sido derrotado.");
+						ganador = true;
+						break;
+					}
+				}
+			}
 
-	        int danioRecibido = enemigo.atacar(person);
-	        System.out.println(enemigo.getNombre() + " hace " + danioRecibido + " de daño. Vida de "
-	                + person.getNombre() + ": " + person.getPuntosVida());
+			System.out.println("\nTurno de " + enemigo.getNombre() + "...");
+			pausa(300);
 
-	        pausa(300);
+			int danioRecibido = enemigo.atacar(person);
+			System.out.println(enemigo.getNombre() + " hace " + danioRecibido + " de daño. Vida de "
+					+ person.getNombre() + ": " + person.getPuntosVida());
 
-	        if (!person.estaVivo()) {
-	        	System.out.println("...Has perdido...");
-	            System.out.println(person.getNombre() + " ha caido en combate.");
-	            ganador = false;
-	            break;
-	        }
+			pausa(300);
 
-	        turno++;
-	    }
+			if (!person.estaVivo()) {
+				System.out.println("...Has perdido...");
+				System.out.println(person.getNombre() + " ha caido en combate.");
+				ganador = false;
+				break;
+			}
 
-	    System.out.println("\n==============================");
-	    System.out.println("        FIN DEL COMBATE");
-	    System.out.println("==============================\n");
+			turno++;
+		}
+
+		System.out.println("\n==============================");
+		System.out.println("        FIN DEL COMBATE");
+		System.out.println("==============================\n");
 		return ganador;
 	}
-	
+
 	private static Criatura obtenerCompaneroActivo(Personaje person) {
-	    if (person.getCriaturas() == null || person.getCriaturas().isEmpty()) return null;
+		if (person.getCriaturas() == null || person.getCriaturas().isEmpty())
+			return null;
 
-	    // Si tu Criatura no tiene "estaVivo()", puedes quitar esta comprobación
-	    for (Criatura c : person.getCriaturas()) {
-	        if (c != null && c.estaVivo()) {
-	            return c;
-	        }
-	    }
-	    return null;
+		// Si tu Criatura no tiene "estaVivo()", puedes quitar esta comprobación
+		for (Criatura c : person.getCriaturas()) {
+			if (c != null && c.estaVivo()) {
+				return c;
+			}
+		}
+		return null;
 	}
-	
+
 	private static boolean consumirCurativo(Personaje person) {
-	    List<Equipamiento> equipo = person.getEquipo();
-	    if (equipo == null || equipo.isEmpty()) {
-	        System.out.println("Inventario vacio.");
-	        return false;
-	    }
+		List<Equipamiento> equipo = person.getEquipo();
+		if (equipo == null || equipo.isEmpty()) {
+			System.out.println("Inventario vacio.");
+			return false;
+		}
 
-	    // Filtramos consumibles curativos
-	    List<Equipamiento> curativos = new ArrayList<>();
-	    for (Equipamiento e : equipo) {
-	        if (e instanceof Baya || e instanceof CarneSeca || e instanceof Pocion) {
-	            curativos.add(e);
-	        }
-	    }
+		// Filtramos consumibles curativos
+		List<Equipamiento> curativos = new ArrayList<>();
+		for (Equipamiento e : equipo) {
+			if (e instanceof Baya || e instanceof CarneSeca || e instanceof Pocion) {
+				curativos.add(e);
+			}
+		}
 
-	    if (curativos.isEmpty()) {
-	        System.out.println("No tienes consumibles curativos (Baya, CarneSeca o Pocion).");
-	        return false;
-	    }
+		if (curativos.isEmpty()) {
+			System.out.println("No tienes consumibles curativos (Baya, CarneSeca o Pocion).");
+			return false;
+		}
 
-	    System.out.println("\n--- CONSUMIBLES CURATIVOS ---");
-	    for (int i = 0; i < curativos.size(); i++) {
-	        Equipamiento e = curativos.get(i);
-	        System.out.println((i + 1) + ") " + nombreCurativo(e) + " (cura: " + curacionCurativo(e) + ")");
-	    }
-	    System.out.println((curativos.size() + 1) + ") Cancelar");
+		System.out.println("\n--- CONSUMIBLES CURATIVOS ---");
+		for (int i = 0; i < curativos.size(); i++) {
+			Equipamiento e = curativos.get(i);
+			System.out.println((i + 1) + ") " + nombreCurativo(e) + " (cura: " + curacionCurativo(e) + ")");
+		}
+		System.out.println((curativos.size() + 1) + ") Cancelar");
 
-	    int opcion = pideDatoNumerico("Elige un consumible: ");
+		int opcion = pideDatoNumerico("Elige un consumible: ");
 
-	    if (opcion < 1 || opcion > curativos.size()) {
-	        return false;
-	    }
+		if (opcion < 1 || opcion > curativos.size()) {
+			return false;
+		}
 
-	    Equipamiento elegido = curativos.get(opcion - 1);
+		Equipamiento elegido = curativos.get(opcion - 1);
 
-	    int antes = person.getPuntosVida();
-	    aplicarCuracion(person, elegido);
+		int antes = person.getPuntosVida();
+		aplicarCuracion(person, elegido);
 
-	    // Consumir: eliminar del inventario
-	    equipo.remove(elegido);
+		// Consumir: eliminar del inventario
+		equipo.remove(elegido);
 
-	    int despues = person.getPuntosVida();
-	    System.out.println("Has consumido " + nombreCurativo(elegido) + ". PV: " + antes + " -> " + despues
-	            + " / " + person.getPuntosVidaMax());
+		int despues = person.getPuntosVida();
+		System.out.println("Has consumido " + nombreCurativo(elegido) + ". PV: " + antes + " -> " + despues + " / "
+				+ person.getPuntosVidaMax());
 
-	    return true;
+		return true;
 	}
 
 	private static String nombreCurativo(Equipamiento e) {
-	    if (e instanceof Baya) return "Baya";
-	    if (e instanceof CarneSeca) return "CarneSeca";
-	    if (e instanceof Pocion) return "Pocion";
-	    return e.getNombre();
+		if (e instanceof Baya)
+			return "Baya";
+		if (e instanceof CarneSeca)
+			return "CarneSeca";
+		if (e instanceof Pocion)
+			return "Pocion";
+		return e.getNombre();
 	}
 
 	private static int curacionCurativo(Equipamiento e) {
-	    if (e instanceof Pocion) {
-	        return ((Pocion) e).getPuntosDeVida();
-	    }
-	    if (e instanceof CarneSeca) {
-	        return 12; // ajustable
-	    }
-	    if (e instanceof Baya) {
-	        return 5; // ajustable
-	    }
-	    return 0;
+		if (e instanceof Pocion) {
+			return ((Pocion) e).getPuntosDeVida();
+		}
+		if (e instanceof CarneSeca) {
+			return 12; // ajustable
+		}
+		if (e instanceof Baya) {
+			return 5; // ajustable
+		}
+		return 0;
 	}
 
 	private static void aplicarCuracion(Personaje person, Equipamiento e) {
-	    int cura = curacionCurativo(e);
+		int cura = curacionCurativo(e);
 
-	    if (cura <= 0) return;
+		if (cura <= 0)
+			return;
 
-	    int nuevaVida = person.getPuntosVida() + cura;
-	    if (nuevaVida > person.getPuntosVidaMax()) {
-	        nuevaVida = person.getPuntosVidaMax();
-	    }
-	    person.setPuntosVida(nuevaVida);
+		int nuevaVida = person.getPuntosVida() + cura;
+		if (nuevaVida > person.getPuntosVidaMax()) {
+			nuevaVida = person.getPuntosVidaMax();
+		}
+		person.setPuntosVida(nuevaVida);
 	}
 
 	private static void pausa(long ms) {
-	    try {
-	        Thread.sleep(ms);
-	    } catch (InterruptedException ex) {
-	        Thread.currentThread().interrupt();
-	    }
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	private static void mostrarEstadoCombate(Personaje person, Criatura enemigo) {
-	    System.out.println(person.getNombre() + " PV: " + person.getPuntosVida() + "/" + person.getPuntosVidaMax());
+		System.out.println(person.getNombre() + " PV: " + person.getPuntosVida() + "/" + person.getPuntosVidaMax());
 
-	    Criatura companero = obtenerCompaneroActivo(person);
-	    if (companero != null) {
-	        System.out.println(companero.getAlias() + " (" + companero.getNombre() + ") PV: "
-	                + companero.getPuntosVida() + "/" + companero.getPuntosVida());
-	        // Si tu Criatura tiene "puntosVidaMax", entonces usa: companero.getPuntosVida() + "/" + companero.getPuntosVidaMax()
-	    } else {
-	        System.out.println();
-	    }
+		Criatura companero = obtenerCompaneroActivo(person);
+		if (companero != null) {
+			System.out.println(companero.getAlias() + " (" + companero.getNombre() + ") PV: "
+					+ companero.getPuntosVida() + "/" + companero.getPuntosVida());
+			// Si tu Criatura tiene "puntosVidaMax", entonces usa: companero.getPuntosVida()
+			// + "/" + companero.getPuntosVidaMax()
+		} else {
+			System.out.println();
+		}
 
-	    System.out.println(enemigo.getNombre() + " PV: " + enemigo.getPuntosVida());
+		System.out.println(enemigo.getNombre() + " PV: " + enemigo.getPuntosVida());
 	}
 
 	public static void invocarLoboJavali(Personaje person) {
@@ -722,7 +729,8 @@ public class Utils {
 			personaje.setPuntosVida(personaje.getPuntosVida() - 5);
 		} else if (tirada > 3 && tirada <= 7) {
 			System.out.println("Has encontrado algunas bayas");
-			personaje.addEquipamiento(new Baya());;
+			personaje.addEquipamiento(new Baya());
+			;
 		} else if (tirada > 7) {
 			System.out.println("Has encontrado muchas bayas");
 			personaje.addEquipamiento(new Baya());
@@ -733,37 +741,39 @@ public class Utils {
 	}
 
 	public static String cazar(Personaje person) {
-		// añadir condicion para poder cazar
+		String mensaje = "";
 		if (person.getCriaturas().size() == 0) {
 			System.out.println("No puedes cazar sin un compañero criatura, primero invoca uno.");
-			return "No puedes cazar sin un compañero criatura, primero invoca uno.";
+			mensaje = "No puedes cazar sin un compañero criatura, primero invoca uno.";
 		}
 		boolean exito = dadoDiez() > 3; // 70% de exito
 		Criatura presa = randomizarCriatura();
-
+//TODO: AÑADIR METODO COMBATE SIEMPRE.
+		boolean resultadoCombate = false;
 		if (exito) {
-			// Comida carne = new Comida(presa.getNombre() + " carne", 10);
-			CarneSeca carneSeca = new CarneSeca();
-			// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA
-			// CRIATURA
-			person.addEquipamiento(carneSeca);;
-			person.ganarExperiencia();
-			System.out.println("Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
-					+ " en el inventario.");
-			return "Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
-					+ " en el inventario.";
+
+			resultadoCombate = Utils.combate(person, presa);
+			if (resultadoCombate) {
+				CarneSeca carneSeca = new CarneSeca();
+				// MARIO: LA CARNE DEBE DE TENER PESO Y DIFERENTES PUNTOS DE VIDA SEGUN LA
+				// CRIATURA
+				person.addEquipamiento(carneSeca);
+				;
+				person.ganarExperiencia();
+
+				mensaje = "Has cazado un " + presa.getNombre() + ", consigues carne seca de " + presa.getNombre()
+						+ " en el inventario.";
+			}
 
 		} else {
 			int danioHecho = presa.atacar(person);
 			person.setPuntosVida(person.getPuntosVida() - danioHecho);
-			System.out.println("Eres mas debil que un " + presa.getNombre() + ", y al intentar cazarlo te hace "
-					+ danioHecho + " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
-					+ person.getPuntosVida());
-			return "Eres mas debil que un" + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
+			mensaje = "Eres mas debil que un" + presa.getNombre() + ", y al intentar cazarlo te hace " + danioHecho
 					+ " de daño, huyes llorando como un niño pequeño. \tLa vida de nuestro personaje es: "
 					+ person.getPuntosVida();
 
 		}
+		return mensaje;
 	}
 
 	public static void buscarObjeto(Personaje personaje) {

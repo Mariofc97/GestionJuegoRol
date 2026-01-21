@@ -6,10 +6,11 @@ import java.util.List;
 import entities.Personaje;
 import entities.criatura.Criatura;
 import entities.episodios.Episodio3ElBosqueOscuro;
+import entities.episodios.Episodio4Rio;
 import entities.equipo.Equipamiento;
 import utilidades.Utils;
 
-public class PruebaEpisodio3 {
+public class PruebaEpisodio4 {
 	public static void main(String[] args) {
 		// Crear listas vacías para evitar NullPointerException al añadir objetos
 		List<Equipamiento> equipo = new ArrayList<>();
@@ -26,9 +27,8 @@ public class PruebaEpisodio3 {
 
 		Criatura compi = Utils.randomizarCriatura();
 		p.getCriaturas().add(compi);
-		System.out.println("Iniciando prueba de Episodio 2 con el personaje: " + p.getNombre());
-		Episodio3ElBosqueOscuro.episodio3ElBosqueOscuro(p);
-		System.out.println("Fin de la prueba de Episodio 2.");
+		System.out.println("Iniciando prueba de Episodio 4 con el personaje: " + p.getNombre());
+		Episodio4Rio.episodio4Rio(p);
+		System.out.println("Fin de la prueba de Episodio 4.");
 	}
-
 }

@@ -14,24 +14,12 @@ EN EL COMBATE HAY QUE AÑADIR EL TIPO DE DAÑO DE ARMA DE NUESTRO PERSONAJE CADA
 QUE CADA VEZ 
 	
 Anotaciones Dani:
-	añadir al episodio 1 el menu de inventario.
+cambiar menu crear armas eleccion por numeros es más comodo
+
 =======
 	Dani:
->>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
-	-en case 1 hay que cambiar que las llaves sea true cuando se consiga el objeto igual para todos los menus..
-	
-	
-	limite de daño
-	
-	
-	crear usuarios en la base de datos. de perfil usuario normal y administrador. Usuario entite
-	
-	crear control de usuarios en la aplicacion.
-	
-	crear menu de administrador para gestionar usuarios.
-	
-	Recolectar bayas (comida ligera / riesgo de “bayas del demonio”)
 
+<<<<<<< HEAD
 	Cazar (da carne / riesgo combate)
 	
 	ANOTACIONES MANU:
@@ -40,3 +28,23 @@ Anotaciones Dani:
 	-En elegir raza hacero con la opcion numerica en vez de por string.
 	-PuntosVidaMax y puntosVida una vez guardado el personaje parece ambiguo ya que no se sabe cual es cual.
 	-El menu una vez registrado deberia de dar solo las opciones necesarias para seguir jugando y no el menu completo como login, registrar etc. que ya se ha hecho..
+=======
+cambiar menus de episodios en vertical
+
+corregir la palabra MATERALES POR materiales
+
+	cambiar y añadir en cazar los combates con las criaturas	y que la expericia se suba aqui , podria devolver tb si win o lose.
+	
+	repaso epi3
+	
+	cabar epi4
+	
+	hacer epi final jefe cueva.
+
+
+	
+	
+	Manu:
+	
+	modo tester episodios!!!!
+>>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git

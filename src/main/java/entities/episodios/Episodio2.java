@@ -80,7 +80,7 @@ public class Episodio2 {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Esconderse del miedo \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al bosque oscuro. \t8.Descansar");
+					"1. Buscar bayas \n2. Cazar \n3. Crear arma \n4. Esconderse del miedo \n5.Inventario y estado \n6.Buscar materiales \n7.Ir al bosque oscuro \n8.Descansar");
 			System.out.println("dila opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -101,6 +101,7 @@ public class Episodio2 {
 
 			case 2: {
 				// cazar
+				//TODO: AÑADIR METODO COMBATE EN CASO DE ENCONTRAR CRIATURA AL CAZAR
 				try {
 					int puntosdeExperienciaAntesCazar = personaje.getExperiencia();
 					System.out.println("Intentando cazar...");

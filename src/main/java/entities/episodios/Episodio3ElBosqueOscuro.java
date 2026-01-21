@@ -65,18 +65,18 @@ public class Episodio3ElBosqueOscuro {
 		if (contadorEpisodio3 == 0) {
 			contadorEpisodio3++;
 		}
-		
+
 		System.out.println();
 		System.out.println("\"EPISODIO 3: El Bosque Oscuro\"");
 		System.out.println("Te adentras en el Bosque Oscuro, un lugar lleno de misterios y peligros.");
 		System.out.println("A medida que avanzas, sientes que los árboles susurran a tu alrededor.");
 		System.out.println("Algo acecha...");
 		System.out.println();
-		
+
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \t2. Cazar \t3. Crear arma \t4. Usar trampa \t5.Inventario y estado \t6.Buscar materales. \t7.Ir al rio. \t8.Descansar. \t9.Invocar lobo y jabali.");
+					"1. Buscar bayas \n2. Cazar \n3. Crear arma \n4. Usar trampa \n5.Inventario y estado \n6.Buscar materales. \n7.Ir al rio. \n8.Descansar. \n9.Invocar lobo y jabali.");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -146,6 +146,7 @@ public class Episodio3ElBosqueOscuro {
 				break;
 
 			case 4: {
+				// TODO: HAY QUE HACER LO UN METODO.
 
 				int contadorTrampas = 0;
 

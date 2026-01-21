@@ -111,7 +111,7 @@ public class Episodio1 {
 				LOGGER.info(() -> "Mostrando menú para personaje: " + personaje.getNombre());
 				
 				System.out.println(
-						"1. Llorar de forma desconsolado \t2. Pensar en un compañero de vieje \t3. Salir de la cueva \t4. Dormir y recuperar vida \t5. Ver inventario/estado \t6. Buscar objeto");
+						"1. Llorar de forma desconsolado \n2. Pensar en un compañero de vieje \n3. Salir de la cueva \n4. Dormir y recuperar vida \n5. Ver inventario/estado \n6. Buscar materiales");
 				System.out.println("dila opcion del menu");
 				int opcion;
 				try {
