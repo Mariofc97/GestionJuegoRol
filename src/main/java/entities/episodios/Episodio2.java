@@ -101,6 +101,7 @@ public class Episodio2 {
 
 			case 2: {
 				// cazar
+				//TODO: AÑADIR METODO COMBATE EN CASO DE ENCONTRAR CRIATURA AL CAZAR
 				try {
 					int puntosdeExperienciaAntesCazar = personaje.getExperiencia();
 					System.out.println("Intentando cazar...");
