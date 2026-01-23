@@ -21,7 +21,7 @@ public class GenericDaoHibernate<T, ID> implements GenericDao<T, ID> {
 	}
 	
 	protected Session session() {
-		return HibernateUtil.getSessionFactory();
+		return HibernateUtil.getSession();
 	}
 
 	@Override

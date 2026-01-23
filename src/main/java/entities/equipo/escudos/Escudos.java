@@ -1,7 +1,11 @@
-package entities.equipo;
+package entities.equipo.escudos;
 
-public class Escudos extends Equipamiento {
+import entities.equipo.Equipamiento;
+import jakarta.persistence.Column;
+
+public abstract class Escudos extends Equipamiento {
 	
+	@Column(name = "puntos_resistencia")
 	private int puntosResistencia;
 
 	public Escudos(String nombre, int nivelRequerido, int peso, int durabilidad) {

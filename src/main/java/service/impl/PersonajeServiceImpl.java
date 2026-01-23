@@ -119,6 +119,26 @@ public class PersonajeServiceImpl implements PersonajeService{
 		return personajeDao.update(p);
 	}
 
+	@Override
+	public Personaje cargarParaJuego(Long personajeId) throws ReglaJuegoException {
+		// TODO Auto-generated method stub
+		if(personajeId == null) throw new ReglaJuegoException("El ID del personaje es obligatorio");
+		
+		//Cargamaos el personaje 
+		Personaje p = personajeDao.findByIdFetchAll(personajeId);
+		if(p == null) throw new ReglaJuegoException("No existe personaje con ID: " + personajeId);
+		
+		// Nos aseguramos de que el objeto que devolvemos tenga la lista de criaturas, no tocamos nada si p2 viene null
+		if(p !=null) p.setCriaturas(p.getCriaturas());
+		
+	    // Si estás usando raza transient, aquí es buen sitio para reconstruirla si la necesitas en juego
+	    // p.setRaza(construirRaza(p.getRazaTipo()));  // opcional
+		
+		return p;
+	}
+	
+	
+
 	
 	
 

@@ -10,6 +10,25 @@ import dao.impl.PersonajeDaoImpl;
 import dto.EquipamientoDto;
 import entities.Personaje;
 import entities.equipo.Equipamiento;
+import entities.equipo.armas.Arco;
+import entities.equipo.armas.Armas;
+import entities.equipo.armas.Bumeran;
+import entities.equipo.armas.CanaPescar;
+import entities.equipo.armas.Cazamariposas;
+import entities.equipo.armas.Honda;
+import entities.equipo.armas.Lanza;
+import entities.equipo.armas.Trampa;
+import entities.equipo.escudos.EscudoMadera;
+import entities.equipo.escudos.EscudoPiedra;
+import entities.equipo.escudos.Escudos;
+import entities.equipo.objetos.Baya;
+import entities.equipo.objetos.CarneSeca;
+import entities.equipo.objetos.Cuerda;
+import entities.equipo.objetos.HojaParaLimpiar;
+import entities.equipo.objetos.MojonSeco;
+import entities.equipo.objetos.Palo;
+import entities.equipo.objetos.Piedra;
+import entities.equipo.objetos.Pocion;
 import exceptions.ReglaJuegoException;
 import service.EquipamientoService;
 
@@ -99,6 +118,247 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 		
 		personajeDao.update(p);
 		return mapToDto(nuevo);
+	}
+
+	@Override
+	public EquipamientoDto fabricar(Long personajeId, String tipo) throws ReglaJuegoException {
+
+	    Personaje p = cargarPersonajeConEquipo(personajeId);
+
+	    if (tipo == null || tipo.isBlank()) {
+	        throw new ReglaJuegoException("Tipo de fabricación obligatorio");
+	    }
+
+	    String t = tipo.trim().toUpperCase();
+
+	    Equipamiento nuevo;
+
+	    switch (t) {
+
+	        // ===================== ARMAS =====================
+
+	        case "ARCO":
+	            // nivel requerido (ejemplo)
+	            checkNivel(p, 1);
+	            // materiales
+	            consumirMateriales(p, "PALO", "CUERDA");
+	            // crear
+	            nuevo = new Arco();
+	            break;
+
+	        case "BUMERAN":
+	            checkNivel(p, 1);
+	            consumirMateriales(p, "PALO");
+	            nuevo = new Bumeran();
+	            break;
+
+	        case "CAZAMARIPOSAS":
+	            checkNivel(p, 1);
+	            consumirMateriales(p, "PALO", "MOJON SECO");
+	            nuevo = new Cazamariposas();
+	            break;
+
+	        case "LANZA":
+	            checkNivel(p, 2);
+	            consumirMateriales(p, "PALO", "PIEDRA");
+	            nuevo = new Lanza();
+	            break;
+
+	        case "HONDA":
+	            checkNivel(p, 2);
+	            consumirMateriales(p, "CUERDA");
+	            nuevo = new Honda();
+	            break;
+
+	        case "CAÑA PESCA":
+	        case "CANA PESCA":
+	            checkNivel(p, 2);
+	            consumirMateriales(p, 
+	            		"CUERDA",
+	            		"PALO",
+	                    "BAYA");
+	            nuevo = new CanaPescar();
+	            break;
+
+	        case "TRAMPA":
+	            checkNivel(p, 3);
+	            consumirMateriales(p, 
+	            		"CUERDA",
+	            		"PALO",
+	            		"PIEDRA");
+	            nuevo = new Trampa();
+	            break;
+
+	        // ===================== ESCUDOS =====================
+
+	        case "ESCUDO MADERA":
+	        case "ESCUDOMADERA":
+	            checkNivel(p, 1);
+	            // AJUSTARLO
+	            consumirMateriales(p, "PALO");
+	            nuevo = new EscudoMadera();
+	            break;
+
+	        case "ESCUDO PIEDRA":
+	        case "ESCUDOPIEDRA":
+	            checkNivel(p, 2);
+	            consumirMateriales(p, "PIEDRA", "CUERDA");
+	            nuevo = new EscudoPiedra();
+	            break;
+
+	        default:
+	            throw new ReglaJuegoException("No se puede fabricar: " + t);
+	    }
+
+	    // aquí validas inventario (max objetos + peso) reutilizando tu método existente
+	    // IMPORTANTE: como ya consumiste materiales, el inventario ya bajó peso/objetos.
+	    EquipamientoDto dto = añadirAlInventario(p.getId(), nuevo);
+
+	    // persistir: añadirAlInventario ya hace personajeDao.update(p)
+	    return dto;
+	}
+
+	@Override
+	public EquipamientoDto equiparArma(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
+
+	    Personaje p = cargarPersonajeConEquipo(personajeId);
+
+	    if (equipamientoId == null) throw new ReglaJuegoException("equipamientoId obligatorio");
+
+	    Equipamiento encontrado = null;
+	    for (Equipamiento e : p.getEquipo()) {
+	        if (e != null && e.getId() != null && e.getId().equals(equipamientoId)) {
+	            encontrado = e;
+	            break;
+	        }
+	    }
+
+	    if (encontrado == null) throw new ReglaJuegoException("No tienes ese equipamiento en tu inventario.");
+	    if (!(encontrado instanceof Armas)) {
+	        throw new ReglaJuegoException("Ese objeto no es un arma.");
+	    }
+
+	    // nivel requerido
+	    if (p.getNivel() < encontrado.getNivelRequerido()) {
+	        throw new ReglaJuegoException("Nivel insuficiente para equipar. Requiere nivel "
+	                + encontrado.getNivelRequerido() + " y tienes " + p.getNivel());
+	    }
+
+	    // mover al principio = equipada
+	    p.getEquipo().remove(encontrado);
+	    p.getEquipo().add(0, encontrado);
+
+	    personajeDao.update(p);
+
+	    return mapToDto(encontrado);
+	}
+
+	@Override
+	public EquipamientoDto equiparEscudo(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
+
+	    Personaje p = cargarPersonajeConEquipo(personajeId);
+
+	    if (equipamientoId == null) throw new ReglaJuegoException("equipamientoId obligatorio");
+
+	    Equipamiento encontrado = null;
+	    for (Equipamiento e : p.getEquipo()) {
+	        if (e != null && e.getId() != null && e.getId().equals(equipamientoId)) {
+	            encontrado = e;
+	            break;
+	        }
+	    }
+
+	    if (encontrado == null) throw new ReglaJuegoException("No tienes ese equipamiento en tu inventario.");
+	    if (!(encontrado instanceof Escudos)) {
+	        throw new ReglaJuegoException("Ese objeto no es un escudo.");
+	    }
+
+	    // nivel requerido
+	    if (p.getNivel() < encontrado.getNivelRequerido()) {
+	        throw new ReglaJuegoException("Nivel insuficiente para equipar. Requiere nivel "
+	                + encontrado.getNivelRequerido() + " y tienes " + p.getNivel());
+	    }
+
+	    // mover al principio = equipado (igual que armas)
+	    p.getEquipo().remove(encontrado);
+	    p.getEquipo().add(0, encontrado);
+
+	    personajeDao.update(p);
+
+	    return mapToDto(encontrado);
+	}
+
+	
+	private Personaje cargarPersonajeConEquipo(Long personajeId) throws ReglaJuegoException {
+	    if (personajeId == null) throw new ReglaJuegoException("personajeId obligatorio");
+	    Personaje p = personajeDao.findByIdFetchEquipo(personajeId);
+	    if (p == null) throw new ReglaJuegoException("No existe personaje con id=" + personajeId);
+	    if (p.getEquipo() == null) p.setEquipo(new ArrayList<>());
+	    return p;
+	}
+
+	private void checkNivel(Personaje p, int nivelRequerido) throws ReglaJuegoException {
+	    if (p.getNivel() < nivelRequerido) {
+	        throw new ReglaJuegoException("Nivel insuficiente. Necesitas nivel " + nivelRequerido +
+	                " y tienes " + p.getNivel());
+	    }
+	}
+
+	private Equipamiento encontrarMaterial(Personaje p, String material) {
+	    for (Equipamiento e : p.getEquipo()) {
+	        if (e == null) continue;
+
+	        switch (material) {
+	            case "PALO":
+	                if (e instanceof Palo) return e;
+	                break;
+	            case "CUERDA":
+	                if (e instanceof Cuerda) return e;
+	                break;
+	            case "PIEDRA":
+	                if (e instanceof Piedra) return e;
+	                break;
+	            case "BAYA":
+	                if (e instanceof Baya) return e;
+	                break;
+	            case "POCION":
+	            	if (e instanceof Pocion) return e;
+	            	break;
+	            case "HOJA PARA LIMPIAR":
+	            	if (e instanceof HojaParaLimpiar) return e;
+	            	break;
+	            case "CARNE":
+	            case "CARNE SECA":
+	            	if (e instanceof CarneSeca) return e;
+	            	break;
+	            case "MOJON":
+	            case "MOJON SECO":
+	                if (e instanceof MojonSeco) return e;
+	                break;
+	            default:
+	            	System.out.println("Material no encontrado");
+	                return null;
+	        }
+	    }
+	    return null;
+	}
+	
+	private void consumirMateriales(Personaje p, String... materiales) throws ReglaJuegoException {
+
+	    // 1) comprobar que existen
+	    for (String m : materiales) {
+	        Equipamiento encontrado = encontrarMaterial(p, m);
+	        if (encontrado == null) {
+	            throw new ReglaJuegoException("Te falta material: " + m);
+	        }
+	    }
+
+	    // 2) borrar uno de cada
+	    for (String m : materiales) {
+	        Equipamiento encontrado = encontrarMaterial(p, m);
+	        // aquí ya sabemos que existe
+	        p.getEquipo().remove(encontrado);
+	    }
 	}
 	
 }

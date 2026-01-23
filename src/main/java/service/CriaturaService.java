@@ -7,7 +7,7 @@ import exceptions.ReglaJuegoException;
 
 public interface CriaturaService {
 
-    CriaturaDto crearYAsignar(Long personajeId, String tipoCriatura, String alias) throws ReglaJuegoException;
+    CriaturaDto invocarCompanero(Long personajeId, String tipoCriatura, String alias) throws ReglaJuegoException;
 
     List<CriaturaDto> listarPorPersonaje(Long personajeId) throws ReglaJuegoException;
 }

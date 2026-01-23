@@ -11,4 +11,6 @@ public interface PersonajeService {
 	Personaje buscarPorId(Long id) throws ReglaJuegoException;
 	List<Personaje> listarPorUsuario(Long usuarioId);
 	public Personaje actualizar(Personaje p);
+	Personaje cargarParaJuego(Long personajeId) throws ReglaJuegoException;
+
 }

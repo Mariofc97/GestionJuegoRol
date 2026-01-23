@@ -7,6 +7,7 @@ import core.Defendible;
 import entities.criatura.Criatura;
 import entities.equipo.Equipamiento;
 import entities.equipo.armas.Armas;
+import entities.equipo.escudos.Escudos;
 import entities.equipo.objetos.Pocion;
 import entities.raza.Raza;
 import jakarta.persistence.CascadeType;
@@ -275,10 +276,26 @@ public class Personaje implements Atacable, Defendible {
 		// TODO Auto-generated method stub
 		if (danio <= 0) return;
 		
-		this.puntosVida -= danio;
-		if (this.puntosVida < 0) {
-			System.out.println(this.nombre + " esta muerto, tiene 0 puntos de vida");
+		//comprobamos si tiene escudo equipado, si no la defensa es 0
+		Escudos escudo = getEscudoEquipado();
+		int defensa = 0;
+		
+		if(escudo != null) {
+			defensa = escudo.getPuntosResistencia();
+			if(defensa < 0) defensa = 0;
+		}
+		
+		//calculamos daño final
+		int danioFinal = danio - defensa;
+		if(danioFinal < 0) danioFinal = 0;
+		
+		this.puntosVida = this.puntosVida - danioFinal;
+		
+		System.out.println(nombre + " recibe " + danioFinal + " de daño.");
+		
+		if(this.puntosVida <= 0) {
 			this.puntosVida = 0;
+			System.out.println("¡ " + nombre + " HA MUERTO");
 		}
 	}
 
@@ -340,6 +357,30 @@ public class Personaje implements Atacable, Defendible {
 
 	private int experienciaParaSiguienteNivel() {
 		return nivel * 100;
+	}
+	
+	public Escudos getEscudoEquipado() {
+		if(equipo == null) return null;
+		
+		for (Equipamiento e: equipo) {
+			if(e instanceof Escudos) {
+				return (Escudos) e;
+			}
+		}
+		
+		return null;
+	}
+	
+	public boolean tieneEscudoEquipado() {
+		return getEscudoEquipado() != null;
+	}
+	
+	public int getDefensaActual() {
+		Escudos escudo = getEscudoEquipado();
+		if(escudo == null) return 0;
+		
+		//de esta manera se evita que por error sea negativa
+		return Math.max(0, escudo.getPuntosResistencia());
 	}
 
 	public void subirNivelSiToca() {

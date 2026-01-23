@@ -10,6 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dto.CriaturaDto;
+import dto.EquipamientoDto;
 import entities.Personaje;
 import entities.criatura.Conejo;
 import entities.criatura.Criatura;
@@ -19,15 +21,8 @@ import entities.criatura.Lobo;
 import entities.criatura.Mosquito;
 import entities.criatura.Raton;
 import entities.equipo.Equipamiento;
-import entities.equipo.Escudos;
-import entities.equipo.armas.Arco;
 import entities.equipo.armas.Armas;
-import entities.equipo.armas.Bumeran;
-import entities.equipo.armas.CanaPescar;
-import entities.equipo.armas.Cazamariposas;
-import entities.equipo.armas.Honda;
-import entities.equipo.armas.Lanza;
-import entities.equipo.armas.Trampa;
+import entities.equipo.escudos.Escudos;
 import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.CarneSeca;
 import entities.equipo.objetos.Cuerda;
@@ -37,9 +32,14 @@ import entities.equipo.objetos.Palo;
 import entities.equipo.objetos.Piedra;
 import entities.equipo.objetos.Pocion;
 import exceptions.ReglaJuegoException;
+import service.CriaturaService;
+import service.EquipamientoService;
+import service.impl.CriaturaServiceImpl;
+import service.impl.EquipamientoServiceImpl;
 
 public class Utils {
 
+	private static final CriaturaService criaturaService = new CriaturaServiceImpl();
 	protected static final Logger log = LoggerFactory.getLogger(Utils.class);
 	// TODO
 	// Metodos
@@ -60,32 +60,52 @@ public class Utils {
 	// invocacion();
 
 	public static Criatura invocacionCompañeroCriatura(Personaje person) {
-		int cantidad = person.getCriaturas().size();
-		if (cantidad >= 5) {
-			System.out.println("No puedes tener más de cinto compañeros");
-			return null;
-		}
-		Criatura compi = randomizarCriatura();
-		boolean resultado = dadoDiez() > 1; // 90% de exito
 
-		if (resultado) {
-			person.addCriatura(compi);
-			System.out.println("Ahora tienes un compañero de viaje, ¿quieres ponerle un alias?:");
-			String alias = pideDatoCadena("Introduce el alias deseado: ");
-			if (alias.isEmpty()) {
-				alias = compi.getNombre();
-			} else {
-				System.out.println("Has decidido llamar a tu criatura: " + alias);
-			}
-			compi.setAlias(alias);
-			return compi;
-		} else {
-			System.out.println("No estas pensado en lo que debes, al invocar la criatura se rie de ti y te ataca.");
-			person.setPuntosVida(person.getPuntosVida() - compi.getPuntosAtaque());
-			System.out.println("Te ha quitado " + compi.getPuntosAtaque() + " puntos de vida, te quedan "
-					+ person.getPuntosVida() + " puntos de vida.");
-			return null;
-		}
+	    if (person == null || person.getId() == null) {
+	        System.out.println("Error: personaje no válido o no persistido.");
+	        return null;
+	    }
+
+	    // narrativa: “qué sale”
+	    Criatura compiRandom = randomizarCriatura();
+
+	    // tirada (90% éxito)
+	    boolean ok = dadoDiez() > 1;
+	    if (!ok) {
+	        System.out.println("No estás pensando en lo que debes, la criatura se ríe de ti y te ataca.");
+	        person.setPuntosVida(person.getPuntosVida() - compiRandom.getPuntosAtaque());
+	        System.out.println("Te ha quitado " + compiRandom.getPuntosAtaque() +
+	                " puntos de vida, te quedan " + person.getPuntosVida() + " puntos de vida.");
+	        return null;
+	    }
+
+	    System.out.println("Ahora tienes un compañero de viaje, ¿quieres ponerle un alias?:");
+	    String alias = pideDatoCadena("Introduce el alias deseado: ");
+
+	    // tipo para el service (MOSQUITO/CONEJO/...)
+	    String tipo = compiRandom.getClass().getSimpleName().toUpperCase();
+
+	    try {
+	        CriaturaDto dto = criaturaService.invocarCompanero(person.getId(), tipo, alias);
+
+	        System.out.println("Has invocado una criatura: " + dto.getTipo() + " alias=" + dto.getAlias());
+
+	        // mantener coherencia en memoria también:
+	        compiRandom.setId(dto.getId());
+	        compiRandom.setNombre(dto.getNombre());
+	        compiRandom.setAlias(dto.getAlias());
+	        compiRandom.setNivel(dto.getNivel());
+	        compiRandom.setExperiencia(dto.getExperiencia());
+	        compiRandom.setPuntosVida(dto.getPuntosVida());
+	        compiRandom.setPuntosAtaque(dto.getPuntosAtaque());
+	        person.addCriatura(compiRandom);
+
+	        return compiRandom;
+
+	    } catch (ReglaJuegoException e) {
+	        System.out.println("No se pudo invocar: " + e.getMessage());
+	        return null;
+	    }
 	}
 
 	public static int contarHojas(Personaje personaje) {
@@ -459,19 +479,32 @@ public class Utils {
 	}
 
 	private static void mostrarCompaneros(Personaje person) {
-		List<Criatura> criaturasCompis = person.getCriaturas();
+	    if (person == null || person.getId() == null) {
+	        System.out.println("No hay personaje válido.");
+	        return;
+	    }
 
-		for (Criatura criatura : criaturasCompis) {
-			if (criaturasCompis == null) {
-				log.error("No tienes criaturas aliadas asignadas");
-			} else {
+	    try {
+	        List<CriaturaDto> lista = criaturaService.listarPorPersonaje(person.getId());
 
-				System.out.println(
-						"Criatura: " + criatura.getNombre() + "|Alias: " + criatura.getAlias() + "|Puntos de vida: "
-								+ criatura.getPuntosVida() + "|Puntos de ataque: " + criatura.getPuntosAtaque());
-			}
-		}
+	        if (lista.isEmpty()) {
+	            System.out.println("No tienes criaturas aliadas.");
+	            return;
+	        }
+
+	        for (CriaturaDto c : lista) {
+	            System.out.println("Criatura: " + c.getNombre()
+	                    + " | Tipo: " + c.getTipo()
+	                    + " | Alias: " + c.getAlias()
+	                    + " | PV: " + c.getPuntosVida()
+	                    + " | ATQ: " + c.getPuntosAtaque());
+	        }
+
+	    } catch (ReglaJuegoException e) {
+	        System.out.println("Error listando criaturas: " + e.getMessage());
+	    }
 	}
+
 
 	private static String obtenerTipoEquipamiento(Equipamiento e) {
 		if (e instanceof Armas) {
@@ -489,49 +522,52 @@ public class Utils {
 	// Equipar: mover el arma elegida al principio de la lista para que
 	// getArmaEquipada() pueda encontrarla primero.
 	private static void menuArmas(Personaje person) {
-		List<Equipamiento> equipo = person.getEquipo();
+	    List<Equipamiento> equipo = person.getEquipo();
+	    if (equipo == null || equipo.isEmpty()) {
+	        System.out.println("No llevas armas ni objetos");
+	        return;
+	    }
 
-		if (equipo == null || equipo.isEmpty()) {
-			log.error("No llevas armas ni objetos");
-			return;
-		}
+	    List<Armas> armas = new ArrayList<>();
+	    for (Equipamiento e : equipo) {
+	        if (e instanceof Armas) armas.add((Armas) e);
+	    }
 
-		List<Armas> armas = new ArrayList<>();
-		for (Equipamiento e : equipo) {
-			if (e instanceof Armas) {
-				// casteo de equipo a arma
-				armas.add((Armas) e);
-			}
-		}
+	    if (armas.isEmpty()) {
+	        System.out.println("No tienes ninguna arma en el inventario");
+	        return;
+	    }
 
-		if (armas.isEmpty()) {
-			System.out.println("No tienes ningun arma en el inventario");
-			return;
-		}
-		System.out.println("\n--- ARMAS ---");
-		for (int i = 0; i < armas.size(); i++) {
-			Armas a = armas.get(i);
-			System.out.println((i + 1) + ". " + a.getNombre() + " daño: " + a.getPuntosDaño() + " ,tipo de daño: "
-					+ a.getTipoDaño() + ", Precision: " + a.getPrecision());
-		}
+	    System.out.println("\n--- ARMAS ---");
+	    for (int i = 0; i < armas.size(); i++) {
+	        Armas a = armas.get(i);
+	        System.out.println((i + 1) + ") " + a.getNombre() +
+	            " [id=" + a.getId() + "]" +
+	            " daño=" + a.getPuntosDaño() +
+	            " durabilidad=" + a.getDurabilidad() +
+	            " nivelReq=" + a.getNivelRequerido());
+	    }
 
-		System.out.println((armas.size() + 1) + ". Volver");
-		int opcion = pideDatoNumerico("Elige un arma para equipar (o pulsa " + (armas.size() + 1) + " para volver):");
+	    System.out.println((armas.size() + 1) + ") Volver");
+	    int opcion = pideDatoNumerico("Elige un arma para equipar:");
 
-		if (opcion < 1 || opcion > armas.size()) {
-			System.out.println("Volviendo sin cambiar el arma.");
-			return;
-		}
+	    if (opcion < 1 || opcion > armas.size()) {
+	        System.out.println("Volviendo sin cambiar arma.");
+	        return;
+	    }
 
-		Armas seleccionada = armas.get(opcion - 1);
+	    Armas seleccionada = armas.get(opcion - 1);
 
-		equipo.remove(seleccionada);
-		equipo.add(0, seleccionada);
-
-		System.out.println("Has equipado el arma: " + seleccionada.getNombre());
-
+	    try {
+	        EquipamientoService es = new EquipamientoServiceImpl();
+	        EquipamientoDto dto = es.equiparArma(person.getId(), seleccionada.getId());
+	        System.out.println("Arma equipada OK: " + dto.getNombre());
+	    } catch (ReglaJuegoException e) {
+	        System.out.println("No puedes equipar: " + e.getMessage());
+	    }
 	}
 
+	// hay que crear tambien MENUESCUDOS!!!
 	private static void menuUsarPocion(Personaje person) {
 		List<Equipamiento> equipo = person.getEquipo();
 		if (equipo == null || equipo.isEmpty()) {
@@ -815,254 +851,27 @@ public class Utils {
 
 	}
 
-	public static Armas construirArma(Personaje personaje) throws ReglaJuegoException {
+	public static void menuFabricar(Personaje personaje) {
+	    if (personaje == null || personaje.getId() == null) {
+	        System.out.println("Debes tener un personaje válido.");
+	        return;
+	    }
 
-		if (personaje == null || personaje.getEquipo() == null) {
-			throw new ReglaJuegoException("Personaje o inventario no disponible.");
-		}
+	    String tipo = pideDatoCadena(
+	        "¿Qué quieres fabricar? (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA, CAÑA PESCA, TRAMPA, ESCUDO MADERA, ESCUDO PIEDRA)"
+	    );
 
-		String t = Utils.pideDatoCadena(
-				"Selecciona el arma que quieres fabricar: (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA, CAÑA PESCA, TRAMPA)");
-		String tipo = t.trim().toUpperCase();
+	    try {
+	        EquipamientoService es = new EquipamientoServiceImpl();
+	        EquipamientoDto dto = es.fabricar(personaje.getId(), tipo);
 
-		Armas nuevaArma = null;
-
-		switch (tipo) {
-
-		case "ARCO": {
-			boolean tienePalo = false;
-			boolean tieneCuerda = false;
-
-			// 1) Comprobar materiales
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (e instanceof Palo)
-					tienePalo = true;
-				if (e instanceof Cuerda)
-					tieneCuerda = true;
-			}
-
-			if (!tienePalo || !tieneCuerda) {
-				throw new ReglaJuegoException("Necesitas un Palo y una Cuerda para fabricar el ARCO.");
-			}
-
-			// 2) Consumir materiales (eliminar 1 de cada)
-			Equipamiento paloAEliminar = null;
-			Equipamiento cuerdaAEliminar = null;
-
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (paloAEliminar == null && e instanceof Palo)
-					paloAEliminar = e;
-				if (cuerdaAEliminar == null && e instanceof Cuerda)
-					cuerdaAEliminar = e;
-			}
-
-			personaje.getEquipo().remove(paloAEliminar);
-			personaje.getEquipo().remove(cuerdaAEliminar);
-
-			// 3) Crear arma
-			nuevaArma = new Arco();
-			break;
-		}
-
-		case "BUMERAN": {
-			boolean tienePalo = false;
-
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (e instanceof Palo) {
-					tienePalo = true;
-					break;
-				}
-			}
-
-			if (!tienePalo) {
-				throw new ReglaJuegoException("Necesitas un Palo para fabricar el BUMERAN.");
-			}
-
-			Equipamiento paloAEliminar = null;
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (e instanceof Palo) {
-					paloAEliminar = e;
-					break;
-				}
-			}
-			personaje.getEquipo().remove(paloAEliminar);
-
-			nuevaArma = new Bumeran();
-			break;
-		}
-
-		case "CAZAMARIPOSAS": {
-			boolean tienePalo = false;
-			boolean tieneMojon = false;
-
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (e instanceof Palo)
-					tienePalo = true;
-				if (e instanceof MojonSeco)
-					tieneMojon = true;
-			}
-
-			if (!tienePalo || !tieneMojon) {
-				throw new ReglaJuegoException("Necesitas un Palo y un Mojón Seco para fabricar el CAZAMARIPOSAS.");
-			}
-
-			Equipamiento paloAEliminar = null;
-			Equipamiento mojonAEliminar = null;
-
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (paloAEliminar == null && e instanceof Palo)
-					paloAEliminar = e;
-				if (mojonAEliminar == null && e instanceof MojonSeco)
-					mojonAEliminar = e;
-			}
-
-			personaje.getEquipo().remove(paloAEliminar);
-			personaje.getEquipo().remove(mojonAEliminar);
-
-			nuevaArma = new Cazamariposas();
-			break;
-		}
-
-		case "LANZA": {
-			boolean tienePalo = false;
-			boolean tienePiedra = false;
-
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (e instanceof Palo)
-					tienePalo = true;
-				if (e instanceof Piedra)
-					tienePiedra = true;
-			}
-
-			if (!tienePalo || !tienePiedra) {
-				throw new ReglaJuegoException("Necesitas un Palo y una Piedra para fabricar la LANZA.");
-			}
-
-			Equipamiento paloAEliminar = null;
-			Equipamiento piedraAEliminar = null;
-
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (paloAEliminar == null && e instanceof Palo)
-					paloAEliminar = e;
-				if (piedraAEliminar == null && e instanceof Piedra)
-					piedraAEliminar = e;
-			}
-
-			personaje.getEquipo().remove(paloAEliminar);
-			personaje.getEquipo().remove(piedraAEliminar);
-
-			nuevaArma = new Lanza();
-			break;
-		}
-
-		case "HONDA": {
-			boolean tieneCuerda = false;
-
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (e instanceof Cuerda) {
-					tieneCuerda = true;
-					break;
-				}
-			}
-
-			if (!tieneCuerda) {
-				throw new ReglaJuegoException("Necesitas una Cuerda para fabricar la HONDA.");
-			}
-
-			Equipamiento cuerdaAEliminar = null;
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (e instanceof Cuerda) {
-					cuerdaAEliminar = e;
-					break;
-				}
-			}
-			personaje.getEquipo().remove(cuerdaAEliminar);
-
-			nuevaArma = new Honda(); // antes tenías Lanza por error
-			break;
-		}
-		case "CAÑA PESCA": {
-			boolean tieneCuerda = false;
-			boolean tienePalo = false;
-			boolean tieneBaya = false;
-
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (e instanceof Cuerda)
-					tieneCuerda = true;
-				if (e instanceof Palo)
-					tienePalo = true;
-				if (e instanceof Baya)
-					tieneBaya = true;
-			}
-
-			if (!tieneCuerda || !tienePalo || !tieneBaya) {
-				throw new ReglaJuegoException("Necesitas una Cuerda, Baya y Palo para fabricar la CAÑA PESCA.");
-			}
-
-			Equipamiento cuerdaAEliminar = null;
-			Equipamiento paloAEliminar = null;
-			Equipamiento bayaAEliminar = null;
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (paloAEliminar == null && e instanceof Palo)
-					paloAEliminar = e;
-				if (cuerdaAEliminar == null && e instanceof Cuerda)
-					cuerdaAEliminar = e;
-				if (bayaAEliminar == null && e instanceof Baya)
-					bayaAEliminar = e;
-			}
-			personaje.getEquipo().remove(cuerdaAEliminar);
-			personaje.getEquipo().remove(paloAEliminar);
-			personaje.getEquipo().remove(bayaAEliminar);
-
-			nuevaArma = new CanaPescar(); // antes tenías Lanza por error
-			break;
-		}
-		case "TRAMPA": {
-			boolean tieneCuerda = false;
-			boolean tienePalo = false;
-			boolean tienePiedra = false;
-
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (e instanceof Cuerda)
-					tieneCuerda = true;
-				if (e instanceof Palo)
-					tienePalo = true;
-				if (e instanceof Piedra)
-					tienePiedra = true;
-			}
-
-			if (!tieneCuerda || !tienePalo || !tienePiedra) {
-				throw new ReglaJuegoException("Necesitas una Cuerda, Baya y Piedra para fabricar la TRAMPA.");
-			}
-
-			Equipamiento cuerdaAEliminar = null;
-			Equipamiento paloAEliminar = null;
-			Equipamiento piedraAEliminar = null;
-			for (Equipamiento e : personaje.getEquipo()) {
-				if (paloAEliminar == null && e instanceof Palo)
-					paloAEliminar = e;
-				if (cuerdaAEliminar == null && e instanceof Cuerda)
-					cuerdaAEliminar = e;
-				if (piedraAEliminar == null && e instanceof Piedra)
-					piedraAEliminar = e;
-			}
-			personaje.getEquipo().remove(cuerdaAEliminar);
-			personaje.getEquipo().remove(paloAEliminar);
-			personaje.getEquipo().remove(piedraAEliminar);
-
-			nuevaArma = new Trampa(); // antes tenías Lanza por error
-			break;
-		}
-
-		default:
-			throw new ReglaJuegoException("Opción inválida: " + tipo);
-		}
-
-		// Añadir el arma al inventario
-		personaje.addEquipamiento(nuevaArma);
-		System.out.println("Has fabricado un " + nuevaArma.getNombre() + " y se ha añadido a tu inventario.");
-
-		return nuevaArma;
+	        System.out.println("Fabricado OK: " + dto.getNombre() +
+	            " | durabilidad=" + dto.getDurabilidad() +
+	            " | nivel requerido=" + dto.getNivelRequerido());
+	    } catch (ReglaJuegoException e) {
+	        System.out.println("No puedes fabricar: " + e.getMessage());
+	    }
 	}
+
 
 }

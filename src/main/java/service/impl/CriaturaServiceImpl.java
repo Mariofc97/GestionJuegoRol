@@ -23,9 +23,8 @@ import service.CriaturaService;
 
 public class CriaturaServiceImpl implements CriaturaService {
 
-    private final CriaturaDao criaturaDao = new CriaturaDaoImpl();
     private final PersonajeDao personajeDao = new PersonajeDaoImpl();
-
+    private static final int MAX_CRIATURAS = 5;
     private CriaturaDto mapToDto(Criatura c) {
         if (c == null) return null;
 
@@ -66,47 +65,61 @@ public class CriaturaServiceImpl implements CriaturaService {
     }
 
     @Override
-    public CriaturaDto crearYAsignar(Long personajeId, String tipoCriatura, String alias) throws ReglaJuegoException {
-
-        if (personajeId == null) throw new ReglaJuegoException("personajeId obligatorio.");
-
-        // 1) Validar que existe el personaje (regla de juego)
-        Personaje p = personajeDao.findById(personajeId);
-        if (p == null) throw new ReglaJuegoException("No existe el personaje con id " + personajeId);
-
-        // 2) Validar máximo criaturas
-        long total = criaturaDao.countByPersonajeId(personajeId);
-        if (total >= 5) throw new ReglaJuegoException("No puedes tener más de 5 criaturas aliadas.");
-
-        // 3) Construir criatura concreta
-        Criatura c = construirCriatura(tipoCriatura);
-
-        // 4) Alias (si no ponen, le ponemos el nombre por defecto)
-        if (alias == null || alias.isBlank()) {
-            c.setAlias(c.getNombre());
-        } else {
-            c.setAlias(alias.trim());
-        }
-
-        // 5) Persistir y asociar en BD (crea fila en TB_CRIATURA con personaje_id)
-        Criatura guardada = criaturaDao.saveToPersonaje(personajeId, c);
-
-        return mapToDto(guardada);
-    }
-
-    @Override
     public List<CriaturaDto> listarPorPersonaje(Long personajeId) throws ReglaJuegoException {
-        if (personajeId == null) throw new ReglaJuegoException("personajeId obligatorio.");
+        if (personajeId == null) throw new ReglaJuegoException("El personajeId es obligatorio.");
 
-        Personaje p = personajeDao.findById(personajeId);
-        if (p == null) throw new ReglaJuegoException("No existe el personaje con id " + personajeId);
+        Personaje p = personajeDao.findByIdFetchAll(personajeId);
+        if (p == null) throw new ReglaJuegoException("No existe personaje con id=" + personajeId);
 
-        List<Criatura> lista = criaturaDao.findByPersonajeId(personajeId);
-        List<CriaturaDto> dto = new ArrayList<>();
-        for (Criatura c : lista) {
-            dto.add(mapToDto(c));
+        List<Criatura> lista = p.getCriaturas();
+        if (lista == null || lista.isEmpty()) return java.util.Collections.emptyList();
+
+        List<CriaturaDto> res = new java.util.ArrayList<>();
+        for (Criatura c : lista) res.add(mapToDto(c));
+        return res;
+    }
+    
+    @Override
+    public CriaturaDto invocarCompanero(Long personajeId, String tipoCriatura, String alias) throws ReglaJuegoException {
+
+        // 1) validar entrada
+        if (personajeId == null) throw new ReglaJuegoException("El id del personaje es obligatorio.");
+        if (tipoCriatura == null || tipoCriatura.trim().isEmpty()) throw new ReglaJuegoException("El tipo de criatura es obligatorio.");
+
+        // 2) cargar personaje con criaturas (importante para contar bien y evitar Lazy)
+        Personaje p = personajeDao.findByIdFetchAll(personajeId);
+        if (p == null) throw new ReglaJuegoException("No existe personaje con id=" + personajeId);
+
+        if (p.getCriaturas() == null) p.setCriaturas(new ArrayList<>());
+
+        // 3) regla: máximo criaturas
+        if (p.getCriaturas().size() >= MAX_CRIATURAS) {
+            throw new ReglaJuegoException("No puedes tener más de " + MAX_CRIATURAS + " compañeros.");
         }
-        return dto;
+
+        // 4) construir criatura por tipo
+        String tipo = tipoCriatura.trim().toUpperCase();
+        Criatura nueva = construirCriatura(tipo);
+
+        // 5) alias (si viene vacío, ponemos el nombre base)
+        if (alias == null || alias.trim().isEmpty()) {
+            nueva.setAlias(nueva.getNombre());
+        } else {
+            nueva.setAlias(alias.trim());
+        }
+
+        // 6) enlazar FK usando el método seguro
+        p.addCriatura(nueva);
+
+        // 7) persistir: con cascade, basta update(p)
+        Personaje actualizado = personajeDao.update(p);
+
+        // 8) obtener la criatura persistida para devolver DTO
+        // Como acabamos de añadir una, normalmente la última es la nueva:
+        List<Criatura> lista = actualizado.getCriaturas();
+        Criatura persistida = lista.get(lista.size() - 1);
+
+        return mapToDto(persistida);
     }
 }
 

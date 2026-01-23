@@ -16,4 +16,10 @@ public interface EquipamientoService {
 	
 	//Elimina un equipamiento concreto
 	void eliminar(Long equipamientoId);
+	
+	EquipamientoDto fabricar(Long personajeId, String tipo) throws ReglaJuegoException;
+
+	EquipamientoDto equiparArma(Long personajeId, Long equipamientoId) throws ReglaJuegoException;
+	EquipamientoDto equiparEscudo(Long personajeId, Long equipamientoId) throws ReglaJuegoException;
+
 }
