@@ -16,21 +16,20 @@ public class EpisodioServiceImpl implements EpisodioService {
 	public Personaje jugarEpisodioActual(Long personajeId) {
 	    if (personajeId == null) throw new RuntimeException("El Id del personaje es obligatorio");
 
-	    // 1) cargar personaje con TODO lo necesario para jugar (evita Lazy)
 	    Personaje p = personajeDao.findByIdFetchAll(personajeId);
 	    if (p == null) throw new RuntimeException("No existe personaje con id=" + personajeId);
 
-	    // 2) elegir episodio según progreso
 	    int actual = p.getEpisodioActual();
 	    EpisodioRunner runner = registry.get(actual);
 	    if (runner == null) throw new RuntimeException("No existe runner para episodio " + actual);
 
-	    // 3) ejecutar lógica (consola)
 	    int siguiente = runner.ejecutar(p);
 
-	    // 4) guardar progreso + cambios del episodio
 	    p.setEpisodioActual(siguiente);
-	    return personajeDao.update(p);
+	    personajeDao.update(p);
+
+	    // DEVUELVE YA CON TODO CARGADO
+	    return personajeDao.findByIdFetchAll(personajeId);
 	}
 
 }

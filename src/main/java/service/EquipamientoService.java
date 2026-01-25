@@ -21,5 +21,9 @@ public interface EquipamientoService {
 
 	EquipamientoDto equiparArma(Long personajeId, Long equipamientoId) throws ReglaJuegoException;
 	EquipamientoDto equiparEscudo(Long personajeId, Long equipamientoId) throws ReglaJuegoException;
+	
+	List<EquipamientoDto> listarConsumiblesCurativos(Long personajeId) throws ReglaJuegoException;
+	
+	int consumirCurativo(Long personajeId, Long equipamientoId) throws ReglaJuegoException;
 
 }

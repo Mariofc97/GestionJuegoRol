@@ -4,9 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Personaje;
-import entities.equipo.objetos.Baya;
-import entities.equipo.objetos.HojaParaLimpiar;
-import exceptions.ReglaJuegoException;
 import utilidades.Utils;
 
 public class Episodio2 {
@@ -86,47 +83,44 @@ public class Episodio2 {
 
 			switch (opcion) {
 
-			case 1: {
-				// buscar bayas
-				try {
-					Utils.buscarBaya(personaje);
-				} catch (ReglaJuegoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+            case 1: {
+                // buscar bayas (service + recarga)
+                personaje = Utils.buscarBaya(personaje);
+                episodio2key1 = true;
+            }
+            break;
 
-				episodio2key1 = true;
-			}
-				break;
+            case 2: {
+                // cazar (combate + carne seca con service + recarga)
+                try {
+                    int expAntes = personaje.getExperiencia();
+                    System.out.println("Intentando cazar...");
+                    personaje = Utils.cazar(personaje);
 
-			case 2: {
-				// cazar
-				//TODO: AÑADIR METODO COMBATE EN CASO DE ENCONTRAR CRIATURA AL CAZAR
-				try {
-					int puntosdeExperienciaAntesCazar = personaje.getExperiencia();
-					System.out.println("Intentando cazar...");
-					Utils.cazar(personaje);
-					if (personaje.getExperiencia() > puntosdeExperienciaAntesCazar) {
-						episodio2key2 = true;
-						System.out.println("Caza realizada con éxito.");
-						LOGGER.info("El personaje " + personaje.getNombre() + " ha cazado con éxito.");
-					}
-				} catch (Exception e) {
-					LOGGER.log(Level.SEVERE, "Error al cazar", e);
-					System.out.println("No se pudo cazar.");
-				}
-			}
-				break;
+                    if (personaje.getExperiencia() > expAntes) {
+                        episodio2key2 = true;
+                        System.out.println("Caza realizada con éxito.");
+                        LOGGER.info("El personaje " + personaje.getNombre() + " ha cazado con éxito.");
+                    }
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error al cazar", e);
+                    System.out.println("No se pudo cazar.");
+                }
+            }
+            break;
 
-			case 3: {
-				try {
-					Utils.construirArma(personaje);
-					episodio2key3 = true;
-				} catch (ReglaJuegoException e) {
-					System.out.println("No puedes fabricar: " + e.getMessage());
-				}
-			}
-				break;
+            case 3: {
+                // fabricar (service)
+                try {
+                    Utils.menuFabricar(personaje);
+                    // si quieres que el inventario actualizado se vea al instante en el episodio:
+                    personaje = Utils.recargarPersonaje(personaje.getId());
+                    episodio2key3 = true;
+                } catch (Exception e) {
+                    System.out.println("No puedes fabricar: " + e.getMessage());
+                }
+            }
+            break;
 
 			case 4: {
 				// esconderse del miedo
@@ -138,54 +132,56 @@ public class Episodio2 {
 			}
 				break;
 			case 5: {
-				// inventario
-				try {
-					Utils.menuInventario(personaje);
-					LOGGER.info("Mostrando inventario de: " + personaje.getNombre());
-				} catch (Exception e) {
-					LOGGER.log(Level.SEVERE, "Error al mostrar el inventario", e);
-					System.out.println("No se pudo mostrar el inventario.");
-				}
-			}
-				break;
-			case 6: {
-				// buscar materiales
-				// Caso 6: buscar objeto
-				try {
-					Utils.buscarObjeto(personaje);
-					LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
-				} catch (Exception e) {
-					LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
-					System.out.println("No se pudo buscar el objeto.");
-				}
-			}
-				break;
-			case 7: {
-				// ir al bosque oscuro
-				if (episodio2key1 && episodio2key2 && episodio2key3) {
-					salida = true;
-					System.out.println("Ya puedes ir al bosque oscuro.");
-				}
-				break;
+                try {
+                    Utils.menuInventario(personaje);
+                    LOGGER.info("Mostrando inventario de: " + personaje.getNombre());
+                    // después de equipar/consumir en inventario, recarga por si acaso:
+                    personaje = Utils.recargarPersonaje(personaje.getId());
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error al mostrar el inventario", e);
+                    System.out.println("No se pudo mostrar el inventario.");
+                }
+            }
+            break;
 
-			}
-			case 8: {
-				// descansar
-				try {
-					personaje.setPuntosVida(personaje.getPuntosVidaMax());
-					String msg = "Has descansado y recuperado toda la vida.";
-					System.out.println(msg);
-					LOGGER.info(msg + " Personaje: " + personaje.getNombre());
-				} catch (Exception e) {
-					LOGGER.log(Level.SEVERE, "Error al ejecutar opción descansar", e);
-					System.out.println("No se pudo descansar correctamente.");
-				}
-			}
-				break;
-				
-			default:
-				System.out.println("Opción no válida");
-			}
+            case 6: {
+                try {
+                    personaje = Utils.buscarObjeto(personaje); // ya devuelve recargado
+                    LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
+                    System.out.println("No se pudo buscar el objeto.");
+                }
+            }
+            break;
+
+            case 7: {
+                if (episodio2key1 && episodio2key2 && episodio2key3) {
+                    salida = true;
+                    System.out.println("Ya puedes ir al bosque oscuro.");
+                } else {
+                    System.out.println("Aún no has hecho todo lo necesario para avanzar.");
+                }
+            }
+            break;
+
+            case 8: {
+                try {
+                    personaje.setPuntosVida(personaje.getPuntosVidaMax());
+                    String msg = "Has descansado y recuperado toda la vida.";
+                    System.out.println(msg);
+                    LOGGER.info(msg + " Personaje: " + personaje.getNombre());
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error al descansar", e);
+                    System.out.println("No se pudo descansar correctamente.");
+                }
+            }
+            break;
+
+            default:
+                System.out.println("Opción no válida");
+        }
+
 
 		} while (!salida);
 

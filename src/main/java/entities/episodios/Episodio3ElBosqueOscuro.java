@@ -6,12 +6,14 @@ import java.util.logging.Logger;
 import entities.Personaje;
 import entities.criatura.Jabali;
 import entities.criatura.Lobo;
+import entities.equipo.Equipamiento;
 import entities.equipo.armas.Trampa;
 import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.CarneSeca;
-import entities.equipo.objetos.HojaParaLimpiar;
 //TODO: FALTA REPASAR CONTADOR DE EPISODIO3 PARA QUE FUNCIONE BIEN ENTRE
 import exceptions.ReglaJuegoException;
+import service.EquipamientoService;
+import service.impl.EquipamientoServiceImpl;
 import utilidades.Utils;
 
 //cosas que hacer en el bosque oscuro, como encontrar objetos, criaturas, luchar contra enemigos.
@@ -24,6 +26,7 @@ public class Episodio3ElBosqueOscuro {
 	}
 
 	public static void episodio3ElBosqueOscuro(Personaje personaje) {
+	      EquipamientoService equipService = new EquipamientoServiceImpl();
 
 		if (personaje == null) {
 			LOGGER.warning("Se llamó a episodio3ElBosqueOscuro con Personaje null");
@@ -32,30 +35,10 @@ public class Episodio3ElBosqueOscuro {
 		}
 
 		// Asegurarnos de que la lista de equipo exista para evitar NullPointerException
-		if (personaje.getEquipo() == null) {
-			try {
-				// Inicializamos una lista vacía si no existe
-
-				java.util.List<entities.equipo.Equipamiento> equipoList = new java.util.ArrayList<>();
-				personaje.setEquipo(equipoList);
-				LOGGER.info("Se inicializó la lista de equipo para el personaje: " + personaje.getNombre());
-			} catch (Exception e) {
-				// Si falla la inicialización la registramos pero no abortamos el episodio
-				LOGGER.log(java.util.logging.Level.WARNING, "No se pudo inicializar la lista de equipo", e);
-			}
-		}
-
-		// Asegurarnos de que la lista de criaturas exista para evitar
-		// NullPointerException
-		if (personaje.getCriaturas() == null) {
-			try {
-				java.util.List<entities.criatura.Criatura> criaturasList = new java.util.ArrayList<>();
-				personaje.setCriaturas(criaturasList);
-				LOGGER.info("Se inicializó la lista de criaturas para el personaje: " + personaje.getNombre());
-			} catch (Exception e) {
-				LOGGER.log(java.util.logging.Level.WARNING, "No se pudo inicializar la lista de criaturas", e);
-			}
-		}
+		// Asegurarnos de que la lista de criaturas exista para evitar NullPointerException
+        if (personaje.getEquipo() == null) personaje.setEquipo(new java.util.ArrayList<>());
+        if (personaje.getCriaturas() == null) personaje.setCriaturas(new java.util.ArrayList<>());
+        
 		boolean salida = false;
 		boolean bosqueOscurokey1 = false;
 		boolean bosqueOscurokey2 = false;
@@ -83,168 +66,188 @@ public class Episodio3ElBosqueOscuro {
 			switch (opcion) {
 
 			case 1: {
-				// buscar bayas
-				// TODO: HAY Q AÑADIR QUE AL BUSCAR BAYAS NOS ENCONTRAMOS CON UN JABALI Y PELA
-				// BOSH FACIL
-				try {
-					Utils.buscarBaya(personaje);
-					if (controladorJabali == false) {
-						System.out.println(
-								"Ummm que ricas las bayas, escuchas un ruido... más alto... de repente un jabali salvaje aparece buscando comida y te ataca.");
-						Jabali jabali = new Jabali();
-						int puntosdeExperienciaAntesJabali = personaje.getExperiencia();
+                // Buscar bayas (service + recarga)
+                personaje = Utils.buscarBaya(personaje);
 
-						Utils.combate(personaje, jabali);
-						if (personaje.getExperiencia() > puntosdeExperienciaAntesJabali) {
-							System.out.println("Has sobrevivido al ataque del jabali y conseguido bayas.");
+                // Evento especial: primer encuentro con jabalí
+                if (!controladorJabali) {
+                    System.out.println(
+                        "Ummm que ricas las bayas... escuchas un ruido... " +
+                        "de repente un jabalí salvaje aparece buscando comida y te ataca."
+                    );
 
-							controladorJabali = true;
-							// Aquí podrías implementar un menú para seleccionar cuál usar
-							personaje.addEquipamiento(new Baya());
-							bosqueOscurokey1 = true; // derrotar al lobo es necesario para salir del episodio
-						}
-					}
-					if (controladorJabali == true) {
-						System.out.println("Bien has encontrado bayas!!!!.");
-						personaje.addEquipamiento(new Baya());
-					}
+                    Jabali jabali = new Jabali();
+                    int expAntes = personaje.getExperiencia();
 
-				} catch (ReglaJuegoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+                    boolean ganado = Utils.combate(personaje, jabali);
 
-			}
-				break;
+                    // Si quieres seguir usando “exp antes/después”:
+                    if (ganado && personaje.getExperiencia() > expAntes) {
+                        System.out.println("Has sobrevivido al ataque del jabalí y conseguido bayas.");
+                        controladorJabali = true;
 
-			case 2: {
-				// cazar
-				try {
-					int puntosdeExperienciaAntesCazar = personaje.getExperiencia();
-					System.out.println("Intentando cazar...");
-					Utils.cazar(personaje);
-					if (personaje.getExperiencia() > puntosdeExperienciaAntesCazar) {
-						System.out.println("Caza realizada con éxito.");
-						LOGGER.info("El personaje " + personaje.getNombre() + " ha cazado con éxito.");
-					}
-				} catch (Exception e) {
-					LOGGER.log(Level.SEVERE, "Error al cazar", e);
-					System.out.println("No se pudo cazar.");
-				}
-			}
-				break;
+                        try {
+                            equipService.añadirAlInventario(personaje.getId(), new Baya());
+                            personaje = Utils.recargarPersonaje(personaje.getId());
+                        } catch (ReglaJuegoException e) {
+                            System.out.println("No puedes añadir bayas: " + e.getMessage());
+                        }
 
-			case 3: {
-				try {
-					// TODO: FALTA AÑADIR TRAMPA PARA PELEA CON JABALI O LOBO
-					Utils.construirArma(personaje);
+                        bosqueOscurokey1 = true;
+                    }
+                } else {
+                    // Ya derrotado: solo “farmear” bayas
+                    System.out.println("Bien, has encontrado bayas!!!!");
+                    try {
+                        equipService.añadirAlInventario(personaje.getId(), new Baya());
+                        personaje = Utils.recargarPersonaje(personaje.getId());
+                    } catch (ReglaJuegoException e) {
+                        System.out.println("No puedes añadir bayas: " + e.getMessage());
+                    }
+                }
+            }
+            break;
 
-				} catch (ReglaJuegoException e) {
-					System.out.println("No puedes fabricar: " + e.getMessage());
-				}
-			}
-				break;
+			 case 2: {
+                 // Cazar (combate + carne seca con service + recarga)
+                 try {
+                     int expAntes = personaje.getExperiencia();
+                     System.out.println("Intentando cazar...");
+                     personaje = Utils.cazar(personaje);
 
-			case 4: {
-				// TODO: HAY QUE HACER LO UN METODO.
+                     if (personaje.getExperiencia() > expAntes) {
+                         System.out.println("Caza realizada con éxito.");
+                         LOGGER.info("El personaje " + personaje.getNombre() + " ha cazado con éxito.");
+                     }
+                 } catch (Exception e) {
+                     LOGGER.log(Level.SEVERE, "Error al cazar", e);
+                     System.out.println("No se pudo cazar.");
+                 }
+             }
+             break;
 
-				int contadorTrampas = 0;
+             case 3: {
+                 // Fabricar con service (ya no Utils.construirArma)
+                 try {
+                     Utils.menuFabricar(personaje);
+                     personaje = Utils.recargarPersonaje(personaje.getId());
+                 } catch (Exception e) {
+                     System.out.println("No puedes fabricar: " + e.getMessage());
+                 }
+             }
+             break;
 
-				for (Object obj : personaje.getEquipo()) {
-					if (obj instanceof Trampa) {
-						contadorTrampas++;
-					}
+             case 4: {
+                 // Usar trampa: revisar inventario para ver si hay trampas
+                 int contadorTrampas = 0;
+                 for (Equipamiento eq : personaje.getEquipo()) {
+                     if (eq instanceof Trampa) contadorTrampas++;
+                 }
 
-				}
-				if (contadorTrampas == 0) {
-					System.out.println("No tienes trampas en tu inventario.");
-				}
-				if (contadorTrampas > 0 && controladorAtaqueLobo == false) {
-					System.out.println(
-							"Bien has atrapado un conejo!!!! te acercas despacio pero... siente como algo te esta acechando.... la trampa era para el conejo,,, pero,,, te ataca un lobo que tambien quiere el conejo.");
-					Lobo lobo = new Lobo();
-					int puntosdeExperienciaAntesLobo = personaje.getExperiencia();
+                 if (contadorTrampas == 0) {
+                     System.out.println("No tienes trampas en tu inventario.");
+                     break;
+                 }
 
-					Utils.combate(personaje, lobo);
-					if (personaje.getExperiencia() > puntosdeExperienciaAntesLobo) {
-						System.out.println("Has sobrevivido al ataque del lobo y conseguido el conejo.");
+                 // Si hay trampas y aún no has derrotado al lobo, aparece el lobo
+                 if (!controladorAtaqueLobo) {
+                     System.out.println(
+                         "Bien, has atrapado un conejo!!!! te acercas despacio pero..." +
+                         " sientes como algo te acecha... te ataca un lobo que también quiere el conejo."
+                     );
 
-						controladorAtaqueLobo = true;
-						// Aquí podrías implementar un menú para seleccionar cuál usar
-						personaje.addEquipamiento(new CarneSeca());
-						bosqueOscurokey1 = true; // derrotar al lobo es necesario para salir del episodio
-					}
-				}
-				if (controladorAtaqueLobo == true) {
-					System.out.println("Bien has atrapado un conejo!!!!.");
-					personaje.addEquipamiento(new CarneSeca());
-				}
-			}
-				// USAR TRAMPA
-				// TODO: AQUI CUANDO USAMOS TRAMPO ATRAPAMOS UN CONEJO O SIMILAR, PERO ATRAEMOS
-				// UN LOBO PELEA BOSH FACIL
+                     Lobo lobo = new Lobo();
+                     int expAntes = personaje.getExperiencia();
 
-				break;
+                     boolean ganado = Utils.combate(personaje, lobo);
 
-			case 5: {
-				// inventario
-				try {
-					Utils.menuInventario(personaje);
-					LOGGER.info("Mostrando inventario de: " + personaje.getNombre());
-				} catch (Exception e) {
-					LOGGER.log(Level.SEVERE, "Error al mostrar el inventario", e);
-					System.out.println("No se pudo mostrar el inventario.");
-				}
-			}
-				break;
-			case 6: {
-				// buscar materiales
-				// Caso 6: buscar objeto
-				try {
-					Utils.buscarObjeto(personaje);
-					LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
-				} catch (Exception e) {
-					LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
-					System.out.println("No se pudo buscar el objeto.");
-				}
-			}
-				break;
-			case 7: {
-				// ir al rio hay q hacer las key
-				if (bosqueOscurokey1 && bosqueOscurokey2 && bosqueOscurokey3) {
-					salida = true;
-					System.out.println("Ya puedes ir al bosque oscuro.");
-				}
-				break;
+                     if (ganado && personaje.getExperiencia() > expAntes) {
+                         System.out.println("Has sobrevivido al ataque del lobo y conseguido el conejo.");
 
-			}
-			case 8: {
-				// descansar y recuperar vida
-				Utils.recuperarVida(personaje);
-				String msg = "Has descansado y recuperado toda la vida.";
-				System.out.println(msg);
-				LOGGER.info(msg + " Personaje: " + personaje.getNombre());
-				bosqueOscurokey2 = true;
+                         controladorAtaqueLobo = true;
 
-			}
-				break;
-			case 9: {
-				// invocar lobo y jabali
-				if (controladorAtaqueLobo && controladorJabali) {
-					System.out.println("ya puedes invocar a tu lobo o jabali compañero.");
-					bosqueOscurokey3 = true;
-					Utils.invocarLoboJavali(personaje);
+                         try {
+                             equipService.añadirAlInventario(personaje.getId(), new CarneSeca());
+                             personaje = Utils.recargarPersonaje(personaje.getId());
+                         } catch (ReglaJuegoException e) {
+                             System.out.println("No puedes añadir carne seca: " + e.getMessage());
+                         }
 
-				} else {
-					System.out.println("Aun no has derrotado a un lobo y un jabali, no puedes invocarlos.");
-				}
+                         bosqueOscurokey1 = true;
+                     }
 
-			}
-				break;
+                 } else {
+                     // Ya derrotado: “farmear” carne seca
+                     System.out.println("Bien has atrapado un conejo!!!!");
+                     try {
+                         equipService.añadirAlInventario(personaje.getId(), new CarneSeca());
+                         personaje = Utils.recargarPersonaje(personaje.getId());
+                     } catch (ReglaJuegoException e) {
+                         System.out.println("No puedes añadir carne seca: " + e.getMessage());
+                     }
+                 }
+             }
+             break;
 
-			default:
-				System.out.println("Opción no válida");
-			}
+             case 5: {
+                 // Inventario
+                 try {
+                     Utils.menuInventario(personaje);
+                     LOGGER.info("Mostrando inventario de: " + personaje.getNombre());
+                     personaje = Utils.recargarPersonaje(personaje.getId()); // por equipar/consumir
+                 } catch (Exception e) {
+                     LOGGER.log(Level.SEVERE, "Error al mostrar el inventario", e);
+                     System.out.println("No se pudo mostrar el inventario.");
+                 }
+             }
+             break;
+
+             case 6: {
+                 // Buscar materiales (service + recarga)
+                 try {
+                     personaje = Utils.buscarObjeto(personaje);
+                     LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
+                 } catch (Exception e) {
+                     LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);
+                     System.out.println("No se pudo buscar el objeto.");
+                 }
+             }
+             break;
+
+             case 7: {
+                 if (bosqueOscurokey1 && bosqueOscurokey2 && bosqueOscurokey3) {
+                     salida = true;
+                     System.out.println("Ya puedes ir al río.");
+                 } else {
+                     System.out.println("Aún no cumples los requisitos para avanzar.");
+                 }
+             }
+             break;
+
+             case 8: {
+                 // Descansar y recuperar vida (en memoria, se guarda al final)
+                 Utils.recuperarVida(personaje);
+                 System.out.println("Has descansado y recuperado toda la vida.");
+                 LOGGER.info("Descanso. Personaje: " + personaje.getNombre());
+                 bosqueOscurokey2 = true;
+             }
+             break;
+
+             case 9: {
+                 if (controladorAtaqueLobo && controladorJabali) {
+                     System.out.println("Ya puedes invocar a tu lobo o jabalí compañero.");
+                     bosqueOscurokey3 = true;
+                     Utils.invocarLoboJabali(personaje);
+                     personaje = Utils.recargarPersonaje(personaje.getId()); // por si lo persistes luego
+                 } else {
+                     System.out.println("Aún no has derrotado a un lobo y un jabalí, no puedes invocarlos.");
+                 }
+             }
+             break;
+
+             default:
+                 System.out.println("Opción no válida");
+         }
 
 		} while (!salida);
 	}

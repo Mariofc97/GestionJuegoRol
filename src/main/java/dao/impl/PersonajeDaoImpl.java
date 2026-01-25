@@ -28,6 +28,7 @@ public class PersonajeDaoImpl extends GenericDaoHibernate<Personaje, Long> imple
 	    try {
 	        return session.createQuery(
 	            "select distinct p from Personaje p " +
+	            "left join fetch p.usuario " +
 	            "left join fetch p.equipo " +
 	            "left join fetch p.criaturas " +
 	            "where p.id = :id", Personaje.class

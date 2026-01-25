@@ -360,5 +360,58 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	        p.getEquipo().remove(encontrado);
 	    }
 	}
+
+	@Override
+	public List<EquipamientoDto> listarConsumiblesCurativos(Long personajeId) throws ReglaJuegoException {
+	    Personaje p = cargarPersonajeConEquipo(personajeId);
+
+	    List<EquipamientoDto> res = new ArrayList<>();
+	    for (Equipamiento e : p.getEquipo()) {
+	        if (e instanceof Baya || e instanceof CarneSeca || e instanceof Pocion) {
+	            res.add(mapToDto(e));
+	        }
+	    }
+	    return res;
+	}
+
+	@Override
+	public int consumirCurativo(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
+	    if (equipamientoId == null) throw new ReglaJuegoException("equipamientoId obligatorio");
+
+	    Personaje p = cargarPersonajeConEquipo(personajeId);
+
+	    Equipamiento elegido = null;
+	    for (Equipamiento e : p.getEquipo()) {
+	        if (e != null && e.getId() != null && e.getId().equals(equipamientoId)) {
+	            elegido = e;
+	            break;
+	        }
+	    }
+
+	    if (elegido == null) throw new ReglaJuegoException("No tienes ese objeto.");
+	    if (!(elegido instanceof Baya || elegido instanceof CarneSeca || elegido instanceof Pocion)) {
+	        throw new ReglaJuegoException("Ese objeto no es consumible curativo.");
+	    }
+
+	    int cura = calcularCuracion(elegido);
+
+	    int antes = p.getPuntosVida();
+	    int nuevaVida = antes + cura;
+	    if (nuevaVida > p.getPuntosVidaMax()) nuevaVida = p.getPuntosVidaMax();
+	    p.setPuntosVida(nuevaVida);
+
+	    p.getEquipo().remove(elegido);
+
+	    personajeDao.update(p);
+
+	    return p.getPuntosVida();
+	}
+
+	private int calcularCuracion(Equipamiento e) {
+	    if (e instanceof Pocion) return ((Pocion) e).getPuntosDeVida();
+	    if (e instanceof CarneSeca) return 12; 
+	    if (e instanceof Baya) return 5;       
+	    return 0;
+	}
 	
 }

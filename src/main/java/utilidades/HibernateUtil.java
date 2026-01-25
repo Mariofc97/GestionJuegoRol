@@ -8,31 +8,26 @@ public class HibernateUtil {
 
     private static SessionFactory sessionFactory;
 
-    // Inicializa la SessionFactory si aún no lo está
     public static void crearConexion() {
-        try {
-            if (sessionFactory == null || sessionFactory.isClosed()) {
-                sessionFactory = new Configuration()
-                        .configure() // hibernate.cfg.xml
-                        .buildSessionFactory();
-                System.out.println("SessionFactory creada y conexión establecida");
-            }
-        } catch (Throwable ex) {
-            System.err.println("Error al crear la SessionFactory: " + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
+        getSessionFactory(); // fuerza inicialización
     }
 
-    // Devuelve la SessionFactory (SINGLETON)
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null || sessionFactory.isClosed()) {
-            crearConexion();
+            try {
+                sessionFactory = new Configuration()
+                        .configure()
+                        .buildSessionFactory();
+                System.out.println("SessionFactory creada y conexión establecida");
+            } catch (Throwable ex) {
+                System.err.println("Error al crear SessionFactory: " + ex);
+                throw new ExceptionInInitializerError(ex);
+            }
         }
         return sessionFactory;
     }
 
-    // Devuelve una Session nueva (cada llamada abre una)
-    public static Session getSession() {
+    public static Session openSession() {
         return getSessionFactory().openSession();
     }
 

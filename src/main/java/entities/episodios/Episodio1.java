@@ -5,11 +5,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Personaje;
-import entities.equipo.objetos.Cuerda;
 import entities.equipo.objetos.HojaParaLimpiar;
-import entities.equipo.objetos.MojonSeco;
-import entities.equipo.objetos.Palo;
-import entities.equipo.objetos.Piedra;
+import exceptions.ReglaJuegoException;
+import service.CriaturaService;
+import service.EquipamientoService;
+import service.impl.CriaturaServiceImpl;
+import service.impl.EquipamientoServiceImpl;
 import utilidades.Utils;
 
 /**
@@ -42,6 +43,8 @@ public class Episodio1 {
 	public static void episodio1(Personaje personaje) { // personaje es el nombre del personaje.
 		// Comprobación inicial: si no nos pasan un personaje, salimos con un mensaje de
 		// error
+		EquipamientoService equipService = new EquipamientoServiceImpl();
+		CriaturaService criaturaService = new CriaturaServiceImpl();
 
 		if (personaje == null) {
 			LOGGER.warning("Se llamó a episodio1 con Personaje null");
@@ -108,7 +111,7 @@ public class Episodio1 {
 		
 		do {
 			try {
-				LOGGER.info(() -> "Mostrando menú para personaje: " + personaje.getNombre());
+				LOGGER.info("Mostrando menú para personaje: " + personaje.getNombre());
 				
 				System.out.println(
 						"1. Llorar de forma desconsolado \n2. Pensar en un compañero de vieje \n3. Salir de la cueva \n4. Dormir y recuperar vida \n5. Ver inventario/estado \n6. Buscar materiales");
@@ -117,7 +120,7 @@ public class Episodio1 {
 				try {
 					// Pedimos un número al usuario mediante utilidades comunes
 					opcion = Utils.pideDatoNumerico("Que quieres hacer?");
-					LOGGER.info(() -> "Opción elegida: " + opcion);
+					LOGGER.info("Opción elegida: " + opcion);
 				} catch (InputMismatchException | NumberFormatException ex) {
 					// Si la entrada no es un número, informamos y volvemos a mostrar el menú
 					LOGGER.log(Level.WARNING, "Entrada numérica no válida", ex);
@@ -135,21 +138,20 @@ public class Episodio1 {
 				case 1: {
 					// Caso 1: el personaje "llora" y obtiene una HojaParaLimpiar
 					try {
-						int cantidad = Utils.contarHojas(personaje); // contamos las hojas para limitar a 5 lloron
-						if (cantidad >= 5) {
-							System.out.println("Te dan un torta... LLORON DEJA DE LLORAR!!!!!");
-							break;
-						}
-						HojaParaLimpiar hojadeortiga = new HojaParaLimpiar();
-						personaje.addEquipamiento(hojadeortiga);
-						key1 = true; // marcamos que consiguió el objeto
-						String msg = "Has obtenido una Hoja de Ortiga.";
-						System.out.println(msg);
-						LOGGER.info(msg + " Personaje: " + personaje.getNombre());
-					} catch (Exception e) {
-						// Registramos cualquier fallo al añadir el objeto
-						LOGGER.log(Level.SEVERE, "Error al añadir HojaParaLimpiar al equipo", e);
-						System.out.println("No se pudo añadir el objeto al equipo.");
+					    int cantidad = Utils.contarHojas(personaje);
+					    if (cantidad >= 5) {
+					        System.out.println("Te dan un torta... LLORON DEJA DE LLORAR!!!!!");
+					        break;
+					    }
+
+					    equipService.añadirAlInventario(personaje.getId(), new HojaParaLimpiar());
+					    personaje = Utils.recargarPersonaje(personaje.getId());
+
+					    System.out.println("Has obtenido una Hoja de Ortiga.");
+					    key1 = true;
+
+					} catch (ReglaJuegoException e) {
+					    System.out.println(e.getMessage());
 					}
 				}
 					break;
@@ -158,6 +160,7 @@ public class Episodio1 {
 				    try {
 				        int antes = personaje.getCriaturas().size();
 				        Utils.invocacionCompañeroCriatura(personaje);
+				        personaje = Utils.recargarPersonaje(personaje.getId());
 				        int despues = personaje.getCriaturas().size();
 
 				        if (despues > antes) {
@@ -196,7 +199,7 @@ public class Episodio1 {
 						System.out.println(Utils.desgraciaAleatorio() + " Tu vida ahora es: "
 								+ personaje.getPuntosVida() + " y vuelves a la cueva, llorando...");
 						key3 = true; // necesario para poder salir del episodio
-						LOGGER.info(() -> "Opción 3 ejecutada.  Personaje: " + personaje.getNombre());
+						LOGGER.info("Mostrando menú para personaje: " + personaje.getNombre());
 
 					} catch (Exception e) {
 						LOGGER.log(Level.SEVERE, "Error al ejecutar opción 3", e);
@@ -232,7 +235,7 @@ public class Episodio1 {
 					// Caso 6: buscar objeto
 					// hacer el control de exdesde aqui.
 					try {
-						Utils.buscarObjeto(personaje);
+						personaje = Utils.buscarObjeto(personaje);
 						LOGGER.info("El personaje " + personaje.getNombre() + " ha buscado un objeto.");
 					} catch (Exception e) {
 						LOGGER.log(Level.SEVERE, "Error al buscar objeto", e);

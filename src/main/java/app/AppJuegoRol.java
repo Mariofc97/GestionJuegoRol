@@ -260,7 +260,7 @@ public class AppJuegoRol {
                         }
 
                         try {
-                            Personaje recargado = personajeService.buscarPorId(idPersonaje);
+                        	Personaje recargado = Utils.recargarPersonaje(idPersonaje);
 
                             if (recargado.getUsuario() == null || recargado.getUsuario().getId() == null
                                     || !recargado.getUsuario().getId().equals(usuarioLogueado.getId())) {
@@ -287,40 +287,6 @@ public class AppJuegoRol {
 
                             System.out.println("\nOK: personaje recargado y relaciones verificadas.");
 
-                        } catch (ReglaJuegoException ex) {
-                            System.out.println("Regla del juego: " + ex.getMessage());
-                        } catch (RuntimeException ex) {
-                            System.out.println("Error técnico: " + ex.getMessage());
-                        }
-
-                        break;
-                    }
-
-                    case 11: {
-                        if (usuarioLogueado == null) {
-                            System.out.println("Debes hacer login primero.");
-                            break;
-                        }
-                        if (personajeCreado == null) {
-                            System.out.println("Debes seleccionar/crear un personaje primero.");
-                            break;
-                        }
-
-                        try {
-                            String tipoC = Utils.pideDatoCadena("Tipo de criatura (GUSANO/CONEJO/MOSQUITO/RATON): ");
-                            String aliasC = Utils.pideDatoCadena("Alias (opcional): ");
-
-                            CriaturaDto creada = criaturaService.crearYAsignar(personajeCreado.getId(), tipoC, aliasC);
-                            System.out.println("OK: criatura creada -> " + creada);
-
-                            System.out.println("Criaturas actuales del personaje " + personajeCreado.getNombre() + ":");
-                            List<CriaturaDto> listaCriaturas = criaturaService.listarPorPersonaje(personajeCreado.getId());
-                            for (CriaturaDto cd : listaCriaturas) {
-                                System.out.println(" - " + cd);
-                            }
-
-                        } catch (ReglaJuegoException ex) {
-                            System.out.println("Regla del juego: " + ex.getMessage());
                         } catch (RuntimeException ex) {
                             System.out.println("Error técnico: " + ex.getMessage());
                         }
@@ -368,7 +334,6 @@ public class AppJuegoRol {
             System.out.println("8) Listar personajes por usuario");
             System.out.println("9) TEST: AÑADIR EQUIPAMIENTO POR SERVICE Y LISTAR");
             System.out.println("10) TEST: RECARGAR PERSONAJE Y MOSTRAR INVENTARIO / CRIATURAS (PERSISTENCIA)");
-            System.out.println("11) TEST: AÑADIR CRIATURA POR SERVICE Y LISTAR");
         }
     }
     
