@@ -18,26 +18,37 @@ public class PersonajeDaoImpl extends GenericDaoHibernate<Personaje, Long> imple
 
 	@Override
 	public List<Personaje> findByUsuarioId(Long usuarioId) {
-		// TODO Auto-generated method stub
-		return null;
+	    try (Session s = session()) {
+	        return s.createQuery(
+	                "from Personaje p where p.usuario.id = :uid", Personaje.class)
+	            .setParameter("uid", usuarioId)
+	            .getResultList(); // esto nunca debería ser null
+	    }
 	}
 
 	@Override
 	public Personaje findByIdFetchAll(Long id) {
 	    Session session = HibernateUtil.getSessionFactory().openSession();
 	    try {
-	        return session.createQuery(
+	        // 1) Fetch de usuario + UNA colección (equipo)
+	        Personaje p = session.createQuery(
 	            "select distinct p from Personaje p " +
 	            "left join fetch p.usuario " +
 	            "left join fetch p.equipo " +
-	            "left join fetch p.criaturas " +
 	            "where p.id = :id", Personaje.class
 	        ).setParameter("id", id)
 	         .uniqueResult();
+
+	        // 2) Inicializar la otra colección (criaturas) en la misma sesión
+	        if (p != null && p.getCriaturas() != null) {
+	            p.getCriaturas().size(); // fuerza carga
+	        }
+
+	        return p;
+
 	    } finally {
 	        session.close();
 	    }
-
 	}
 	
 	@Override
@@ -52,6 +63,15 @@ public class PersonajeDaoImpl extends GenericDaoHibernate<Personaje, Long> imple
 	         .uniqueResult();
 	    } finally {
 	        session.close();
+	    }
+	}
+
+
+	@Override
+	public Personaje findByIdForUpdate(Long id) {
+		// TODO Auto-generated method stub
+	    try (Session s = session()) {
+	        return s.get(Personaje.class, id); // managed dentro de esa sesión
 	    }
 	}
 	

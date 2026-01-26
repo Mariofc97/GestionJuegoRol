@@ -39,7 +39,7 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	private final PersonajeDao personajeDao = new PersonajeDaoImpl();
 	
 	private static final int MAX_OBJETOS = 20;
-	private static final int MAX_PESO_TOTAL = 50;
+	private static final int MAX_PESO_TOTAL = 35;
 		
 	private EquipamientoDto mapToDto(Equipamiento e) {
 	    if (e == null) return null;
@@ -92,32 +92,31 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 
 	@Override
 	public EquipamientoDto añadirAlInventario(Long personajeId, Equipamiento nuevo) throws ReglaJuegoException {
-		// TODO Auto-generated method stub
-		Personaje p = personajeDao.findById(personajeId);
-		if(p == null) throw new ReglaJuegoException("El personaje no existe.");
-		
-		if(p.getEquipo().size() >= 20) {
-			throw new ReglaJuegoException("No puedes llevar más de 20 objetos.");
-		}
-		
-		int pesoActual = 0;
-		
-		for (Equipamiento e : p.getEquipo()) {
-			pesoActual += e.getPeso();
-		}
-		
-		int pesoMax = 35;
-		
-		if(pesoActual + nuevo.getPeso() > pesoMax) {
-			throw new ReglaJuegoException("Te pasas de peso. El máximo permitido es: " + pesoMax + " kg.");
-		}
-		
-		//Enlazar FK
-		nuevo.setPersonaje(p);
-		p.getEquipo().add(nuevo);
-		
-		personajeDao.update(p);
-		return mapToDto(nuevo);
+
+	    Personaje p = cargarPersonajeConEquipo(personajeId); // <-- CLAVE (fetch equipo)
+
+	    if (nuevo == null) throw new ReglaJuegoException("Equipamiento obligatorio");
+
+	    if (p.getEquipo().size() >= MAX_OBJETOS) {
+	        throw new ReglaJuegoException("No puedes llevar más de " + MAX_OBJETOS + " objetos.");
+	    }
+
+	    int pesoActual = 0;
+	    for (Equipamiento e : p.getEquipo()) {
+	        pesoActual += e.getPeso();
+	    }
+
+	    if (pesoActual + nuevo.getPeso() > MAX_PESO_TOTAL) {
+	        throw new ReglaJuegoException("Te pasas de peso. El máximo permitido es: " + MAX_PESO_TOTAL + " kg.");
+	    }
+
+	    // enlazar FK + añadir
+	    nuevo.setPersonaje(p);
+	    p.getEquipo().add(nuevo);
+
+	    personajeDao.update(p);
+
+	    return mapToDto(nuevo);
 	}
 
 	@Override
@@ -139,7 +138,7 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 
 	        case "ARCO":
 	            // nivel requerido (ejemplo)
-	            checkNivel(p, 1);
+	            checkNivel(p, 3);
 	            // materiales
 	            consumirMateriales(p, "PALO", "CUERDA");
 	            // crear
@@ -165,7 +164,7 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	            break;
 
 	        case "HONDA":
-	            checkNivel(p, 2);
+	            checkNivel(p, 1);
 	            consumirMateriales(p, "CUERDA");
 	            nuevo = new Honda();
 	            break;
@@ -193,7 +192,7 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 
 	        case "ESCUDO MADERA":
 	        case "ESCUDOMADERA":
-	            checkNivel(p, 1);
+	            checkNivel(p, 2);
 	            // AJUSTARLO
 	            consumirMateriales(p, "PALO");
 	            nuevo = new EscudoMadera();
@@ -201,7 +200,7 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 
 	        case "ESCUDO PIEDRA":
 	        case "ESCUDOPIEDRA":
-	            checkNivel(p, 2);
+	            checkNivel(p, 3);
 	            consumirMateriales(p, "PIEDRA", "CUERDA");
 	            nuevo = new EscudoPiedra();
 	            break;

@@ -12,5 +12,5 @@ public interface PersonajeService {
 	List<Personaje> listarPorUsuario(Long usuarioId);
 	public Personaje actualizar(Personaje p);
 	Personaje cargarParaJuego(Long personajeId) throws ReglaJuegoException;
-
+	Personaje sumarExperiencia(Long personajeId, int exp) throws ReglaJuegoException;
 }

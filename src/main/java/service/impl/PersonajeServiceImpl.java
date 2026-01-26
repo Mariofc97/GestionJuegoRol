@@ -121,20 +121,29 @@ public class PersonajeServiceImpl implements PersonajeService{
 
 	@Override
 	public Personaje cargarParaJuego(Long personajeId) throws ReglaJuegoException {
+	    if (personajeId == null) throw new ReglaJuegoException("El ID del personaje es obligatorio");
+
+	    Personaje p = personajeDao.findByIdFetchAll(personajeId);
+	    if (p == null) throw new ReglaJuegoException("No existe personaje con ID: " + personajeId);
+
+	    return p;
+	}
+
+	@Override
+	public Personaje sumarExperiencia(Long personajeId, int exp) throws ReglaJuegoException {
 		// TODO Auto-generated method stub
-		if(personajeId == null) throw new ReglaJuegoException("El ID del personaje es obligatorio");
-		
-		//Cargamaos el personaje 
-		Personaje p = personajeDao.findByIdFetchAll(personajeId);
-		if(p == null) throw new ReglaJuegoException("No existe personaje con ID: " + personajeId);
-		
-		// Nos aseguramos de que el objeto que devolvemos tenga la lista de criaturas, no tocamos nada si p2 viene null
-		if(p !=null) p.setCriaturas(p.getCriaturas());
-		
-	    // Si estás usando raza transient, aquí es buen sitio para reconstruirla si la necesitas en juego
-	    // p.setRaza(construirRaza(p.getRazaTipo()));  // opcional
-		
-		return p;
+	    if (personajeId == null) throw new ReglaJuegoException("ID personaje obligatorio");
+	    if (exp <= 0) throw new ReglaJuegoException("La exp debe ser positiva");
+
+	    // 1) cargar desde BD (managed en sesión si lo haces dentro del DAO/tx)
+	    Personaje p = personajeDao.findById(personajeId);
+	    if (p == null) throw new ReglaJuegoException("No existe personaje con ID=" + personajeId);
+
+	    // 2) aplicar lógica de dominio
+	    p.ganarExperiencia(exp); // aquí sube nivel si toca y ajusta stats
+
+	    // 3) persistir cambios
+	    return personajeDao.update(p); // merge + tx
 	}
 	
 	

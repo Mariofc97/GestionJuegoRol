@@ -10,7 +10,7 @@ public class EscudoPiedra extends Escudos {
     public EscudoPiedra() {
         super(
             "Escudo de Piedra", // nombre
-            2,                  // nivelRequerido
+            3,                  // nivelRequerido
             8,                  // peso
             60,                 // durabilidad
             5                   // puntosResistencia

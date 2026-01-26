@@ -10,7 +10,7 @@ public class Lanza extends Armas {
     public Lanza() {
         super(
             "Lanza",    // nombre
-            3,          // nivelRequerido
+            2,          // nivelRequerido
             4,          // peso
             70,         // durabilidad
             "PUNZANTE", // tipoDaño

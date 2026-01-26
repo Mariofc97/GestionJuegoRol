@@ -23,7 +23,16 @@ import entities.criatura.Lobo;
 import entities.criatura.Mosquito;
 import entities.criatura.Raton;
 import entities.equipo.Equipamiento;
+import entities.equipo.armas.Arco;
 import entities.equipo.armas.Armas;
+import entities.equipo.armas.Bumeran;
+import entities.equipo.armas.CanaPescar;
+import entities.equipo.armas.Cazamariposas;
+import entities.equipo.armas.Honda;
+import entities.equipo.armas.Lanza;
+import entities.equipo.armas.Trampa;
+import entities.equipo.escudos.EscudoMadera;
+import entities.equipo.escudos.EscudoPiedra;
 import entities.equipo.escudos.Escudos;
 import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.CarneSeca;
@@ -36,13 +45,17 @@ import entities.equipo.objetos.Pocion;
 import exceptions.ReglaJuegoException;
 import service.CriaturaService;
 import service.EquipamientoService;
+import service.PersonajeService;
 import service.impl.CriaturaServiceImpl;
 import service.impl.EquipamientoServiceImpl;
+import service.impl.PersonajeServiceImpl;
 
 public class Utils {
 
+	private static final PersonajeService personajeService = new PersonajeServiceImpl();
 	private static final CriaturaService criaturaService = new CriaturaServiceImpl();
 	protected static final Logger log = LoggerFactory.getLogger(Utils.class);
+	private static boolean ultimaCazaExitosa = false;
 	// TODO
 	// Metodos
 
@@ -204,6 +217,16 @@ public class Utils {
 			}
 		}
 	}
+	
+	private static void syncPersonaje(Personaje person, Personaje source) {
+	    person.setExperiencia(source.getExperiencia());
+	    person.setNivel(source.getNivel());
+	    person.setPuntosVidaMax(source.getPuntosVidaMax());
+	    person.setPuntosAtaque(source.getPuntosAtaque());
+	    person.setPuntosVida(source.getPuntosVida());   
+	    person.setEquipo(source.getEquipo());
+	    person.setCriaturas(source.getCriaturas());
+	}
 
 	public static boolean combate(Personaje person, Criatura enemigo) {
 
@@ -261,10 +284,16 @@ public class Utils {
 				pausa(300);
 
 				if (!enemigo.estaVivo()) {
-					person.ganarExperiencia();
-					System.out.println(enemigo.getNombre() + " ha sido derrotado.");
-					ganador = true;
-					break;
+				    try {
+						Personaje actualizado = personajeService.sumarExperiencia(person.getId(), 10);
+						syncPersonaje(person, actualizado);
+				    } catch (ReglaJuegoException e) {
+				        System.out.println("No se pudo aplicar experiencia: " + e.getMessage());
+				        log.warn("Error sumarExperiencia", e);
+				    } 
+				    System.out.println(enemigo.getNombre() + " ha sido derrotado.");
+				    ganador = true;
+				    break;
 				}
 
 				// Turno del compañero
@@ -276,10 +305,16 @@ public class Utils {
 					System.out.println("Vida del enemigo: " + enemigo.getPuntosVida());
 
 					if (!enemigo.estaVivo()) {
-						person.ganarExperiencia();
-						System.out.println(enemigo.getNombre() + " ha sido derrotado.");
-						ganador = true;
-						break;
+					    try {
+							Personaje actualizado = personajeService.sumarExperiencia(person.getId(), 10);
+							syncPersonaje(person, actualizado);
+					    } catch (ReglaJuegoException e) {
+					        System.out.println("No se pudo aplicar experiencia: " + e.getMessage());
+					        log.warn("Error sumarExperiencia", e);
+					    } 
+					    System.out.println(enemigo.getNombre() + " ha sido derrotado.");
+					    ganador = true;
+					    break;
 					}
 				}
 			}
@@ -459,7 +494,7 @@ public class Utils {
 		List<Equipamiento> equipo = person.getEquipo();
 
 		if (equipo == null || equipo.isEmpty()) {
-			log.error("No llevas ningun objeto encima");
+			log.info("No llevas ningun objeto encima");
 			return;
 		}
 
@@ -731,7 +766,7 @@ public class Utils {
 			System.out.println("2. Ver todo el equipo");
 			System.out.println("3. Ver armas / equipar arma");
 			System.out.println("4. Ver escudos / equipar escudos");
-			System.out.println("4. Consumir objeto (Baya / CarneSeca / Pocion)");
+			System.out.println("5. Consumir objeto (Baya / CarneSeca / Pocion)");
 			System.out.println("6. Tirar objeto a la mierda");
 			System.out.println("7. Mostrar criaturas aliadas");
 			System.out.println("8. Volver");
@@ -853,8 +888,14 @@ public class Utils {
 	        return personaje;
 	    }
 	}
+	
+	public static boolean fueUltimaCazaExitosa() {
+		return ultimaCazaExitosa;
+	}
 
 	public static Personaje cazar(Personaje person) {
+		ultimaCazaExitosa = false;
+		
 	    if (person == null || person.getId() == null) {
 	        System.out.println("Personaje no válido.");
 	        return person;
@@ -874,16 +915,11 @@ public class Utils {
 	        boolean ganado = Utils.combate(person, presa);
 
 	        if (ganado) {
+	            ultimaCazaExitosa = true;
 	            try {
 	                System.out.println("Has cazado un " + presa.getNombre() + ", consigues carne seca.");
 	                equipService.añadirAlInventario(person.getId(), new CarneSeca());
-
-	                // tu lógica de XP (si es en Personaje)
-	                person.ganarExperiencia();
-
-	                // recargar inventario actualizado
 	                return recargarPersonaje(person.getId());
-
 	            } catch (ReglaJuegoException e) {
 	                System.out.println("No puedes añadir carne seca: " + e.getMessage());
 	                return person;
@@ -953,8 +989,10 @@ public class Utils {
 	        return;
 	    }
 
+	    catalogoFabricacionArmasEscudos();
+	    
 	    String tipo = pideDatoCadena(
-	        "¿Qué quieres fabricar? (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA, CAÑA PESCA, TRAMPA, ESCUDO MADERA, ESCUDO PIEDRA)"
+	        "/n¿Qué quieres fabricar? Escribe la que desees (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA, CAÑA PESCA, TRAMPA, ESCUDO MADERA, ESCUDO PIEDRA)"
 	    );
 
 	    try {
@@ -973,6 +1011,55 @@ public class Utils {
 	    PersonajeDao personajeDao = new PersonajeDaoImpl();
 	    return personajeDao.findByIdFetchAll(personajeId);
 	}
+	
+	public static void catalogoFabricacionArmasEscudos() {
 
+	    Arco arco = new Arco();
+	    Bumeran bumeran = new Bumeran();
+	    CanaPescar cana = new CanaPescar();
+	    Honda honda = new Honda();
+	    Lanza lanza = new Lanza();
+	    Trampa trampa = new Trampa();
+	    Cazamariposas caz = new Cazamariposas();
+	    EscudoMadera emad = new EscudoMadera();
+	    EscudoPiedra epie = new EscudoPiedra();
+	    // ... añade el resto
+
+	    System.out.println("\n=== CATÁLOGO DE ARMAS/ESCUDOS ===");
+
+	    imprimirArma(arco);
+	    imprimirArma(bumeran);
+	    imprimirArma(cana);
+	    imprimirArma(honda);
+	    imprimirArma(lanza);
+	    imprimirArma(trampa);
+	    imprimirArma(caz);
+	    imprimirEscudo(emad);
+	    imprimirEscudo(epie);
+	}
+	
+	private static void imprimirArma(Armas a) {
+	    System.out.println(
+	        "- " + a.getNombre()
+	        + " | NivelReq: " + a.getNivelRequerido()
+	        + " | Daño: " + a.getPuntosDaño()
+	        + " | Durabilidad: " + a.getDurabilidad()
+	        + " | Peso: " + a.getPeso()
+	        + " | TipoDaño: " + a.getTipoDaño()
+	        + " | Alcance: " + a.getAlcance()
+	        + " | Precisión: " + a.getPrecision()
+	        + " | Crit%: " + a.getProbCritico()
+	    );
+	}
+	
+	private static void imprimirEscudo(Escudos e) {
+	    System.out.println(
+	        "- " + e.getNombre()
+	        + " | NivelReq: " + e.getNivelRequerido()
+	        + " | Durabilidad: " + e.getDurabilidad()
+	        + " | Peso: " + e.getPeso()
+	        + " | Puntos Resistencia: " + e.getPuntosResistencia()
+	    );
+	}
 
 }

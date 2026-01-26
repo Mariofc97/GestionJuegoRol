@@ -1,5 +1,7 @@
 package dao.impl;
 
+import org.hibernate.Session;
+
 import dao.UsuarioDao;
 import entities.Usuario;
 
@@ -10,20 +12,14 @@ public class UsuarioDaoImpl extends GenericDaoHibernate<Usuario, Long> implement
 	}
 
 	@Override
-	public Usuario findByUsername(String username) {
-		// TODO Auto-generated method stub
-		try {
-			return session()
-					.createQuery("from Usuario u where u.username = :username", Usuario.class)
-					.setParameter("username", username)
-					.getResultStream()
-					.findFirst()
-					.orElse(null);
-		} catch (Exception e) {
-			// TODO: handle exception
-			throw new RuntimeException("Error buscando Usuario por username: " + username + e.getMessage());
-		}
-	}
+    public Usuario findByUsername(String username) {
+        try (Session s = session()) {
+            return s.createQuery(
+                    "from Usuario u where u.username = :u", Usuario.class)
+                .setParameter("u", username)
+                .uniqueResult();
+        }
+    }
 
 	@Override
 	public boolean existsByUsername(String username) {

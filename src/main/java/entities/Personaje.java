@@ -337,28 +337,6 @@ public class Personaje implements Atacable, Defendible {
 		}
 	}
 
-	public void ganarExperiencia() {
-		ganarExperiencia(10); // por defecto gana 10 puntos de experiencia
-	}
-
-	public void ganarExperiencia(int experienciaAñadida) {
-		if (experienciaAñadida <= 0) {
-			System.out.println("El personaje no puede perder experiencia");
-			return;
-		}
-
-		System.out.println("El personaje " + nombre + " gana " + experienciaAñadida + " de experiencia.");
-		this.experiencia += experienciaAñadida;
-		System.out.println("Experiencia acumulada: " + experiencia);
-		subirNivelSiToca();
-	}
-
-	// sencillo, se sube de nivel cada 100 puntos de experiencia.
-
-	private int experienciaParaSiguienteNivel() {
-		return nivel * 100;
-	}
-	
 	public Escudos getEscudoEquipado() {
 		if(equipo == null) return null;
 		
@@ -382,6 +360,33 @@ public class Personaje implements Atacable, Defendible {
 		//de esta manera se evita que por error sea negativa
 		return Math.max(0, escudo.getPuntosResistencia());
 	}
+	
+	public int getExpRestanteParaSubir() {
+	    return experienciaParaSiguienteNivel() - experiencia;
+	}
+	
+	public void ganarExperiencia() {
+		ganarExperiencia(10); // por defecto gana 10 puntos de experiencia
+	}
+
+	public void ganarExperiencia(int experienciaAñadida) {
+		if (experienciaAñadida <= 0) {
+			System.out.println("El personaje no puede perder experiencia");
+			return;
+		}
+
+		System.out.println("El personaje " + nombre + " gana " + experienciaAñadida + " de experiencia.");
+		this.experiencia += experienciaAñadida;
+		System.out.println("Experiencia acumulada: " + experiencia);
+		subirNivelSiToca();
+	}
+
+	// sencillo, se sube de nivel cada 100 puntos de experiencia.
+
+	private int experienciaParaSiguienteNivel() {
+		return nivel * 100;
+	}
+	
 
 	public void subirNivelSiToca() {
 
@@ -394,9 +399,6 @@ public class Personaje implements Atacable, Defendible {
 
 			this.puntosVidaMax += 10;
 			this.puntosAtaque += 2;
-			// MARIO: PENDIENTE DISTINGUIR ATRIBUTOS A MEJORA SI SUBE DE NIVEL EN FUNCION DE
-			// SI ES MONGOL, RAPANUI O TROGODITA
-			// QUIZA CREANDO INSTANCIA Y REALIZANDO CASTEO
 
 		}
 

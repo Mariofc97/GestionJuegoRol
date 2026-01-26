@@ -91,17 +91,16 @@ public class Episodio2 {
             break;
 
             case 2: {
-                // cazar (combate + carne seca con service + recarga)
                 try {
-                    int expAntes = personaje.getExperiencia();
                     System.out.println("Intentando cazar...");
                     personaje = Utils.cazar(personaje);
 
-                    if (personaje.getExperiencia() > expAntes) {
+                    if (Utils.fueUltimaCazaExitosa()) {
                         episodio2key2 = true;
                         System.out.println("Caza realizada con éxito.");
                         LOGGER.info("El personaje " + personaje.getNombre() + " ha cazado con éxito.");
                     }
+
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "Error al cazar", e);
                     System.out.println("No se pudo cazar.");
@@ -113,7 +112,7 @@ public class Episodio2 {
                 // fabricar (service)
                 try {
                     Utils.menuFabricar(personaje);
-                    // si quieres que el inventario actualizado se vea al instante en el episodio:
+                    // el inventario actualizado se ve al instante en el episodio:
                     personaje = Utils.recargarPersonaje(personaje.getId());
                     episodio2key3 = true;
                 } catch (Exception e) {
@@ -135,7 +134,7 @@ public class Episodio2 {
                 try {
                     Utils.menuInventario(personaje);
                     LOGGER.info("Mostrando inventario de: " + personaje.getNombre());
-                    // después de equipar/consumir en inventario, recarga por si acaso:
+                    // después de equipar/consumir en inventario, recargamos por si acaso:
                     personaje = Utils.recargarPersonaje(personaje.getId());
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "Error al mostrar el inventario", e);

@@ -20,4 +20,20 @@ public class Arco extends Armas {
             10        // probCritico
         );
     }
+
+	@Override
+	public String toString() {
+		return "Arco [getTipoDaño()=" + getTipoDaño() + ", getAlcance()=" + getAlcance() + ", getPrecision()="
+				+ getPrecision() + ", getPuntosDaño()=" + getPuntosDaño() + ", getProbCritico()=" + getProbCritico()
+				+ ", toString()=" + super.toString() + ", getId()=" + getId() + ", getPersonaje()=" + getPersonaje()
+				+ ", getNombre()=" + getNombre() + ", getNivelRequerido()=" + getNivelRequerido() + ", getPeso()="
+				+ getPeso() + ", getDurabilidad()=" + getDurabilidad() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + "]";
+	}
+    
+    
+    
+    
+    
+    
 }
