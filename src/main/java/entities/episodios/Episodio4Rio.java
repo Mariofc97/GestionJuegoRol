@@ -6,6 +6,13 @@ import java.util.logging.Logger;
 import entities.Personaje;
 import entities.criatura.PezPrehistoricoGigante;
 import entities.equipo.armas.CanaPescar;
+import entities.equipo.objetos.CarneSeca;
+import entities.equipo.objetos.HojaParaLimpiar;
+import exceptions.ReglaJuegoException;
+import service.CriaturaService;
+import service.EquipamientoService;
+import service.impl.CriaturaServiceImpl;
+import service.impl.EquipamientoServiceImpl;
 import utilidades.Utils;
 
 public class Episodio4Rio {
@@ -17,6 +24,8 @@ public class Episodio4Rio {
 
 	// comienza las validaciones de personaje y listas
 	public static void episodio4Rio(Personaje personaje) {
+		EquipamientoService equipService = new EquipamientoServiceImpl();
+		CriaturaService criaturaService = new CriaturaServiceImpl();
 		if (personaje == null) {
 			LOGGER.warning("Se llamó a episodio3ElBosqueOscuro con Personaje null");
 			System.out.println("Error: personaje no proporcionado.");
@@ -80,17 +89,49 @@ public class Episodio4Rio {
 				break;
 
 			case 2: {
-				// pescar
-				Riokey1 = true;
-				int contadorCanaPesca = 0;
-				for (Object obj : personaje.getEquipo()) {
-					if (obj instanceof CanaPescar) {
-						contadorCanaPesca++;
-					}
-				}
 
+			    boolean tieneCana = false;
+
+			    for (Object obj : personaje.getEquipo()) {
+			        if (obj instanceof CanaPescar) {
+			            tieneCana = true;
+			            break;
+			        }
+			    }
+
+			    if (!tieneCana) {
+			        System.out.println("Intentas pescar, pero sin una caña es imposible.");
+			        System.out.println("Necesitas fabricar o encontrar una caña de pescar.");
+			        LOGGER.info("El personaje " + personaje.getNombre() + " intentó pescar sin caña.");
+			        break;
+			    }
+
+			    // Pesca con caña
+			    System.out.println("Lanzas la caña al río y esperas pacientemente...");
+
+			    int tirada = Utils.dadoDiez();
+
+			    if (tirada <= 2) {
+			        System.out.println("Nada pica esta vez. El río sigue en calma.");
+			    } else {
+			        System.out.println("¡La caña se tensa con fuerza! Has pescado un Siluro.");
+			        //personaje.getEquipo().add(new CarneSeca());
+			        
+			        try {
+						equipService.añadirAlInventario(personaje.getId(), new CarneSeca());
+					} catch (ReglaJuegoException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				    personaje = Utils.recargarPersonaje(personaje.getId());
+			        Riokey1 = true; // ✅ SOLO aquí, cuando pesca de verdad
+
+			        LOGGER.info("El personaje " + personaje.getNombre() + " pescó un Siluro.");
+			    }
 			}
-				break;
+			break;
+
+
 
 			case 3: {
 				
