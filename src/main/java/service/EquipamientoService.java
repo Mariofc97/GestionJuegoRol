@@ -25,5 +25,7 @@ public interface EquipamientoService {
 	List<EquipamientoDto> listarConsumiblesCurativos(Long personajeId) throws ReglaJuegoException;
 	
 	int consumirCurativo(Long personajeId, Long equipamientoId) throws ReglaJuegoException;
+	
+	void eliminarDeInventario(Long personajeId, Long equipamientoId) throws ReglaJuegoException;
 
 }

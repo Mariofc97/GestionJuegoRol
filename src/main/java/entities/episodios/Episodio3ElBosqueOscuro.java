@@ -12,13 +12,18 @@ import entities.equipo.objetos.Baya;
 import entities.equipo.objetos.CarneSeca;
 //TODO: FALTA REPASAR CONTADOR DE EPISODIO3 PARA QUE FUNCIONE BIEN ENTRE
 import exceptions.ReglaJuegoException;
+import service.CriaturaService;
 import service.EquipamientoService;
+import service.impl.CriaturaServiceImpl;
 import service.impl.EquipamientoServiceImpl;
 import utilidades.Utils;
 
 //cosas que hacer en el bosque oscuro, como encontrar objetos, criaturas, luchar contra enemigos.
 
 public class Episodio3ElBosqueOscuro {
+	EquipamientoService equipService = new EquipamientoServiceImpl();
+	CriaturaService criaturaService = new CriaturaServiceImpl();
+	
 	static int contadorEpisodio3 = 0;
 	private static final Logger LOGGER = Logger.getLogger(Episodio3ElBosqueOscuro.class.getName());
 	static {

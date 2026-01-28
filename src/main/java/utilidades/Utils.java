@@ -706,32 +706,55 @@ public class Utils {
 	}
 
 	private static void menuTirarObjetoAlaMierda(Personaje person) {
-		List<Equipamiento> equipo = person.getEquipo();
-		if (equipo == null || equipo.isEmpty()) {
-			System.out.println("No tienes nada que tirar.");
-			return;
-		}
+	    if (person == null || person.getId() == null) {
+	        System.out.println("No hay personaje válido.");
+	        return;
+	    }
 
-		System.out.println("\n--- TIRAR OBJETO ---");
-		for (int i = 0; i < equipo.size(); i++) {
-			Equipamiento e = equipo.get(i);
-			String tipoOb = obtenerTipoEquipamiento(e);
-			System.out.println((i + 1) + ". [" + tipoOb + "] " + e.getNombre());
-		}
-		System.out.println((equipo.size() + 1) + ". Cancelar");
+	    try {
+	        // 1) Traer inventario REAL desde BD
+	        Personaje rec = recargarPersonaje(person.getId());
+	        List<Equipamiento> equipo = rec.getEquipo();
 
-		int opcion = pideDatoNumerico(
-				"Elige el objeto que quieres tirar (o pulsa " + (equipo.size() + 1) + " para cancelar):");
+	        if (equipo == null || equipo.isEmpty()) {
+	            System.out.println("No tienes nada que tirar.");
+	            return;
+	        }
 
-		if (opcion < 1 || opcion > equipo.size()) {
-			System.out.println("No tiras ningún objeto.");
-			return;
-		}
+	        // 2) Pintar menú con IDs
+	        System.out.println("\n--- TIRAR OBJETO  ---");
+	        for (int i = 0; i < equipo.size(); i++) {
+	            Equipamiento e = equipo.get(i);
+	            System.out.println((i + 1) + ") " + e.getNombre()
+	                    + " [id=" + e.getId() + "] durabilidad=" + e.getDurabilidad());
+	        }
+	        System.out.println((equipo.size() + 1) + ") Cancelar");
 
-		Equipamiento aLaMierda = equipo.get(opcion - 1);
-		System.out.println(
-				"Has tirado: " + aLaMierda.getNombre() + " a la mierda, te mereces una hoja de ortiga por arma.");
-		equipo.remove(aLaMierda);
+	        int opcion = pideDatoNumerico("Elige el objeto: ");
+	        if (opcion < 1 || opcion > equipo.size()) {
+	            System.out.println("Cancelado.");
+	            return;
+	        }
+
+	        Long equipId = equipo.get(opcion - 1).getId();
+
+	        // 3) BORRADO PERSISTENTE (service)
+	        EquipamientoService es = new EquipamientoServiceImpl();
+	        es.eliminarDeInventario(person.getId(), equipId); // <- ESTE MÉTODO LO TENÉIS QUE TENER
+
+	        System.out.println("Objeto tirado correctamente.");
+
+	        // 4) Actualizar el objeto en memoria para que el inventario no quede desincronizado
+	        Personaje rec2 = recargarPersonaje(person.getId());
+	        person.setEquipo(rec2.getEquipo());
+
+	    } catch (ReglaJuegoException e) {
+	        System.out.println("No puedes tirar ese objeto: " + e.getMessage());
+	    } catch (Exception e) {
+	        // PARA QUE NUNCA TE EXPULSE DEL INVENTARIO SIN SABER POR QUÉ
+	        System.out.println("Error inesperado al tirar objeto: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+	        e.printStackTrace(); // quítalo cuando lo arregles
+	    }
 	}
 
 	public static int calcularPesoTotal(Personaje person) {
