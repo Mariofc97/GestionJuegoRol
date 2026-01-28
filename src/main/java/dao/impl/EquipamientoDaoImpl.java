@@ -22,18 +22,13 @@ public class EquipamientoDaoImpl extends GenericDaoHibernate<Equipamiento, Long>
 	}
 
 	@Override
-	public void eliminarEquipamiento(Long personajeId, Long equipoId) {
-	    Equipamiento equipamiento = session()
-	            .createQuery("FROM Equipamiento e WHERE e.personaje.id = :pid AND e.id = :eid", Equipamiento.class)
-	            .setParameter("pid", personajeId)
-	            .setParameter("eid", equipoId)
-	            .uniqueResult();
-
-	    if (equipamiento != null) {
-	        session().delete(equipamiento);
-	    }
+	public int deleteByIdAndPersonajeId(Long equipId, Long personajeId) {
+	    String hql = "delete from Equipamiento e where e.id = :eid and e.personaje.id = :pid";
+	    return session().createQuery(hql)
+	        .setParameter("eid", equipId)
+	        .setParameter("pid", personajeId)
+	        .executeUpdate();
 	}
-	
 	
 
 }

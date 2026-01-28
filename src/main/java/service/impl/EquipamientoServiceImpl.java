@@ -413,4 +413,16 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	    return 0;
 	}
 	
+	@Override
+	public void eliminarDeInventario(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
+	    if (personajeId == null || equipamientoId == null) {
+	        throw new ReglaJuegoException("Ids inválidos.");
+	    }
+
+	    int borrados = equipamientoDao.deleteByIdAndPersonajeId(equipamientoId, personajeId);
+	    if (borrados == 0) {
+	        throw new ReglaJuegoException("No existe ese objeto en tu inventario.");
+	    }
+	}
+	
 }
