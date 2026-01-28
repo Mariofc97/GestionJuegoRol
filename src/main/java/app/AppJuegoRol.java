@@ -37,7 +37,7 @@ public class AppJuegoRol {
 //    	DROP TABLE TB_CRIATURA     CASCADE CONSTRAINTS;
 //    	DROP TABLE TB_PERSONAJE    CASCADE CONSTRAINTS;
 //    	DROP TABLE TB_USUARIO      CASCADE CONSTRAINTS;
-    	
+//    	
     	//PRUEBA DE LA APP:
 //    	1. Login y elige personaje
 //
