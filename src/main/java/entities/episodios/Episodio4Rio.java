@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import entities.Personaje;
 import entities.criatura.PezPrehistoricoGigante;
 import entities.equipo.armas.CanaPescar;
-import exceptions.ReglaJuegoException;
 import utilidades.Utils;
 
 public class Episodio4Rio {
@@ -73,12 +72,9 @@ public class Episodio4Rio {
 				// buscar bayas
 				// TODO: HAY Q AÑADIR QUE AL BUSCAR BAYAS NOS ENCONTRAMOS CON UN JABALI Y PELA
 				// BOSH FACIL
-				try {
+				
 					Utils.buscarBaya(personaje);
-				} catch (ReglaJuegoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
 
 			}
 				break;
@@ -97,13 +93,10 @@ public class Episodio4Rio {
 				break;
 
 			case 3: {
-				try {
+				
 					// TODO: FALTA AÑADIR TRAMPA PARA PELEA CON JABALI O LOBO
-					Utils.construirArma(personaje);
-
-				} catch (ReglaJuegoException e) {
-					System.out.println("No puedes fabricar: " + e.getMessage());
-				}
+					Utils.menuFabricar(personaje);
+				
 			}
 				break;
 
