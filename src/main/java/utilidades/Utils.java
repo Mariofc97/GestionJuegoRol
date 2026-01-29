@@ -976,26 +976,36 @@ public class Utils {
 	    // Caso bueno: encontramos un material
 	    int tirada2 = Utils.dadoDiez();
 
+	    String nombreEncontrado = null;
+	    
 	    try {
 	        if (tirada2 == 1 || tirada2 == 2) {
+	        	nombreEncontrado = "Mojon Seco";
 	            System.out.println("Encuentras un objeto muy útil: Mojon Seco");
 	            equipService.añadirAlInventario(personaje.getId(), new MojonSeco());
 	        } else if (tirada2 == 3 || tirada2 == 4) {
+	        	nombreEncontrado = "Cuerda";
 	            System.out.println("Encuentras un objeto muy útil: Cuerda");
 	            equipService.añadirAlInventario(personaje.getId(), new Cuerda());
 	        } else if (tirada2 == 5 || tirada2 == 6) {
+	        	nombreEncontrado = "Piedra";
 	            System.out.println("Encuentras un objeto muy útil: Piedra");
 	            equipService.añadirAlInventario(personaje.getId(), new Piedra());
 	        } else if (tirada2 == 7 || tirada2 == 8) {
+	        	nombreEncontrado = "Palo";
 	            System.out.println("Encuentras un objeto muy útil: Palo");
 	            equipService.añadirAlInventario(personaje.getId(), new Palo());
 	        } else {
+	        	nombreEncontrado = "Hoja Para Limpiar";
 	            System.out.println("Encuentras un objeto muy útil: Hoja Para Limpiar");
 	            equipService.añadirAlInventario(personaje.getId(), new HojaParaLimpiar());
 	        }
 
 	        // IMPORTANTÍSIMO: recargamos desde BD para traer el inventario actualizado
-	        return Utils.recargarPersonaje(personaje.getId());
+	        Personaje rec =  Utils.recargarPersonaje(personaje.getId());
+	        System.out.println("Has encontrado el objeto: " + nombreEncontrado);
+	        
+	        return rec;
 
 	    } catch (ReglaJuegoException e) {
 	        System.out.println("No puedes añadir el objeto al inventario: " + e.getMessage());
