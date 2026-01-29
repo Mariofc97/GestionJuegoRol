@@ -7,7 +7,6 @@ import entities.Personaje;
 import entities.criatura.PezPrehistoricoGigante;
 import entities.equipo.armas.CanaPescar;
 import entities.equipo.objetos.CarneSeca;
-import entities.equipo.objetos.HojaParaLimpiar;
 import exceptions.ReglaJuegoException;
 import service.CriaturaService;
 import service.EquipamientoService;
@@ -71,7 +70,7 @@ public class Episodio4Rio {
 		do {
 
 			System.out.println(
-					"\n1. Buscar bayas \n2. Pescar \n3. Crear arma \n4. Bañarte \n5.Inventario y estado \n6.Buscar materales. \n7.Desafiar Jefe del Clan. \n8.Descansar. \n9.Invocar PezPrehistoricoGigante");
+					"1. Buscar bayas \n2. Pescar \n3. Crear arma \n4. Bañarte \n5.Inventario y estado \n6.Buscar materales. \n7.Desafiar Jefe del Clan. \n8.Descansar. \n9.Invocar PezPrehistoricoGigante");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
@@ -198,7 +197,7 @@ public class Episodio4Rio {
 			}
 				break;
 			case 9: {
-			}
+			
 				// invocar pez prehistorico gigante
 				if (pezPrehistoricoGigante) {
 					if (Utils.dadoDiez() < 3) {
@@ -216,7 +215,7 @@ public class Episodio4Rio {
 				} else {
 					System.out.println("Aun no has derrotado a un PezPrehistoricoGigante, no puedes invocarlo.");
 				}
-
+			}
 				break;
 
 			default:
