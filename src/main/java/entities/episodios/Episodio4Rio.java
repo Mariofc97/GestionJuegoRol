@@ -81,63 +81,60 @@ public class Episodio4Rio {
 				// buscar bayas
 				// TODO: HAY Q AÑADIR QUE AL BUSCAR BAYAS NOS ENCONTRAMOS CON UN JABALI Y PELA
 				// BOSH FACIL
-				
-					Utils.buscarBaya(personaje);
-				
+
+				Utils.buscarBaya(personaje);
 
 			}
 				break;
 
 			case 2: {
 
-			    boolean tieneCana = false;
+				boolean tieneCana = false;
 
-			    for (Object obj : personaje.getEquipo()) {
-			        if (obj instanceof CanaPescar) {
-			            tieneCana = true;
-			            break;
-			        }
-			    }
+				for (Object obj : personaje.getEquipo()) {
+					if (obj instanceof CanaPescar) {
+						tieneCana = true;
+						break;
+					}
+				}
 
-			    if (!tieneCana) {
-			        System.out.println("Intentas pescar, pero sin una caña es imposible.");
-			        System.out.println("Necesitas fabricar o encontrar una caña de pescar.");
-			        LOGGER.info("El personaje " + personaje.getNombre() + " intentó pescar sin caña.");
-			        break;
-			    }
+				if (!tieneCana) {
+					System.out.println("Intentas pescar, pero sin una caña es imposible.");
+					System.out.println("Necesitas fabricar o encontrar una caña de pescar.");
+					LOGGER.info("El personaje " + personaje.getNombre() + " intentó pescar sin caña.");
+					break;
+				}
 
-			    // Pesca con caña
-			    System.out.println("Lanzas la caña al río y esperas pacientemente...");
+				// Pesca con caña
+				System.out.println("Lanzas la caña al río y esperas pacientemente...");
 
-			    int tirada = Utils.dadoDiez();
+				int tirada = Utils.dadoDiez();
 
-			    if (tirada <= 2) {
-			        System.out.println("Nada pica esta vez. El río sigue en calma.");
-			    } else {
-			        System.out.println("¡La caña se tensa con fuerza! Has pescado un Siluro.");
-			        //personaje.getEquipo().add(new CarneSeca());
-			        
-			        try {
+				if (tirada <= 2) {
+					System.out.println("Nada pica esta vez. El río sigue en calma.");
+				} else {
+					System.out.println("¡La caña se tensa con fuerza! Has pescado un Siluro.");
+					// personaje.getEquipo().add(new CarneSeca());
+
+					try {
 						equipService.añadirAlInventario(personaje.getId(), new CarneSeca());
 					} catch (ReglaJuegoException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				    personaje = Utils.recargarPersonaje(personaje.getId());
-			        Riokey1 = true; // ✅ SOLO aquí, cuando pesca de verdad
+					personaje = Utils.recargarPersonaje(personaje.getId());
+					Riokey1 = true; // ✅ SOLO aquí, cuando pesca de verdad
 
-			        LOGGER.info("El personaje " + personaje.getNombre() + " pescó un Siluro.");
-			    }
+					LOGGER.info("El personaje " + personaje.getNombre() + " pescó un Siluro.");
+				}
 			}
-			break;
-
-
+				break;
 
 			case 3: {
-				
-					// TODO: FALTA AÑADIR TRAMPA PARA PELEA CON JABALI O LOBO
-					Utils.menuFabricar(personaje);
-				
+
+				// TODO: FALTA AÑADIR TRAMPA PARA PELEA CON JABALI O LOBO
+				Utils.menuFabricar(personaje);
+
 			}
 				break;
 
@@ -147,10 +144,14 @@ public class Episodio4Rio {
 						"Te bañas en el río, sintiendo el agua fresca y revitalizante que recorre tu cuerpo, observando el paisaje a tu alrededor, notas que algo se mueve en el agua... que es esa mancha enorme??? se dirige hacia ti rapidamente... Te ataca PezPrehistoricoGigante!");
 				// añadir combate con pez prehistorico gigante
 				if (!pezPrehistoricoGigante) {
+
 					PezPrehistoricoGigante pezPrehistorico = new PezPrehistoricoGigante();
-					Utils.combate(personaje, pezPrehistorico);
+					boolean resulatado = Utils.combate(personaje, pezPrehistorico);
+					if (resulatado) {
+						Riokey2 = true;
+						pezPrehistoricoGigante = true;
+					}
 				}
-				Riokey2 = true;
 
 			}
 				break;
