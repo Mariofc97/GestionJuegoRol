@@ -6,11 +6,7 @@
 
         <!-- Conexión JDBC -->
         <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
-<<<<<<< HEAD
-        <property name="hibernate.connection.url">jdbc:oracle:thin:@//10.2.1.23:1522/XEPDB1</property>
-=======
-        <property name="hibernate.connection.url">jdbc:oracle:thin:@//localhost:1522/XEPDB1</property>
->>>>>>> branch 'master' of https://github.com/Mariofc97/GestionJuegoRol.git
+		<property name="hibernate.connection.url">jdbc:oracle:thin:@//localhost:1522/XEPDB1</property>
         <property name="hibernate.connection.username">getafe</property>
         <property name="hibernate.connection.password">password</property>
 
