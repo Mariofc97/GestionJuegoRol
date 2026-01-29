@@ -201,11 +201,13 @@ public class Episodio4Rio {
 			}
 				// invocar pez prehistorico gigante
 				if (pezPrehistoricoGigante) {
-					Riokey3 = true;
 					if (Utils.dadoDiez() < 3) {
 						System.out.println(
 								"Estas invocando a tu PezPrehistoricoGigante como compañero, mojado, tiritando y no puedes contener un estornudo, interumpe la invocación de tu PezPrehistoricoGigante y te ataca descontroladamente!");
-						Utils.combate(personaje, new PezPrehistoricoGigante());
+						boolean resultado = Utils.combate(personaje, new PezPrehistoricoGigante());
+						if (resultado) {
+							Riokey3 = true;
+						}
 					} else {
 						System.out.println(
 								"Invocas a tu PezPrehistoricoGigante, que emerge del agua con un gran salto, sacudiendo su enorme cuerpo y creando una ola que te empapa por completo. Ahora está a tu lado, listo para ayudarte en tus aventuras.");
