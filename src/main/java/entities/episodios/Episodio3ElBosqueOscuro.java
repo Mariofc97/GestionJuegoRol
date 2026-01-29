@@ -64,7 +64,7 @@ public class Episodio3ElBosqueOscuro {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \n2. Cazar \n3. Crear arma \n4. Usar trampa \n5.Inventario y estado \n6.Buscar materales. \n7.Ir al rio. \n8.Descansar. \n9.Invocar lobo y jabali.");
+					"\n1. Buscar bayas \n2. Cazar \n3. Crear arma \n4. Usar trampa \n5.Inventario y estado \n6.Buscar materales. \n7.Ir al rio. \n8.Descansar. \n9.Invocar lobo y jabali.");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 

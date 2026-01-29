@@ -1003,7 +1003,7 @@ public class Utils {
 
 	        // IMPORTANTÍSIMO: recargamos desde BD para traer el inventario actualizado
 	        Personaje rec =  Utils.recargarPersonaje(personaje.getId());
-	        System.out.println("Has encontrado el objeto: " + nombreEncontrado);
+	        System.out.println("\nHas encontrado el objeto: " + nombreEncontrado);
 	        
 	        return rec;
 

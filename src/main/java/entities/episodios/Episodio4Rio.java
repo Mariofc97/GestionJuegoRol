@@ -71,7 +71,7 @@ public class Episodio4Rio {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \n2. Pescar \n3. Crear arma \n4. Bañarte \n5.Inventario y estado \n6.Buscar materales. \n7.Desafiar Jefe del Clan. \n8.Descansar. \n9.Invocar PezPrehistoricoGigante");
+					"\n1. Buscar bayas \n2. Pescar \n3. Crear arma \n4. Bañarte \n5.Inventario y estado \n6.Buscar materales. \n7.Desafiar Jefe del Clan. \n8.Descansar. \n9.Invocar PezPrehistoricoGigante");
 			System.out.println("di la opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 

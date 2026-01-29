@@ -77,7 +77,7 @@ public class Episodio2 {
 		do {
 
 			System.out.println(
-					"1. Buscar bayas \n2. Cazar \n3. Crear arma \n4. Esconderse del miedo \n5.Inventario y estado \n6.Buscar materiales \n7.Ir al bosque oscuro \n8.Descansar");
+					"\n1. Buscar bayas \n2. Cazar \n3. Crear arma \n4. Esconderse del miedo \n5.Inventario y estado \n6.Buscar materiales \n7.Ir al bosque oscuro \n8.Descansar");
 			System.out.println("dila opcion del menu");
 			int opcion = Utils.pideDatoNumerico("Que quieres hacer?");
 
