@@ -712,7 +712,6 @@ public class Utils {
 	    }
 
 	    try {
-	        // 1) Traer inventario REAL desde BD
 	        Personaje rec = recargarPersonaje(person.getId());
 	        List<Equipamiento> equipo = rec.getEquipo();
 
@@ -721,7 +720,6 @@ public class Utils {
 	            return;
 	        }
 
-	        // 2) Pintar menú con IDs
 	        System.out.println("\n--- TIRAR OBJETO  ---");
 	        for (int i = 0; i < equipo.size(); i++) {
 	            Equipamiento e = equipo.get(i);
@@ -736,24 +734,23 @@ public class Utils {
 	            return;
 	        }
 
-	        Long equipId = equipo.get(opcion - 1).getId();
+	        Equipamiento elegido = equipo.get(opcion - 1);
+	        Long equipId = elegido.getId();
+	        String nombreObj = elegido.getNombre();
 
-	        // 3) BORRADO PERSISTENTE (service)
 	        EquipamientoService es = new EquipamientoServiceImpl();
-	        es.eliminarDeInventario(person.getId(), equipId); // <- ESTE MÉTODO LO TENÉIS QUE TENER
+	        es.eliminarDeInventario(person.getId(), equipId);
 
-	        System.out.println("Objeto tirado correctamente.");
 
-	        // 4) Actualizar el objeto en memoria para que el inventario no quede desincronizado
 	        Personaje rec2 = recargarPersonaje(person.getId());
+	        System.out.println("El objeto " + nombreObj + " se ha eliminado correctamente!");
 	        person.setEquipo(rec2.getEquipo());
 
 	    } catch (ReglaJuegoException e) {
 	        System.out.println("No puedes tirar ese objeto: " + e.getMessage());
 	    } catch (Exception e) {
-	        // PARA QUE NUNCA TE EXPULSE DEL INVENTARIO SIN SABER POR QUÉ
 	        System.out.println("Error inesperado al tirar objeto: " + e.getClass().getSimpleName() + " - " + e.getMessage());
-	        e.printStackTrace(); // quítalo cuando lo arregles
+	        e.printStackTrace();
 	    }
 	}
 

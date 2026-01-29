@@ -2,8 +2,12 @@ package dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import dao.EquipamientoDao;
 import entities.equipo.Equipamiento;
+import utilidades.HibernateUtil;
 
 public class EquipamientoDaoImpl extends GenericDaoHibernate<Equipamiento, Long> implements EquipamientoDao {
 
@@ -22,13 +26,28 @@ public class EquipamientoDaoImpl extends GenericDaoHibernate<Equipamiento, Long>
 	}
 
 	@Override
-	public int deleteByIdAndPersonajeId(Long equipId, Long personajeId) {
-	    String hql = "delete from Equipamiento e where e.id = :eid and e.personaje.id = :pid";
-	    return session().createQuery(hql)
-	        .setParameter("eid", equipId)
-	        .setParameter("pid", personajeId)
-	        .executeUpdate();
-	}
-	
+    public int deleteByIdAndPersonajeId(Long equipId, Long personajeId) {
+        Transaction tx = null;
 
+        try (Session session = HibernateUtil.openSession()) {
+
+            tx = session.beginTransaction();
+
+            int filas = session.createQuery("""
+                    delete from Equipamiento e
+                    where e.id = :eid and e.personaje.id = :pid
+                """)
+                .setParameter("eid", equipId)
+                .setParameter("pid", personajeId)
+                .executeUpdate();
+
+            tx.commit();
+            return filas;
+
+        } catch (RuntimeException ex) {
+            if (tx != null) tx.rollback();
+            throw ex;
+        }
+    }
 }
+

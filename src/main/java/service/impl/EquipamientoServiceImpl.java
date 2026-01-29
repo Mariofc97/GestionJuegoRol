@@ -79,18 +79,6 @@ public class EquipamientoServiceImpl implements EquipamientoService {
     }
 
 	@Override
-	public void eliminar(Long equipamientoId) {
-		// TODO Auto-generated method stub
-        if (equipamientoId == null) throw new RuntimeException("equipamientoId obligatorio");
-
-        Equipamiento e = equipamientoDao.findById(equipamientoId);
-        if (e == null) throw new RuntimeException("No existe Equipamiento con id=" + equipamientoId);
-
-        equipamientoDao.delete(e);
-		
-	}
-
-	@Override
 	public EquipamientoDto añadirAlInventario(Long personajeId, Equipamiento nuevo) throws ReglaJuegoException {
 
 	    Personaje p = cargarPersonajeConEquipo(personajeId); // <-- CLAVE (fetch equipo)
@@ -424,5 +412,6 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	        throw new ReglaJuegoException("No existe ese objeto en tu inventario.");
 	    }
 	}
+
 	
 }

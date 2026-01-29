@@ -14,9 +14,6 @@ public interface EquipamientoService {
 	//Lista inventario del personaje
 	List<EquipamientoDto> listarPorPersonaje(Long personajeId);
 	
-	//Elimina un equipamiento concreto
-	void eliminar(Long equipamientoId);
-	
 	EquipamientoDto fabricar(Long personajeId, String tipo) throws ReglaJuegoException;
 
 	EquipamientoDto equiparArma(Long personajeId, Long equipamientoId) throws ReglaJuegoException;
