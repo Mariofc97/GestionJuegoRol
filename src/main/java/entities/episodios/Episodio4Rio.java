@@ -26,7 +26,7 @@ public class Episodio4Rio {
 		EquipamientoService equipService = new EquipamientoServiceImpl();
 		CriaturaService criaturaService = new CriaturaServiceImpl();
 		if (personaje == null) {
-			LOGGER.warning("Se llamó a episodio3ElBosqueOscuro con Personaje null");
+			LOGGER.warning("Se llamó a episodio4Rio con Personaje null");
 			System.out.println("Error: personaje no proporcionado.");
 			return;
 		}
@@ -145,8 +145,8 @@ public class Episodio4Rio {
 				if (!pezPrehistoricoGigante) {
 
 					PezPrehistoricoGigante pezPrehistorico = new PezPrehistoricoGigante();
-					boolean resulatado = Utils.combate(personaje, pezPrehistorico);
-					if (resulatado) {
+					boolean resultado = Utils.combate(personaje, pezPrehistorico);
+					if (resultado) {
 						Riokey2 = true;
 						pezPrehistoricoGigante = true;
 					}
@@ -197,8 +197,9 @@ public class Episodio4Rio {
 			}
 				break;
 			case 9: {
-			
+
 				// invocar pez prehistorico gigante
+
 				if (pezPrehistoricoGigante) {
 					if (Utils.dadoDiez() < 3) {
 						System.out.println(
