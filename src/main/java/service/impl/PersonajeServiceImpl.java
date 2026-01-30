@@ -2,9 +2,10 @@ package service.impl;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import dao.PersonajeDao;
+import dao.UsuarioDao;
+import dao.impl.PersonajeDaoImpl;
+import dao.impl.UsuarioDaoImpl;
 import entities.Personaje;
 import entities.Usuario;
 import entities.raza.Mongol;
@@ -12,24 +13,17 @@ import entities.raza.RapaNui;
 import entities.raza.Raza;
 import entities.raza.Troglodita;
 import exceptions.ReglaJuegoException;
-import repositories.PersonajeRepository;
-import repositories.UsuarioRepository;
 import service.PersonajeService;
 
-@Service
-public class PersonajeServiceImpl implements PersonajeService {
+public class PersonajeServiceImpl implements PersonajeService{
 
-	private final PersonajeRepository personajeRepository;
-	private final UsuarioRepository usuarioRepository;
+	private final PersonajeDao personajeDao = new PersonajeDaoImpl();
+	private final UsuarioDao usuarioDao = new UsuarioDaoImpl();
 	
-	public PersonajeServiceImpl(PersonajeRepository personajeRepository, UsuarioRepository usuarioRepository) {
-	    this.personajeRepository = personajeRepository;
-	    this.usuarioRepository = usuarioRepository;
-	}
 	
 	@Override
-	@Transactional
 	public Personaje crearYGuardar(Long usuarioId, String nombre, String razaTipo) {
+		// TODO Auto-generated method stub
 		if(usuarioId == null) {
 			throw new RuntimeException("El id del usuario es obligatorio");
 		}
@@ -40,9 +34,9 @@ public class PersonajeServiceImpl implements PersonajeService {
 			throw new RuntimeException("La raza es obligatoria");
 		}
 		
-		Usuario u = usuarioRepository.findById(usuarioId)
-		        .orElseThrow(() -> new RuntimeException("No existe usuario con id= " + usuarioId));
-
+		Usuario u = usuarioDao.findById(usuarioId);
+		
+		if (u == null) throw new RuntimeException("No existe usuario con id= " + usuarioId);
 		try {
 			
 			Personaje p = new Personaje(nombre.trim(), razaTipo.trim());
@@ -50,13 +44,15 @@ public class PersonajeServiceImpl implements PersonajeService {
 			p.setUsuario(u);
 			
 			// Construimos la raza a partir del texto (LA NO PERSISTENTE)
+			
 			Raza raza = construirRaza(razaTipo);
 			
-			// stats base
+			// creamos personaje con stats predefinidos en este service y con los atributos base de la raza (fuerza/inteligencia/suerte)
+			
 			inicializarStatsBase(p);			
 			aplicarStatsBaseDeRaza(p, raza);
 			
-			personajeRepository.save(p);
+			personajeDao.save(p);
 			
 			return p;
 		} catch (ReglaJuegoException e) {
@@ -65,18 +61,19 @@ public class PersonajeServiceImpl implements PersonajeService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public Personaje buscarPorId(Long id) throws ReglaJuegoException {
 		if(id == null) throw new ReglaJuegoException("El ID es obligatorio");
 		
-		return personajeRepository.findById(id)
-		        .orElseThrow(() -> new ReglaJuegoException("No existe personaje con ID= " + id));
+		Personaje p = personajeDao.findById(id);
+		
+		if(p == null) throw new ReglaJuegoException("No existe personaje con ID= " + id);
+		
+		return p;
 	}
 	
 	@Override
-	@Transactional(readOnly = true)
 	public List<Personaje> listarPorUsuario(Long usuarioId) {
-	    return personajeRepository.findByUsuarioId(usuarioId);
+	    return personajeDao.findByUsuarioId(usuarioId);
 	}
 	
 	private Raza construirRaza(String razaTipo) throws ReglaJuegoException {
@@ -112,35 +109,46 @@ public class PersonajeServiceImpl implements PersonajeService {
 		p.setPuntosAtaque(p.getPuntosAtaque() + raza.getFuerza());
 		p.setInteligencia(p.getInteligencia() + raza.getInteligencia());
 		p.setSuerte(p.getSuerte() + raza.getSuerte());
+		
+		//No llamo a raza.aplicarBonos(p) porque eso son pasivas situacionales en funcion de la historia
 	}
 
 	@Override
-	@Transactional
 	public Personaje actualizar(Personaje p) {
-		return personajeRepository.save(p);
+		// TODO Auto-generated method stub
+		return personajeDao.update(p);
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public Personaje cargarParaJuego(Long personajeId) throws ReglaJuegoException {
 	    if (personajeId == null) throw new ReglaJuegoException("El ID del personaje es obligatorio");
 
-	    return personajeRepository.findByIdFetchAll(personajeId)
-	            .orElseThrow(() -> new ReglaJuegoException("No existe personaje con ID: " + personajeId));
+	    Personaje p = personajeDao.findByIdFetchAll(personajeId);
+	    if (p == null) throw new ReglaJuegoException("No existe personaje con ID: " + personajeId);
+
+	    return p;
 	}
 
 	@Override
-	@Transactional
 	public Personaje sumarExperiencia(Long personajeId, int exp) throws ReglaJuegoException {
+		// TODO Auto-generated method stub
 	    if (personajeId == null) throw new ReglaJuegoException("ID personaje obligatorio");
 	    if (exp <= 0) throw new ReglaJuegoException("La exp debe ser positiva");
 
-	    Personaje p = personajeRepository.findById(personajeId)
-	            .orElseThrow(() -> new ReglaJuegoException("No existe personaje con ID=" + personajeId));
+	    // 1) cargar desde BD (managed en sesión si lo haces dentro del DAO/tx)
+	    Personaje p = personajeDao.findById(personajeId);
+	    if (p == null) throw new ReglaJuegoException("No existe personaje con ID=" + personajeId);
 
-	    p.ganarExperiencia(exp); // lógica dominio
+	    // 2) aplicar lógica de dominio
+	    p.ganarExperiencia(exp); // aquí sube nivel si toca y ajusta stats
 
-	    return p; // Transactional will save changes
+	    // 3) persistir cambios
+	    return personajeDao.update(p); // merge + tx
 	}
+	
+	
+
+	
+	
 
 }

@@ -3,9 +3,10 @@ package service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import dao.CriaturaDao;
+import dao.PersonajeDao;
+import dao.impl.CriaturaDaoImpl;
+import dao.impl.PersonajeDaoImpl;
 import dto.CriaturaDto;
 import entities.Personaje;
 import entities.criatura.Conejo;
@@ -18,23 +19,11 @@ import entities.criatura.PezPrehistoricoGigante;
 import entities.criatura.Raton;
 import entities.criatura.Siluro;
 import exceptions.ReglaJuegoException;
-import repositories.CriaturaRepository;
-import repositories.PersonajeRepository;
 import service.CriaturaService;
 
-@Service
 public class CriaturaServiceImpl implements CriaturaService {
 
-    private final PersonajeRepository personajeRepository;
-    
-    // We might not need CriaturaRepository if all access is via Personaje, but good to have injected if future needs.
-    private final CriaturaRepository criaturaRepository;
-    
-    public CriaturaServiceImpl(PersonajeRepository personajeRepository, CriaturaRepository criaturaRepository) {
-        this.personajeRepository = personajeRepository;
-        this.criaturaRepository = criaturaRepository;
-    }
-
+    private final PersonajeDao personajeDao = new PersonajeDaoImpl();
     private static final int MAX_CRIATURAS = 5;
     private CriaturaDto mapToDto(Criatura c) {
         if (c == null) return null;
@@ -76,12 +65,11 @@ public class CriaturaServiceImpl implements CriaturaService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<CriaturaDto> listarPorPersonaje(Long personajeId) throws ReglaJuegoException {
         if (personajeId == null) throw new ReglaJuegoException("El personajeId es obligatorio.");
 
-        Personaje p = personajeRepository.findByIdFetchAll(personajeId)
-                .orElseThrow(() -> new ReglaJuegoException("No existe personaje con id=" + personajeId));
+        Personaje p = personajeDao.findByIdFetchAll(personajeId);
+        if (p == null) throw new ReglaJuegoException("No existe personaje con id=" + personajeId);
 
         List<Criatura> lista = p.getCriaturas();
         if (lista == null || lista.isEmpty()) return java.util.Collections.emptyList();
@@ -92,7 +80,6 @@ public class CriaturaServiceImpl implements CriaturaService {
     }
     
     @Override
-    @Transactional
     public CriaturaDto invocarCompanero(Long personajeId, String tipoCriatura, String alias) throws ReglaJuegoException {
 
         // 1) validar entrada
@@ -100,8 +87,8 @@ public class CriaturaServiceImpl implements CriaturaService {
         if (tipoCriatura == null || tipoCriatura.trim().isEmpty()) throw new ReglaJuegoException("El tipo de criatura es obligatorio.");
 
         // 2) cargar personaje con criaturas (importante para contar bien y evitar Lazy)
-        Personaje p = personajeRepository.findByIdFetchAll(personajeId)
-                .orElseThrow(() -> new ReglaJuegoException("No existe personaje con id=" + personajeId));
+        Personaje p = personajeDao.findByIdFetchAll(personajeId);
+        if (p == null) throw new ReglaJuegoException("No existe personaje con id=" + personajeId);
 
         if (p.getCriaturas() == null) p.setCriaturas(new ArrayList<>());
 
@@ -125,11 +112,11 @@ public class CriaturaServiceImpl implements CriaturaService {
         p.addCriatura(nueva);
 
         // 7) persistir: con cascade, basta update(p)
-        personajeRepository.save(p);
+        Personaje actualizado = personajeDao.update(p);
 
         // 8) obtener la criatura persistida para devolver DTO
         // Como acabamos de añadir una, normalmente la última es la nueva:
-        List<Criatura> lista = p.getCriaturas();
+        List<Criatura> lista = actualizado.getCriaturas();
         Criatura persistida = lista.get(lista.size() - 1);
 
         return mapToDto(persistida);
