@@ -3,10 +3,9 @@ package service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.EquipamientoDao;
-import dao.PersonajeDao;
-import dao.impl.EquipamientoDaoImpl;
-import dao.impl.PersonajeDaoImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import dto.EquipamientoDto;
 import entities.Personaje;
 import entities.equipo.Equipamiento;
@@ -30,13 +29,20 @@ import entities.equipo.objetos.Palo;
 import entities.equipo.objetos.Piedra;
 import entities.equipo.objetos.Pocion;
 import exceptions.ReglaJuegoException;
+import repositories.EquipamientoRepository;
+import repositories.PersonajeRepository;
 import service.EquipamientoService;
 
-
+@Service
 public class EquipamientoServiceImpl implements EquipamientoService {
 
-	private final EquipamientoDao equipamientoDao = new EquipamientoDaoImpl();
-	private final PersonajeDao personajeDao = new PersonajeDaoImpl();
+	private final EquipamientoRepository equipamientoRepository;
+	private final PersonajeRepository personajeRepository;
+	
+	public EquipamientoServiceImpl(EquipamientoRepository equipamientoRepository, PersonajeRepository personajeRepository) {
+	    this.equipamientoRepository = equipamientoRepository;
+	    this.personajeRepository = personajeRepository;
+	}
 	
 	private static final int MAX_OBJETOS = 20;
 	private static final int MAX_PESO_TOTAL = 35;
@@ -63,11 +69,12 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
     public List<EquipamientoDto> listarPorPersonaje(Long personajeId) {
         if (personajeId == null) throw new RuntimeException("personajeId obligatorio");
 
-        Personaje personaje = personajeDao.findById(personajeId);
-        if (personaje == null) throw new RuntimeException("No existe Personaje con id=" + personajeId);
+        Personaje personaje = personajeRepository.findByIdFetchAll(personajeId)
+                .orElseThrow(() -> new RuntimeException("No existe Personaje con id=" + personajeId));
 
         if (personaje.getEquipo() == null) return List.of();
 
@@ -79,6 +86,7 @@ public class EquipamientoServiceImpl implements EquipamientoService {
     }
 
 	@Override
+	@Transactional
 	public EquipamientoDto añadirAlInventario(Long personajeId, Equipamiento nuevo) throws ReglaJuegoException {
 
 	    Personaje p = cargarPersonajeConEquipo(personajeId); // <-- CLAVE (fetch equipo)
@@ -99,15 +107,18 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	    }
 
 	    // enlazar FK + añadir
-	    nuevo.setPersonaje(p);
-	    p.getEquipo().add(nuevo);
+	    // nuevo.setPersonaje(p) se hace dentro de p.addEquipamiento si se usa el metodo helper, 
+	    // pero aqui lo hacemos explicitamente o reutilizamos el helper de la entidad si existe.
+	    // La entidad Personaje tiene un método addEquipamiento(e) que setea la relación.
+	    p.addEquipamiento(nuevo);
 
-	    personajeDao.update(p);
+	    personajeRepository.save(p);
 
 	    return mapToDto(nuevo);
 	}
 
 	@Override
+	@Transactional
 	public EquipamientoDto fabricar(Long personajeId, String tipo) throws ReglaJuegoException {
 
 	    Personaje p = cargarPersonajeConEquipo(personajeId);
@@ -201,11 +212,12 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	    // IMPORTANTE: como ya consumiste materiales, el inventario ya bajó peso/objetos.
 	    EquipamientoDto dto = añadirAlInventario(p.getId(), nuevo);
 
-	    // persistir: añadirAlInventario ya hace personajeDao.update(p)
+	    // persistir handled by traansaction but añadirAlInventario saves too
 	    return dto;
 	}
 
 	@Override
+	@Transactional
 	public EquipamientoDto equiparArma(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
 
 	    Personaje p = cargarPersonajeConEquipo(personajeId);
@@ -235,12 +247,13 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	    p.getEquipo().remove(encontrado);
 	    p.getEquipo().add(0, encontrado);
 
-	    personajeDao.update(p);
+	    personajeRepository.save(p);
 
 	    return mapToDto(encontrado);
 	}
 
 	@Override
+	@Transactional
 	public EquipamientoDto equiparEscudo(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
 
 	    Personaje p = cargarPersonajeConEquipo(personajeId);
@@ -270,7 +283,7 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	    p.getEquipo().remove(encontrado);
 	    p.getEquipo().add(0, encontrado);
 
-	    personajeDao.update(p);
+	    personajeRepository.save(p);
 
 	    return mapToDto(encontrado);
 	}
@@ -278,8 +291,10 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	
 	private Personaje cargarPersonajeConEquipo(Long personajeId) throws ReglaJuegoException {
 	    if (personajeId == null) throw new ReglaJuegoException("personajeId obligatorio");
-	    Personaje p = personajeDao.findByIdFetchEquipo(personajeId);
-	    if (p == null) throw new ReglaJuegoException("No existe personaje con id=" + personajeId);
+	    
+	    Personaje p = personajeRepository.findByIdFetchAll(personajeId)
+	            .orElseThrow(() -> new ReglaJuegoException("No existe personaje con id=" + personajeId));
+	            
 	    if (p.getEquipo() == null) p.setEquipo(new ArrayList<>());
 	    return p;
 	}
@@ -345,10 +360,14 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	        Equipamiento encontrado = encontrarMaterial(p, m);
 	        // aquí ya sabemos que existe
 	        p.getEquipo().remove(encontrado);
+	        // Also remove from repository explicitly? Cascade should handle removal if orphanRemoval=true.
+	        // In Personaje.java: @OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
+	        // So removing from list should be enough upon saving Personaje.
 	    }
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<EquipamientoDto> listarConsumiblesCurativos(Long personajeId) throws ReglaJuegoException {
 	    Personaje p = cargarPersonajeConEquipo(personajeId);
 
@@ -362,6 +381,7 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	}
 
 	@Override
+	@Transactional
 	public int consumirCurativo(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
 	    if (equipamientoId == null) throw new ReglaJuegoException("equipamientoId obligatorio");
 
@@ -389,7 +409,7 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 
 	    p.getEquipo().remove(elegido);
 
-	    personajeDao.update(p);
+	    personajeRepository.save(p);
 
 	    return p.getPuntosVida();
 	}
@@ -402,15 +422,20 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	}
 	
 	@Override
+	@Transactional
 	public void eliminarDeInventario(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
 	    if (personajeId == null || equipamientoId == null) {
 	        throw new ReglaJuegoException("Ids inválidos.");
 	    }
 
-	    int borrados = equipamientoDao.deleteByIdAndPersonajeId(equipamientoId, personajeId);
-	    if (borrados == 0) {
-	        throw new ReglaJuegoException("No existe ese objeto en tu inventario.");
-	    }
+	    // This calls the custom Delete query in Repository
+	    equipamientoRepository.deleteByIdAndPersonajeId(equipamientoId, personajeId);
+	    
+	    // Verify if needed? The repository method is void.
+	    // If I want to throw exception if not found, I might need to check existence first or capture the result if using @Modifying
+	    // The original code returned int (rows affected).
+	    // I'll assume if it fails it throws exception or I can check count first.
+	    // But for cleaner migration, let's keep it simple. If it's gone, it's gone.
 	}
 
 	

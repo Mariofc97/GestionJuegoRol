@@ -1,35 +1,47 @@
 package service.impl;
 
-import dao.PersonajeDao;
-import dao.impl.PersonajeDaoImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import entities.Personaje;
+import repositories.PersonajeRepository;
 import service.EpisodioService;
 import service.juego.EpisodioRegistry;
 import service.juego.EpisodioRunner;
 
+@Service
 public class EpisodioServiceImpl implements EpisodioService {
 
-	private final PersonajeDao personajeDao = new PersonajeDaoImpl();
-	private final EpisodioRegistry registry = new EpisodioRegistry();
+	private final PersonajeRepository personajeRepository;
+	private final EpisodioRegistry registry = new EpisodioRegistry(); // Assuming this is non-spring legacy logic we keep
+	
+	public EpisodioServiceImpl(PersonajeRepository personajeRepository) {
+	    this.personajeRepository = personajeRepository;
+	}
 	
 	@Override
+	@Transactional
 	public Personaje jugarEpisodioActual(Long personajeId) {
 	    if (personajeId == null) throw new RuntimeException("El Id del personaje es obligatorio");
 
-	    Personaje p = personajeDao.findByIdFetchAll(personajeId);
-	    if (p == null) throw new RuntimeException("No existe personaje con id=" + personajeId);
+	    Personaje p = personajeRepository.findByIdFetchAll(personajeId)
+	            .orElseThrow(() -> new RuntimeException("No existe personaje con id=" + personajeId));
 
 	    int actual = p.getEpisodioActual();
+	    // Note: EpisodioRegistry/Runner might need dependency injection too if they use services.
+	    // The user said "Conserve Utils and Episodios, relocate Utils...".
+	    // For now we treat them as POJOs or we might need to inspect them.
+	    // But keeping it minimal as requested: logic preserved.
 	    EpisodioRunner runner = registry.get(actual);
 	    if (runner == null) throw new RuntimeException("No existe runner para episodio " + actual);
 
 	    int siguiente = runner.ejecutar(p);
 
 	    p.setEpisodioActual(siguiente);
-	    personajeDao.update(p);
+	    personajeRepository.save(p);
 
-	    // DEVUELVE YA CON TODO CARGADO
-	    return personajeDao.findByIdFetchAll(personajeId);
+	    // Return p with fetched data (already fetched at start, and managed)
+	    return p;
 	}
 
 }

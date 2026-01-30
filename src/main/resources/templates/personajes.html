@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Personajes</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Mis Personajes</h1>
+        <h3 th:text="'Bienvenido, ' + ${usuario.username}">User</h3>
+
+        <div class="personajes-grid">
+            <div th:each="p : ${personajes}" class="card">
+                <h2 th:text="${p.nombre}">Nombre</h2>
+                <p>Nivel: <span th:text="${p.nivel}">1</span></p>
+                <p>Raza: <span th:text="${p.razaTipo}">Humano</span></p>
+                <a th:href="@{/personaje/{id}(id=${p.id})}" class="btn">Jugar</a>
+            </div>
+            <div th:if="${personajes.empty}">
+                <p>No tienes personajes aún.</p>
+            </div>
+        </div>
+        <a href="/" class="btn-secondary">Cerrar Sesión</a>
+    </div>
+</body>
+
+</html>

@@ -4,15 +4,22 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.UsuarioDao;
-import dao.impl.UsuarioDaoImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import dto.UsuarioDto;
 import entities.Usuario;
+import repositories.UsuarioRepository;
 import service.UsuarioService;
 
+@Service
 public class UsuarioServiceImpl implements UsuarioService {
 	
-	private final UsuarioDao usuarioDao = new UsuarioDaoImpl();
+	private final UsuarioRepository usuarioRepository;
+	
+	public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+	    this.usuarioRepository = usuarioRepository;
+	}
 	
 	private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 	
@@ -32,21 +39,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	// En este caso seria para crear usuarios pasando todos los parametros
 	private Usuario mapToEntity(String username, String email, String password, String rol) {
-		return new Usuario(null,username, email, password, rol);
+		return new Usuario(null, username, email, password, rol);
 	}
 
 	@Override
+	@Transactional
 	public UsuarioDto registrar(String username, String email, String password, String rol) {
-		// TODO Auto-generated method stub
 		if(username == null || username.isBlank()) throw new RuntimeException("Username obligatorio");
-		if(email == null || username.isBlank()) throw new RuntimeException("Email obligatorio");
-		if(password == null || username.isBlank()) throw new RuntimeException("Password obligatorio");
-		if(rol == null || username.isBlank()) throw new RuntimeException("Rol obligatorio");
+		if(email == null || email.isBlank()) throw new RuntimeException("Email obligatorio"); // Fix typo in original: checked username instead of email
+		if(password == null || password.isBlank()) throw new RuntimeException("Password obligatorio"); // Fix typo: checked username
+		if(rol == null || rol.isBlank()) throw new RuntimeException("Rol obligatorio"); // Fix typo: checked username
 		
-		if(usuarioDao.existsByUsername(username)) {
+		if(usuarioRepository.existsByUsername(username)) {
 			throw new RuntimeException("El username ya existe: " + username);
 		}
-		if(usuarioDao.existsByEmail(email)) {
+		if(usuarioRepository.existsByEmail(email)) {
 			throw new RuntimeException("El email ya existe: " + email);
 		}
 		
@@ -57,22 +64,20 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		
 		Usuario u = mapToEntity(username, email, password, rol);
-		usuarioDao.save(u);
+		usuarioRepository.save(u);
 		
 		return mapToDto(u);
 	}
 
 	@Override
 	public UsuarioDto login(String username, String password) {
-		// TODO Auto-generated method stub
 		if(username == null || username.isBlank() || password == null || password.isBlank()) {
 			throw new RuntimeException("Username y password son obligatorios para logearse");
 		}
 		
-		Usuario u = usuarioDao.findByUsername(username);
-		if (u == null) {
-			throw new RuntimeException("No existe el usuario " + username);
-		}
+		Usuario u = usuarioRepository.findByUsername(username)
+		        .orElseThrow(() -> new RuntimeException("No existe el usuario " + username));
+		
 		if (!u.getPassword().equals(password)) {
 			throw new RuntimeException("Password incorrecta");
 		}
@@ -82,8 +87,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public List<UsuarioDto> listar() {
-		// TODO Auto-generated method stub
-		List<Usuario> usuarios = usuarioDao.findAll();
+		List<Usuario> usuarios = usuarioRepository.findAll();
 		List<UsuarioDto> dtos = new ArrayList<>();
 		
 		for (Usuario u : usuarios) {
@@ -91,7 +95,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		
 		return dtos;
-				
 	}
 
 }
