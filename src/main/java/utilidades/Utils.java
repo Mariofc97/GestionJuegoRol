@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.slf4j.Logger;
@@ -421,6 +422,96 @@ public class Utils {
 		System.out.println(enemigo.getNombre() + " PV: " + enemigo.getPuntosVida());
 	}
 
+	public static void invocarTodasCriaturas(Personaje person) {
+
+	    if (person == null || person.getId() == null) {
+	        System.out.println("Error: personaje no válido o no persistido.");
+	        return;
+	    }
+
+	    // 🔒 Lista local de criaturas permitidas
+	    Set<String> criaturasPermitidas = Set.of(
+	        "CONEJO",
+	        "GUSANO",
+	        "JABALI",
+	        "LOBO",
+	        "MOSQUITO",
+	        "PEZ_PREISTORICO_GIGANTE",
+	        "RATON",
+	        "SILURO"
+	    );
+
+	    Lobo lobo = new Lobo();
+	    Jabali jabali = new Jabali();
+
+	    int tirada = dadoDiez();
+
+	    if (tirada == 1) {
+	        System.out.println(
+	            "Mientras invocas al lobo un mosquito te pica y te distraes, el lobo se enfada y te ataca."
+	        );
+	        combate(person, lobo);
+	        return;
+	    }
+
+	    if (tirada == 9) {
+	        System.out.println(
+	            "Mientras invocas al jabalí un ratón te asusta y te distraes, el jabalí se enfada y te ataca."
+	        );
+	        combate(person, jabali);
+	        return;
+	    }
+
+	    String tipo;
+	    String nombreDefault;
+
+	    if (tirada > 1 && tirada < 5) {
+	        tipo = "LOBO";
+	        nombreDefault = "Lobo";
+	        System.out.println("Has invocado correctamente a un lobo.");
+	    } else {
+	        tipo = "JABALI";
+	        nombreDefault = "Jabali";
+	        System.out.println("Has invocado correctamente a un jabalí.");
+	    }
+
+	    // ✅ Validación final
+	    if (!criaturasPermitidas.contains(tipo)) {
+	        System.out.println("Error: criatura no permitida por las reglas del juego.");
+	        return;
+	    }
+
+	    String alias = pideDatoCadena("¿Quieres ponerle un alias? (Enter para dejar el nombre): ");
+	    if (alias == null || alias.trim().isEmpty()) {
+	        alias = nombreDefault;
+	    }
+
+	    try {
+	        CriaturaDto dto = criaturaService.invocarCompanero(
+	            person.getId(),
+	            tipo,
+	            alias
+	        );
+
+	        System.out.println(
+	            "Criatura guardada en BD: " + dto.getTipo() + " alias=" + dto.getAlias()
+	        );
+
+	        Personaje rec = recargarPersonaje(person.getId());
+	        if (rec != null) {
+	            person.setCriaturas(rec.getCriaturas());
+	            person.setEquipo(rec.getEquipo());
+	            person.setPuntosVida(rec.getPuntosVida());
+	            person.setExperiencia(rec.getExperiencia());
+	            person.setNivel(rec.getNivel());
+	        }
+
+	    } catch (ReglaJuegoException e) {
+	        System.out.println("No se pudo invocar: " + e.getMessage());
+	    }
+	}
+
+	
 	public static void invocarLoboJabali(Personaje person) {
 
 	    if (person == null || person.getId() == null) {

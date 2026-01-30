@@ -71,11 +71,13 @@ corregir la palabra MATERALES POR materiales
 
 	cambiar y añadir en cazar los combates con las criaturas	y que la expericia se suba aqui , podria devolver tb si win o lose.
 	
-	repaso epi3
+	repaso epi3 OK
 	
-	cabar epi4
+	cabar epi4 OK
 	
 	hacer epi final jefe cueva.
+	
+	HACER QUE TODO CONSTE EN LA BASE DE DATOS.
 
 
 	
