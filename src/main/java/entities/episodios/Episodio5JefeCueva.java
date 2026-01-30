@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import org.aspectj.weaver.patterns.PerObject;
 
 import entities.Personaje;
+import entities.criatura.Criatura;
+import entities.criatura.JefeDelClan;
 import utilidades.Utils;
 
 public class Episodio5JefeCueva {
@@ -36,13 +38,11 @@ public class Episodio5JefeCueva {
 		System.out.println("Tras atravesar el bosque oscuro, llegas a un río caudaloso que bloquea tu camino. "
 				+ "El agua corre lentamente, limpia y clara... enseguida se te ocurren muchas cosas que podrías hacer.");
 
-		boolean jefekey1 = false;
 		boolean jefekey2 = false;
 		boolean salida = false;
 		int contadorCorrer = 0;
 		int contadorGolpes = 0;
 		int vidaInicial = personaje.getPuntosVida();
-		int ataqueInicial = personaje.getPuntosAtaque();
 		do {
 
 			System.out.println("1. Salir corriendo por la presión\n" + "2. Darte golpes en el pecho\n"
@@ -66,7 +66,6 @@ public class Episodio5JefeCueva {
 					contadorCorrer++;
 					int vidaSubida = personaje.getPuntosVida() + 50;
 					personaje.setPuntosVida(vidaSubida);
-					jefekey1 = true;
 
 				}
 				break;
@@ -131,7 +130,16 @@ public class Episodio5JefeCueva {
 			case 8: {
 				System.out.println("Te preparas para desafiar al jefe del clan...");
 				// aquí irá el combate
+				JefeDelClan jefedelclan = new JefeDelClan();
+				Boolean resultadoFinal = Utils.combate(personaje, jefedelclan);
 				jefekey2 = true;
+				if (resultadoFinal) {
+					System.out.println(
+							"En un ataque de locura matas al Jefe del clan, pero a locura no cesa, te acuerdas todo lo que te han hecho y cuando todo termina, estas ensangrentado de pies a cabeza, te das cuenta de algo..... Has matodo a todo el clan.\n Apartir de ahora seras un errante sin clan consumido por la verguenza.");
+				} else {
+					System.out.println(
+							"Comienza el combate, y luchas con honor, de repente te despiertas, estas en el suelo y el Jefe de tice una palabras:\nHas cambiado mucho, ahora tienes honor, y lo has demostrado. Vuelve con nosotros, eres de nuetro Clan, lo has demostrado, recuperaras todo tu familia y posicón.\n Y desde entonces vives orgulloso con tu familia y tu Clan!");
+				}
 
 				break;
 			}
@@ -141,11 +149,9 @@ public class Episodio5JefeCueva {
 			}
 
 			// solo cuando se ha pasado por case 1 y case 2
-			salida = jefekey1 && jefekey2;
+			salida = jefekey2;
 
 		} while (!salida);
 
-		System.out.println("Tras demostrar tu valor y determinación, el clan te observa de otra manera.\n"
-				+ "Ha llegado el momento de enfrentarte al jefe.");
 	}
 }
