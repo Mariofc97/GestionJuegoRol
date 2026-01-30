@@ -75,7 +75,7 @@ public class Episodio5JefeCueva {
 
 				if (contadorGolpes > 5) {
 					System.out.println(
-							"Eres un bruto te has golpeado tanto que te has roto dos costillas, tu vida es 1 y ya no podras tener más aumentos de ataque");
+							"Eres un bruto te has golpeado tanto que te has roto dos costillas, tu vida es 1 y ya no podras tener más aumentos de ataque y pierdes todos los aumentos de vida.");
 					personaje.setPuntosVida(1);
 
 				} else {
@@ -92,7 +92,8 @@ public class Episodio5JefeCueva {
 
 			case 3: {
 				Utils.recuperarVida(personaje);
-				System.out.println("Has descansado y recuperado toda la vida.");
+				System.out.println(
+						"Has descansado y recuperado toda la vida, si tenias aumentos en la vida se a pasado el efecto.");
 				LOGGER.info("Descanso completo de: " + personaje.getNombre());
 				break;
 			}
@@ -135,10 +136,10 @@ public class Episodio5JefeCueva {
 				jefekey2 = true;
 				if (resultadoFinal) {
 					System.out.println(
-							"En un ataque de locura matas al Jefe del clan, pero a locura no cesa, te acuerdas todo lo que te han hecho y cuando todo termina, estas ensangrentado de pies a cabeza, te das cuenta de algo..... Has matodo a todo el clan.\n Apartir de ahora seras un errante sin clan consumido por la verguenza.");
+							"En un ataque de locura matas al Jefe del clan, pero a locura no cesa, te acuerdas todo lo que te han hecho y cuando todo termina, estas ensangrentado de pies a cabeza, te das cuenta de algo..... Has matado a todo el clan.\n A partir de ahora seras un errante sin clan consumido por la verguenza.");
 				} else {
 					System.out.println(
-							"Comienza el combate, y luchas con honor, de repente te despiertas, estas en el suelo y el Jefe de tice una palabras:\nHas cambiado mucho, ahora tienes honor, y lo has demostrado. Vuelve con nosotros, eres de nuetro Clan, lo has demostrado, recuperaras todo tu familia y posicón.\n Y desde entonces vives orgulloso con tu familia y tu Clan!");
+							"Has luchado con honor, de repente te despiertas, estas en el suelo y el Jefe te dice unas palabras:\nHas cambiado mucho, ahora tienes honor, y lo has demostrado. Vuelve con nosotros, eres de nuetro Clan, recuperaras todo, tu familia y posicón.\n Y desde entonces vives orgulloso con tu familia y tu Clan!");
 				}
 
 				break;
