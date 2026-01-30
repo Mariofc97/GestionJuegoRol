@@ -1,4 +1,4 @@
-package pruebas;
+package entities.episodios;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
