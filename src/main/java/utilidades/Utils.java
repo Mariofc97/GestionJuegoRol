@@ -494,7 +494,7 @@ public class Utils {
 		List<Equipamiento> equipo = person.getEquipo();
 
 		if (equipo == null || equipo.isEmpty()) {
-			log.info("No llevas ningun objeto encima");
+			System.out.println("No llevas ningun objeto encima");
 			return;
 		}
 
