@@ -1,7 +1,6 @@
 package service.juego;
 
 import entities.Personaje;
-import entities.episodios.Episodio4Rio;
 import entities.episodios.Episodio5JefeCueva;
 
 public class Episodio5Runner implements EpisodioRunner {
