@@ -73,7 +73,7 @@ public class AppJuegoRol {
                         String u = Utils.pideDatoCadena("Username: ");
                         String e = Utils.pideDatoCadena("Email: ");
                         String p = Utils.pideDatoCadena("Password: ");
-                        String r = Utils.pideDatoCadena("Rol: ");
+                        String r = Utils.pideDatoCadena("Rol (JUGADOR / ADMINISTRADOR: ");
 
                         UsuarioDto registrado = usuarioService.registrar(u, e, p, r);
                         System.out.println("Usuario registrado OK -> " + registrado);
