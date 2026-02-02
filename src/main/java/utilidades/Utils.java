@@ -307,7 +307,7 @@ public class Utils {
 
 					if (!enemigo.estaVivo()) {
 					    try {
-							Personaje actualizado = personajeService.sumarExperiencia(person.getId(), 10);
+							Personaje actualizado = personajeService.sumarExperiencia(person.getId(), 80);
 							syncPersonaje(person, actualizado);
 					    } catch (ReglaJuegoException e) {
 					        System.out.println("No se pudo aplicar experiencia: " + e.getMessage());
@@ -985,10 +985,14 @@ public class Utils {
 	        if (tirada <= 7) {
 	            System.out.println("Has encontrado algunas bayas");
 	            equipService.añadirAlInventario(personaje.getId(), new Baya());
+	            Personaje actualizado = personajeService.sumarExperiencia(personaje.getId(), 10);
+	            syncPersonaje(personaje, actualizado);
 	        } else {
 	            System.out.println("Has encontrado muchas bayas");
 	            equipService.añadirAlInventario(personaje.getId(), new Baya());
 	            equipService.añadirAlInventario(personaje.getId(), new Baya());
+	            Personaje actualizado = personajeService.sumarExperiencia(personaje.getId(), 20);
+	            syncPersonaje(personaje, actualizado);
 	        }
 
 	        // recargar inventario actualizado
@@ -1093,6 +1097,12 @@ public class Utils {
 	        }
 
 	        // IMPORTANTÍSIMO: recargamos desde BD para traer el inventario actualizado
+	        try {
+	        	Personaje actualizado = personajeService.sumarExperiencia(personaje.getId(), 20);
+	        	syncPersonaje(personaje, actualizado);
+	        } catch (ReglaJuegoException e) {
+	        	System.out.println("No se pudo sumar experiencia" + e.getMessage());
+	        }
 	        Personaje rec =  Utils.recargarPersonaje(personaje.getId());
 	        System.out.println("\nHas encontrado el objeto: " + nombreEncontrado);
 	        

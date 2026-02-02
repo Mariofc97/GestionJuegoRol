@@ -63,13 +63,13 @@ Anotaciones MARIO:
 	o No puede dar de alta otros usuarios ni gestionar usuarios existentes.
 	
 	
-	-cambiar el metodo fabricarArmas con un syso despues de la consulta de hibernate.
-	-las armas se estan guardando con el construstor de equipamiento, por lo que no aparecen en la base de datos los puntos de daño que realiza, 
-	- los campos de puntos de vida en la base de datos del equipamiento estan repetidos.
+
 	- En el menu de las armas, debe de aparecen que arma tenemos equipada en todo momento.
-	- Creo que cada vez que se actualiza el personaje con el metodo de recargarPersonaje() de service, se cura toda la vida.
-	- Cuando elegimos equipar arma, el personaje sigue haciendo la misma cantidad de daño en combate
-	- Parece que cuando cambia de episodio se resetea el nivel del personaje y todo a 0
+	- Cuando elegimos equipar arma, el personaje sigue haciendo la misma cantidad de daño en combate, y la durabilidad del arma no baja en la base de datos, ademas me gustaria que cuando el personaje hace daño con ese arma aparezca un mensaje como: "Personaje uso Honda para hacer Latigazo"
+	- Revisar porque el enemigo no ataca a nuestra criatura invocada en combate, y si esa criatura muere se debe de ir de nuestro listado de criaturas
+	- Creo que cuando se sube de nivel, se sube la vida normal, ademas de la maxima aunque no estoy seguro, solo quiero que se suba la maxima, eso o creo que cada vez que se actualiza el personaje con el metodo de recargarPersonaje() de service, se cura toda la vida..
+	- las armas se estan guardando con el construstor de equipamiento, por lo que no aparecen en la base de datos los puntos de daño que realiza, 
+	- los campos de puntos de vida en la base de datos del equipamiento estan repetidos en la tabla de equipamiento, revisar porque y cual debe ser cada campo.
 
 Anotaciones Dani:
 cambiar menu crear armas eleccion por numeros es más comodo

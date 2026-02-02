@@ -2,7 +2,6 @@ package app;
 
 import java.util.List;
 
-import dto.CriaturaDto;
 import dto.EquipamientoDto;
 import dto.UsuarioDto;
 import entities.Personaje;
@@ -33,10 +32,10 @@ public class AppJuegoRol {
     public static void main(String[] args) {
     	
 //    	En Oracle-xe
-   // 	DROP TABLE TB_EQUIPAMIENTO CASCADE CONSTRAINTS;
-  //  	DROP TABLE TB_CRIATURA     CASCADE CONSTRAINTS;
-  //  	DROP TABLE TB_PERSONAJE    CASCADE CONSTRAINTS;
- //   	DROP TABLE TB_USUARIO      CASCADE CONSTRAINTS;
+//    	DROP TABLE TB_EQUIPAMIENTO CASCADE CONSTRAINTS;
+//    	DROP TABLE TB_CRIATURA     CASCADE CONSTRAINTS;
+//    	DROP TABLE TB_PERSONAJE    CASCADE CONSTRAINTS;
+//    	DROP TABLE TB_USUARIO      CASCADE CONSTRAINTS;
 //    	
     	//PRUEBA DE LA APP:
 //    	1. Login y elige personaje

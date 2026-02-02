@@ -73,8 +73,8 @@ public class UsuarioDto {
 
 	@Override
 	public String toString() {
-		return "UsuarioDto [id=" + id + ", username=" + username + ", email=" + email + ", rol=" + rol + ", fechaAlta="
-				+ fechaAlta + ", activo=" + activo + "]";
+		return "Usuario [Id= " + id + ", Username= " + username + ", Email= " + email + ", Rol= " + rol + ", Fecha alta= "
+				+ fechaAlta + ", Activo =" + activo + "]";
 	}
 	
 	
