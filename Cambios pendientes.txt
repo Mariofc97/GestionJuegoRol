@@ -61,6 +61,15 @@ Anotaciones MARIO:
 	o Puede iniciar partidas y jugar utilizando las criaturas que tenga 
 	asociadas. 
 	o No puede dar de alta otros usuarios ni gestionar usuarios existentes.
+	
+	
+	-cambiar el metodo fabricarArmas con un syso despues de la consulta de hibernate.
+	-las armas se estan guardando con el construstor de equipamiento, por lo que no aparecen en la base de datos los puntos de daño que realiza, 
+	- los campos de puntos de vida en la base de datos del equipamiento estan repetidos.
+	- En el menu de las armas, debe de aparecen que arma tenemos equipada en todo momento.
+	- Creo que cada vez que se actualiza el personaje con el metodo de recargarPersonaje() de service, se cura toda la vida.
+	- Cuando elegimos equipar arma, el personaje sigue haciendo la misma cantidad de daño en combate
+	- Parece que cuando cambia de episodio se resetea el nivel del personaje y todo a 0
 
 Anotaciones Dani:
 cambiar menu crear armas eleccion por numeros es más comodo
@@ -105,3 +114,5 @@ corregir la palabra MATERALES POR materiales
 	-Elijo arma del catalogo y no pasa nada. Se que no tengo porque voy al inventario.(Quizas es porque llevo 20 objetos y no puedo coger nada mas).Lo especifica
 	con las bayas la primera vez que pulso pero no en esta opcion.
 	-Consumo bayas pero no baja del inventario (Equipo completo).
+
+	

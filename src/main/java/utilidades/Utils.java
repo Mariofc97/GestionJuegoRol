@@ -286,7 +286,7 @@ public class Utils {
 
 				if (!enemigo.estaVivo()) {
 				    try {
-						Personaje actualizado = personajeService.sumarExperiencia(person.getId(), 10);
+						Personaje actualizado = personajeService.sumarExperiencia(person.getId(), 80);
 						syncPersonaje(person, actualizado);
 				    } catch (ReglaJuegoException e) {
 				        System.out.println("No se pudo aplicar experiencia: " + e.getMessage());
@@ -1113,7 +1113,7 @@ public class Utils {
 	    catalogoFabricacionArmasEscudos();
 	    
 	    String tipo = pideDatoCadena(
-	        "/n¿Qué quieres fabricar? Escribe la que desees (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA, CAÑA PESCA, TRAMPA, ESCUDO MADERA, ESCUDO PIEDRA)"
+	        "\n¿Qué quieres fabricar? Escribe la que desees (ARCO, BUMERAN, CAZAMARIPOSAS, LANZA, HONDA, CAÑA PESCA, TRAMPA, ESCUDO MADERA, ESCUDO PIEDRA)"
 	    );
 
 	    try {
