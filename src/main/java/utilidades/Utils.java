@@ -278,8 +278,26 @@ public class Utils {
 				}
 				pausa(300);
 			} else {
-				int danioHecho = person.atacar(enemigo);
-				System.out.println(person.getNombre() + " hace " + danioHecho + " de daño a " + enemigo.getNombre());
+				Armas arma = person.getArmaEquipada();
+				if (arma == null) {
+				    System.out.println("No tienes un arma equipada. No puedes atacar.");
+				    continue;
+				}
+
+				String tipoAtaque = arma.getTipoDaño();
+				if (tipoAtaque == null || tipoAtaque.isBlank()) tipoAtaque = "ATAQUE";
+
+				System.out.println("El personaje \"" + person.getNombre() + "\" usa " 
+				        + tipoAtaque + " con \"" + arma.getNombre() + "\"");
+
+				int danioHecho = person.getPuntosAtaque() + arma.getPuntosDaño();
+
+				// Aplicar daño al enemigo
+				enemigo.setPuntosVida(enemigo.getPuntosVida() - danioHecho);
+				if (enemigo.getPuntosVida() < 0) enemigo.setPuntosVida(0);
+
+				System.out.println(person.getNombre() + " hace " + danioHecho 
+				        + " de daño a " + enemigo.getNombre());
 				System.out.println("Vida del enemigo: " + enemigo.getPuntosVida());
 
 				pausa(300);
@@ -412,8 +430,8 @@ public class Utils {
 		Criatura companero = obtenerCompaneroActivo(person);
 		if (companero != null) {
 			System.out.println(companero.getAlias() + " (" + companero.getNombre() + ") PV: "
-					+ companero.getPuntosVida() + "/" + companero.getPuntosVida());
-			// Si tu Criatura tiene "puntosVidaMax", entonces usa: companero.getPuntosVida()
+			        + companero.getPuntosVida());
+			// Si la Criatura tuviera "puntosVidaMax", entonces usa: companero.getPuntosVida()
 			// + "/" + companero.getPuntosVidaMax()
 		} else {
 			System.out.println();
@@ -650,6 +668,16 @@ public class Utils {
 	// Equipar: mover el arma elegida al principio de la lista para que
 	// getArmaEquipada() pueda encontrarla primero.
 	private static void menuArmas(Personaje person) {
+
+	    if (person == null || person.getId() == null) {
+	        System.out.println("No hay personaje válido.");
+	        return;
+	    }
+
+	    // Recargar SIEMPRE desde BD antes de mostrar
+	    Personaje rec = recargarPersonaje(person.getId());
+	    if (rec != null) person.setEquipo(rec.getEquipo());
+
 	    List<Equipamiento> equipo = person.getEquipo();
 	    if (equipo == null || equipo.isEmpty()) {
 	        System.out.println("No llevas armas ni objetos");
@@ -666,14 +694,25 @@ public class Utils {
 	        return;
 	    }
 
+	    // Calcula equipada DESPUÉS de recargar
+	    Armas equipada = person.getArmaEquipada();
+
 	    System.out.println("\n--- ARMAS ---");
 	    for (int i = 0; i < armas.size(); i++) {
 	        Armas a = armas.get(i);
+
+	        boolean esEquipada = (equipada != null && equipada.getId() != null
+	                && equipada.getId().equals(a.getId()));
+
+	        String marca = esEquipada ? "  (EQUIPADA)" : "";
+
 	        System.out.println((i + 1) + ") " + a.getNombre() +
-	            " [id=" + a.getId() + "]" +
-	            " daño=" + a.getPuntosDaño() +
-	            " durabilidad=" + a.getDurabilidad() +
-	            " nivelReq=" + a.getNivelRequerido());
+	                " [id=" + a.getId() + "]" +
+	                " daño=" + a.getPuntosDaño() +
+	                " durabilidad=" + a.getDurabilidad() +
+	                " nivelReq=" + a.getNivelRequerido() +
+	                " tipo=" + a.getTipoDaño() +
+	                marca);
 	    }
 
 	    System.out.println((armas.size() + 1) + ") Volver");
@@ -690,10 +729,16 @@ public class Utils {
 	        EquipamientoService es = new EquipamientoServiceImpl();
 	        EquipamientoDto dto = es.equiparArma(person.getId(), seleccionada.getId());
 	        System.out.println("Arma equipada OK: " + dto.getNombre());
+
+	        // MUY IMPORTANTE: recargar y sincronizar el inventario YA ORDENADO
+	        Personaje rec2 = recargarPersonaje(person.getId());
+	        if (rec2 != null) person.setEquipo(rec2.getEquipo());
+
 	    } catch (ReglaJuegoException e) {
 	        System.out.println("No puedes equipar: " + e.getMessage());
 	    }
 	}
+
 	
 	private static void menuEscudos(Personaje person) {
 	    List<Equipamiento> equipo = person.getEquipo();

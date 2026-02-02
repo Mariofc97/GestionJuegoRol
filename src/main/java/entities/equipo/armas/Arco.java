@@ -13,7 +13,7 @@ public class Arco extends Armas {
             3,        // nivelRequerido
             3,        // peso
             60,       // durabilidad
-            "FLECHAS",// tipoDaño
+            "FLECHAZO",// tipoDaño
             4,        // alcance
             70,       // precision
             6,        // puntosDaño
