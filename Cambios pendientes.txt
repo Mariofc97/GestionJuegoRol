@@ -2,71 +2,37 @@
 
 Anotaciones MARIO:
 
-	- ME GUSTARIA DAR UTILIDAD A LAS CLASES DE ESCUDOS Y POCIONES
 	- QUE DE VEZ EN CUANDO CUANDO BUSQUES MATERIALES TE ENCUENTRES A UN ANIMAL CON EL QUE DEBAS COMBATIR
 	- BUSCAR ALGUNA INTERACCION RANDOM CON TU COMPAÑERO DE VIAJE(CRIATURA)
-	- EN LA CUEVA, AL PRINCIPIO, DEBERIAMOS DE LIMITAR LA BUSQUEDA DE MATERIALES
-	- EN EL INVENTARIO DE ARMAS, DEBE APARECER EL ARMA QUE TIENE EQUIPADA EL PERSONAJE
-	- HAY QUE REGULAR QUE EN EL COMBATE EL ENEMIGO PUEDA ATACAR AL AZAR A MI COMPAÑERO O AL USUARIO
-	- EN EL COMBATE, EL ENEMIGO DEBERIA PEGAR UN 50% A UN ALIADO U OTRO AL AZAR.
-	- HAY QUE AÑADIR UNA CELEBRACION CUANDO GANEMOS EL COMBATE
-	- DAR UTILIDAD A ESCUDOS, CREACION DE ESCUDOS DE MADERA Y DE PIEDRA
-	- EN EL COMBATE HAY QUE AÑADIR EL TIPO DE DAÑO DE ARMA DE NUESTRO PERSONAJE CADA VEZ QUE ATAQUE. EJ: SI ATACA CON ARCO... FLECHAZO
-	- En el inventario, ver todo el equipo, ver armas y ver escudos, deberia ser una consulta a la BD y ahora solo esta en memoria.
-	- ES IMPORTANTE QUE AL ELIMINAR OBJETOS DEL INVENTARIO LO HAGAMOS DE FORMA PERSISTENTE, PORQUE SOLO LO ESTAMOS HACIENDO EN MEMORIA...
-	- HAY QUE HACER QUE EL USUARIO ELIJA CONSTRUIR ARMAS PASANDO NUMEROS, Y QUE ANTES DE CREARLAS SE LE INFORME AL USUARIO DE LOS ATRIBUTOS DE LAS ARMAS
 	- QUE AL SUBIR EXPERIENCIA SE VEA EL TOTAL DE EXPERIENCIA NECESARIO PARA SUBIR DE NIVEL Y QUE EN EL INVENTARIO, EN (1. VER ESTADO DEL PERSONAJE) TAMBIEN SE VEA
-	- Registrar el resultado de combates importantes. 
-	- Crear DaoException (o similar): Para errores relacionados con la base de datos / Hibernate.
-		Cualquier problema de acceso a datos asociado a usuarios deberá lanzar 
-		una DaoException (o similar).  
+	- Intentar egistrar el resultado de combates importantes.  
 	- Imagen de perfil del usuario, que se podrá modelar de una de estas 
 		formas (a elegir y justificar en la memoria): 
 		o Como un campo String que guarde la ruta de la imagen (en disco o 
 			en un servidor web). 
 		o Como un campo binario (BLOB) que almacene la imagen 
 			directamente en la base de datos.
-
-	2) Controlador (Servlet) de Login 
-		Crear un servlet que gestione el login: 
-		doPost 
-		1. Recoger usuario y password del formulario y cargarlo en DTO. 
-		2. Llamar a la capa de servicios para comprobar credenciales pasándole el 
-		DTO. 
-		3. Según el resultado:  
-		o Login OK: 
-		▪ Redirigir a la zona privada (juego.html). 
-		o Login KO: 
-		▪ Volver a login.jsp con el mensaje de error correspondiente  
-	3) Capa de servicios (Service) 
-		En la capa de servicios debéis implementar un método del estilo: 
-		• login(UsuarioDTO usuario) 
-		La lógica mínima en Service: 
-		• Validar usuario y password correctos 
-		• Buscar el usuario por nombre (a través del DAO). 
-		• Si no existe → error “Usuario no dado de alta”. 
-		• Si existe, pero password no coincide → error “Contraseña incorrecta”. 
-		• Si coincide → devolver UsuarioDTO (sin exponer datos innecesarios). 
-		
-	1. ADMINISTRADOR 
-	o Puede dar de alta nuevos usuarios (crear otros usuarios en el 
-	sistema). 
-	o Puede listar usuarios existentes. 
-	o Puede activar/desactivar usuarios. 
-	o Opcionalmente, puede modificar su rol (por ejemplo, convertir un 
-	usuario jugador en administrador o viceversa). 
-	2. JUGADOR 
-	o Puede crear y gestionar sus propias criaturas (altas, 
-	modificaciones y, si se desea, bajas lógicas). 
-	o Puede iniciar partidas y jugar utilizando las criaturas que tenga 
-	asociadas. 
-	o No puede dar de alta otros usuarios ni gestionar usuarios existentes.
+			
+	Revisar este tema de seguridad:	
 	
-	
+		1. ADMINISTRADOR 
+		o Puede dar de alta nuevos usuarios (crear otros usuarios en el 
+		sistema). 
+		o Puede listar usuarios existentes. 
+		o Puede activar/desactivar usuarios. 
+		o Opcionalmente, puede modificar su rol (por ejemplo, convertir un 
+		usuario jugador en administrador o viceversa). 
+		2. JUGADOR 
+		o Puede crear y gestionar sus propias criaturas (altas, 
+		modificaciones y, si se desea, bajas lógicas). 
+		o Puede iniciar partidas y jugar utilizando las criaturas que tenga 
+		asociadas. 
+		o No puede dar de alta otros usuarios ni gestionar usuarios existentes.
 
 	- En el menu de las armas, debe de aparecen que arma tenemos equipada en todo momento, ahora aparece, pero parece que solo aparece como equipada la ultima arma que se ha fabricado, pero no la que selecciona el jugador como EQUIPADA.
 	- Cuando elegimos equipar arma, y luego la usamos para atacar, la durabilidad del arma deberia de bajar y no baja en la base de datos.
-	- Revisar porque el enemigo no ataca a nuestra criatura invocada en combate, y si esa criatura muere se debe de ir de nuestro listado de criaturas
+	- No hay ni una pocion creada a lo largo de la historia, en algun momento deberian de darnos un par.
+	- HAY QUE REGULAR QUE EN EL COMBATE EL ENEMIGO PUEDA ATACAR AL AZAR A MI COMPAÑERO O AL USUARIO. Revisar porque el enemigo no ataca a nuestra criatura invocada en combate, y si esa criatura muere se debe de ir de nuestro listado de criaturas
 	- Cuando fabrico una caña de percar no aparece en el inventario de objetos, pero si en el de armas.
 	- Creo que cuando se invoca a una criatura se queda la primera en la lista de criaturas y es la unica que se usa en combate, se deberia de usar todas las criaturas
 	- Cuando se fabrican las armas no se eliminan los objetos del inventario necesarios para fabricarla
