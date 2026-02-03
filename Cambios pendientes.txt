@@ -65,7 +65,7 @@ Anotaciones MARIO:
 	
 
 	- En el menu de las armas, debe de aparecen que arma tenemos equipada en todo momento, ahora aparece, pero parece que solo aparece como equipada la ultima arma que se ha fabricado, pero no la que selecciona el jugador como EQUIPADA.
-	- Cuando elegimos equipar arma, la durabilidad del arma no baja en la base de datos.
+	- Cuando elegimos equipar arma, y luego la usamos para atacar, la durabilidad del arma deberia de bajar y no baja en la base de datos.
 	- Revisar porque el enemigo no ataca a nuestra criatura invocada en combate, y si esa criatura muere se debe de ir de nuestro listado de criaturas
 	- Cuando fabrico una caña de percar no aparece en el inventario de objetos, pero si en el de armas.
 	- Creo que cuando se invoca a una criatura se queda la primera en la lista de criaturas y es la unica que se usa en combate, se deberia de usar todas las criaturas
