@@ -64,12 +64,17 @@ Anotaciones MARIO:
 	
 	
 
-	- En el menu de las armas, debe de aparecen que arma tenemos equipada en todo momento.
-	- Cuando elegimos equipar arma, el personaje sigue haciendo la misma cantidad de daño en combate, y la durabilidad del arma no baja en la base de datos, ademas me gustaria que cuando el personaje hace daño con ese arma aparezca un mensaje como: "Personaje uso Honda para hacer Latigazo"
+	- En el menu de las armas, debe de aparecen que arma tenemos equipada en todo momento, ahora aparece, pero parece que solo aparece como equipada la ultima arma que se ha fabricado, pero no la que selecciona el jugador como EQUIPADA.
+	- Cuando elegimos equipar arma, la durabilidad del arma no baja en la base de datos.
 	- Revisar porque el enemigo no ataca a nuestra criatura invocada en combate, y si esa criatura muere se debe de ir de nuestro listado de criaturas
-	- Creo que cuando se sube de nivel, se sube la vida normal, ademas de la maxima aunque no estoy seguro, solo quiero que se suba la maxima, eso o creo que cada vez que se actualiza el personaje con el metodo de recargarPersonaje() de service, se cura toda la vida..
+	- Cuando fabrico una caña de percar no aparece en el inventario de objetos, pero si en el de armas.
+	- Creo que cuando se invoca a una criatura se queda la primera en la lista de criaturas y es la unica que se usa en combate, se deberia de usar todas las criaturas
+	- Cuando se fabrican las armas no se eliminan los objetos del inventario necesarios para fabricarla
+	- Hay un error al crear escudo de madera o piedra : Error general: org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl@4a59d584 is closed
+	- Cuando invocamos al pezPrehistoricoGigante no nos permite ponerle alias, lo suyo seria que nos dejara, como el resto.
 	- las armas se estan guardando con el construstor de equipamiento, por lo que no aparecen en la base de datos los puntos de daño que realiza, 
 	- los campos de puntos de vida en la base de datos del equipamiento estan repetidos en la tabla de equipamiento, revisar porque y cual debe ser cada campo.
+	- Hay que hacer el case 1 y case 2 del episodio final persistentes (el de correr y golpearse el pecho), guardandose esas subidas en la base de datos
 
 Anotaciones Dani:
 cambiar menu crear armas eleccion por numeros es más comodo

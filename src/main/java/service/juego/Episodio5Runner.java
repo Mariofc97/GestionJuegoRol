@@ -15,7 +15,7 @@ public class Episodio5Runner implements EpisodioRunner {
 	public int ejecutar(Personaje personaje) {
 		// TODO Auto-generated method stub
 		Episodio5JefeCueva.episodio5JefeClan(personaje);
-		return 5; // cuando haya un cuarto episodio ponemos cuatro
+		return 1; // cuando haya un cuarto episodio ponemos cuatro
 	}
 
 }
