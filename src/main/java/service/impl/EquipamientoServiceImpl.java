@@ -347,11 +347,18 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	        }
 	    }
 
-	    // 2) borrar uno de cada
+	    // 2) borrar uno de cada (en memoria + en BD)
 	    for (String m : materiales) {
 	        Equipamiento encontrado = encontrarMaterial(p, m);
-	        // aquí ya sabemos que existe
+
+	        // quitar de la lista en memoria
 	        p.getEquipo().remove(encontrado);
+
+	        // borrado real en BD
+	        int borrados = equipamientoDao.deleteByIdAndPersonajeId(encontrado.getId(), p.getId());
+	        if (borrados == 0) {
+	            throw new ReglaJuegoException("No se pudo consumir material: " + m);
+	        }
 	    }
 	}
 

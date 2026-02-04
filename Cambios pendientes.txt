@@ -29,8 +29,6 @@ Anotaciones MARIO:
 		asociadas. 
 		o No puede dar de alta otros usuarios ni gestionar usuarios existentes.
 
-	- En el menu de las armas, debe de aparecen que arma tenemos equipada en todo momento, ahora aparece, pero parece que solo aparece como equipada la ultima arma que se ha fabricado, pero no la que selecciona el jugador como EQUIPADA.
-	- Cuando elegimos equipar arma, y luego la usamos para atacar, la durabilidad del arma deberia de bajar y no baja en la base de datos.
 	- No hay ni una pocion creada a lo largo de la historia, en algun momento deberian de darnos un par.
 	- HAY QUE REGULAR QUE EN EL COMBATE EL ENEMIGO PUEDA ATACAR AL AZAR A MI COMPAÑERO O AL USUARIO. Revisar porque el enemigo no ataca a nuestra criatura invocada en combate, y si esa criatura muere se debe de ir de nuestro listado de criaturas
 	- Cuando fabrico una caña de percar no aparece en el inventario de objetos, pero si en el de armas.
