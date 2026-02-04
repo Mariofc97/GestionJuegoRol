@@ -25,4 +25,9 @@ public interface EquipamientoService {
 	
 	void eliminarDeInventario(Long personajeId, Long equipamientoId) throws ReglaJuegoException;
 
+	public EquipamientoDto actualizarArma(Long personajeId, Long armaId, int nuevaDurabilidad, boolean equipada)
+	        throws ReglaJuegoException;
+	
+	void consumirDurabilidadArma(Long personajeId, Long armaId, int coste) throws ReglaJuegoException;
+
 }

@@ -296,24 +296,25 @@ public class Utils {
 				enemigo.setPuntosVida(enemigo.getPuntosVida() - danioHecho);
 				if (enemigo.getPuntosVida() < 0) enemigo.setPuntosVida(0);
 
-				System.out.println(person.getNombre() + " hace " + danioHecho 
-				        + " de daño a " + enemigo.getNombre());
-				System.out.println("Vida del enemigo: " + enemigo.getPuntosVida());
+				// ✅ BAJAR DURABILIDAD DEL ARMA Y GUARDAR EN BD
+				try {
+				    EquipamientoService es = new EquipamientoServiceImpl();
+				    es.consumirDurabilidadArma(person.getId(), arma.getId(), 1);
 
-				pausa(300);
+				    // Recargar para reflejar durabilidad/equipada real
+				    Personaje rec = recargarPersonaje(person.getId());
+				    if (rec != null) person.setEquipo(rec.getEquipo());
 
-				if (!enemigo.estaVivo()) {
-				    try {
-						Personaje actualizado = personajeService.sumarExperiencia(person.getId(), 80);
-						syncPersonaje(person, actualizado);
-				    } catch (ReglaJuegoException e) {
-				        System.out.println("No se pudo aplicar experiencia: " + e.getMessage());
-				        log.warn("Error sumarExperiencia", e);
-				    } 
-				    System.out.println(enemigo.getNombre() + " ha sido derrotado.");
-				    ganador = true;
-				    break;
+				    // Si se rompió, avisar (ya viene actualizado en memoria tras recargar)
+				    Armas armaRec = person.getArmaEquipada();
+				    if (armaRec == null) {
+				        System.out.println("⚠️ Tu arma se ha roto y ya no está equipada.");
+				    }
+
+				} catch (ReglaJuegoException ex) {
+				    System.out.println("No se pudo bajar durabilidad: " + ex.getMessage());
 				}
+
 
 				// Turno del compañero
 				Criatura companero = obtenerCompaneroActivo(person);
@@ -674,7 +675,7 @@ public class Utils {
 	        return;
 	    }
 
-	    // Recargar SIEMPRE desde BD antes de mostrar
+	    // ✅ Recargar SIEMPRE desde BD para tener el estado real (equipada/durabilidad)
 	    Personaje rec = recargarPersonaje(person.getId());
 	    if (rec != null) person.setEquipo(rec.getEquipo());
 
@@ -694,25 +695,17 @@ public class Utils {
 	        return;
 	    }
 
-	    // Calcula equipada DESPUÉS de recargar
-	    Armas equipada = person.getArmaEquipada();
-
 	    System.out.println("\n--- ARMAS ---");
 	    for (int i = 0; i < armas.size(); i++) {
 	        Armas a = armas.get(i);
+	        String marca = a.isEquipada() ? "  (EQUIPADA)" : "";
 
-	        boolean esEquipada = (equipada != null && equipada.getId() != null
-	                && equipada.getId().equals(a.getId()));
-
-	        String marca = esEquipada ? "  (EQUIPADA)" : "";
-
-	        System.out.println((i + 1) + ") " + a.getNombre() +
-	                " [id=" + a.getId() + "]" +
-	                " daño=" + a.getPuntosDaño() +
-	                " durabilidad=" + a.getDurabilidad() +
-	                " nivelReq=" + a.getNivelRequerido() +
-	                " tipo=" + a.getTipoDaño() +
-	                marca);
+	        System.out.println((i + 1) + ") " + a.getNombre()
+	            + " [id=" + a.getId() + "]"
+	            + " daño=" + a.getPuntosDaño()
+	            + " durabilidad=" + a.getDurabilidad()
+	            + " nivelReq=" + a.getNivelRequerido()
+	            + marca);
 	    }
 
 	    System.out.println((armas.size() + 1) + ") Volver");
@@ -730,7 +723,7 @@ public class Utils {
 	        EquipamientoDto dto = es.equiparArma(person.getId(), seleccionada.getId());
 	        System.out.println("Arma equipada OK: " + dto.getNombre());
 
-	        // MUY IMPORTANTE: recargar y sincronizar el inventario YA ORDENADO
+	        // ✅ Recargar para que quede reflejado inmediatamente en memoria
 	        Personaje rec2 = recargarPersonaje(person.getId());
 	        if (rec2 != null) person.setEquipo(rec2.getEquipo());
 
@@ -738,6 +731,7 @@ public class Utils {
 	        System.out.println("No puedes equipar: " + e.getMessage());
 	    }
 	}
+
 
 	
 	private static void menuEscudos(Personaje person) {

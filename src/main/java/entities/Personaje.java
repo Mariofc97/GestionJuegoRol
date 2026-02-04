@@ -314,27 +314,18 @@ public class Personaje implements Atacable, Defendible {
 	}
 
 	public Armas getArmaEquipada() {
-		if (equipo == null) {
-			return null;
-		}
+	    if (equipo == null) return null;
 
-		for (Equipamiento e : equipo) {
-			if (e instanceof Armas) {
-				// casteamos e como objeto tipo Armas
-				return (Armas) e;
-			}
-		}
-
-		return null;
+	    for (Equipamiento e : equipo) {
+	        if (e instanceof Armas a && a.isEquipada()) {
+	            return a;
+	        }
+	    }
+	    return null;
 	}
 
 	public boolean tieneArmaEquipada() {
-		Armas arma = getArmaEquipada();
-		if (arma != null) {
-			return true;
-		} else {
-			return false;
-		}
+	    return getArmaEquipada() != null;
 	}
 
 	public Escudos getEscudoEquipado() {

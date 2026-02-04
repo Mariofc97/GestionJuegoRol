@@ -30,6 +30,7 @@ import entities.equipo.objetos.Palo;
 import entities.equipo.objetos.Piedra;
 import entities.equipo.objetos.Pocion;
 import exceptions.ReglaJuegoException;
+import jakarta.transaction.Transactional;
 import service.EquipamientoService;
 
 
@@ -206,39 +207,45 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	}
 
 	@Override
+	@Transactional
 	public EquipamientoDto equiparArma(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
 
 	    Personaje p = cargarPersonajeConEquipo(personajeId);
 
 	    if (equipamientoId == null) throw new ReglaJuegoException("equipamientoId obligatorio");
 
-	    Equipamiento encontrado = null;
+	    Armas armaSeleccionada = null;
+
+	    // 1) Buscar el arma seleccionada
 	    for (Equipamiento e : p.getEquipo()) {
-	        if (e != null && e.getId() != null && e.getId().equals(equipamientoId)) {
-	            encontrado = e;
+	        if (e instanceof Armas a && e.getId() != null && e.getId().equals(equipamientoId)) {
+	            armaSeleccionada = a;
 	            break;
 	        }
 	    }
 
-	    if (encontrado == null) throw new ReglaJuegoException("No tienes ese equipamiento en tu inventario.");
-	    if (!(encontrado instanceof Armas)) {
-	        throw new ReglaJuegoException("Ese objeto no es un arma.");
-	    }
+	    if (armaSeleccionada == null) throw new ReglaJuegoException("No tienes ese arma en tu inventario.");
 
-	    // nivel requerido
-	    if (p.getNivel() < encontrado.getNivelRequerido()) {
+	    // 2) Nivel requerido
+	    if (p.getNivel() < armaSeleccionada.getNivelRequerido()) {
 	        throw new ReglaJuegoException("Nivel insuficiente para equipar. Requiere nivel "
-	                + encontrado.getNivelRequerido() + " y tienes " + p.getNivel());
+	                + armaSeleccionada.getNivelRequerido() + " y tienes " + p.getNivel());
 	    }
 
-	    // mover al principio = equipada
-	    p.getEquipo().remove(encontrado);
-	    p.getEquipo().add(0, encontrado);
+	    // 3) ✅ Des-equipar TODAS las armas y equipar solo la seleccionada
+	    for (Equipamiento e : p.getEquipo()) {
+	        if (e instanceof Armas a) {
+	            a.setEquipada(false);
+	        }
+	    }
+	    armaSeleccionada.setEquipada(true);
 
+	    // 4) Guardar (se guardan los changes en TB_EQUIPAMIENTO)
 	    personajeDao.update(p);
 
-	    return mapToDto(encontrado);
+	    return mapToDto(armaSeleccionada);
 	}
+
 
 	@Override
 	public EquipamientoDto equiparEscudo(Long personajeId, Long equipamientoId) throws ReglaJuegoException {
@@ -412,6 +419,67 @@ public class EquipamientoServiceImpl implements EquipamientoService {
 	        throw new ReglaJuegoException("No existe ese objeto en tu inventario.");
 	    }
 	}
+	
+	@Override
+	@Transactional
+	public EquipamientoDto actualizarArma(Long personajeId, Long armaId, int nuevaDurabilidad, boolean equipada)
+	        throws ReglaJuegoException {
+
+	    Personaje p = cargarPersonajeConEquipo(personajeId);
+
+	    Armas arma = null;
+	    for (Equipamiento e : p.getEquipo()) {
+	        if (e instanceof Armas a && e.getId() != null && e.getId().equals(armaId)) {
+	            arma = a;
+	            break;
+	        }
+	    }
+
+	    if (arma == null) throw new ReglaJuegoException("No tienes esa arma.");
+	    if (nuevaDurabilidad < 0) nuevaDurabilidad = 0;
+
+	    arma.setDurabilidad(nuevaDurabilidad);
+	    arma.setEquipada(equipada);
+
+	    // 👇 esto es lo que realmente persiste en BD en tu proyecto
+	    personajeDao.update(p);
+
+	    return mapToDto(arma);
+	}
+	
+	@Override
+	@Transactional
+	public void consumirDurabilidadArma(Long personajeId, Long armaId, int coste) throws ReglaJuegoException {
+
+	    if (personajeId == null || armaId == null) throw new ReglaJuegoException("Ids obligatorios");
+	    if (coste <= 0) coste = 1;
+
+	    Personaje p = cargarPersonajeConEquipo(personajeId);
+
+	    Armas arma = null;
+	    for (Equipamiento e : p.getEquipo()) {
+	        if (e instanceof Armas a && a.getId() != null && a.getId().equals(armaId)) {
+	            arma = a;
+	            break;
+	        }
+	    }
+
+	    if (arma == null) throw new ReglaJuegoException("No tienes esa arma.");
+	    if (!arma.isEquipada()) throw new ReglaJuegoException("Esa arma no está equipada.");
+
+	    int nueva = arma.getDurabilidad() - coste;
+	    if (nueva < 0) nueva = 0;
+	    arma.setDurabilidad(nueva);
+
+	    if (nueva == 0) {
+	        arma.setEquipada(false);
+	    }
+
+	    personajeDao.update(p); // ✅ merge + tx => guarda durabilidad + equipada
+	}
+
+
+
 
 	
 }

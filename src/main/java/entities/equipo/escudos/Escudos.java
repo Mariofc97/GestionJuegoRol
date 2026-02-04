@@ -2,7 +2,9 @@ package entities.equipo.escudos;
 
 import entities.equipo.Equipamiento;
 import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public abstract class Escudos extends Equipamiento {
 	
 	@Column(name = "puntos_resistencia")
